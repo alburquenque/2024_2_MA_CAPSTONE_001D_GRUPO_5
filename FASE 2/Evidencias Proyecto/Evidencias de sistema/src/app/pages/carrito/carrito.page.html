@@ -1,0 +1,45 @@
+<ion-content [fullscreen]="true">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title size="large">Carrito de compras</ion-title>
+    </ion-toolbar>
+  </ion-header>
+    <h5 class="direccion">Puerto Montt, Calle Génesis, 821</h5>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-subtitle class="cardcarrito">Productos</ion-card-subtitle>
+      </ion-card-header>
+    
+      <ion-card-content>
+        <div class="content-carrito">
+          <!--------------->
+          <div>
+            <img class="imgcarrito" src="assets/FARO.png">
+          </div>
+          <div>
+            <p>Name Producto</p>
+            <p> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Saepe, explicabo?</p>
+            <button class="buttons" (click)="removeItem()"> - </button>
+            <ion-badge slot="end" color="danger">{{ itemCount }}</ion-badge>
+            <button class="buttons" (click)="addItem()"> + </button>
+          </div>
+          <!--------------->
+          <div>
+            <img class="imgcarrito" src="assets/FARO.png">
+          </div>
+          <div>
+            <p>Name Producto</p>
+            <p> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Saepe, explicabo?</p>
+            <button class="buttons" (click)="removeItem()"> - </button>
+            <ion-badge slot="end" color="danger">{{ itemCount }}</ion-badge>
+            <button class="buttons" (click)="addItem()"> + </button>
+          </div>
+          <!--------------->
+        </div>
+      </ion-card-content>
+    </ion-card>
+    <ion-fab class="limpieza" slot="fixed">
+      <button class="cleanButton">Limpiar</button>
+      <button class="cleanButton">Pagar</button>
+  </ion-fab>
+</ion-content>
