@@ -1,9 +1,6 @@
-<ion-content [fullscreen]="true">
-  <ion-header>
-    <ion-toolbar>
-      <ion-title size="large">Carrito de compras</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<app-header [title]="'Carrito de compras'"></app-header>
+
+  <ion-content>
     <h5 class="direccion">Puerto Montt, Calle Génesis, 821</h5>
     <ion-card>
       <ion-card-header>
@@ -17,10 +14,10 @@
             <img class="imgcarrito" src="assets/FARO.png">
           </div>
           <div>
-            <p>Name Producto</p>
+            <h2>Name Producto</h2>
             <p> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Saepe, explicabo?</p>
             <button class="buttons" (click)="removeItem()"> - </button>
-            <ion-badge slot="end" color="danger">{{ itemCount }}</ion-badge>
+            <ion-badge slot="end" color="secondary">{{ itemCount }}</ion-badge>
             <button class="buttons" (click)="addItem()"> + </button>
           </div>
           <!--------------->
@@ -28,10 +25,10 @@
             <img class="imgcarrito" src="assets/FARO.png">
           </div>
           <div>
-            <p>Name Producto</p>
+            <h2>Name Producto</h2>
             <p> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Saepe, explicabo?</p>
             <button class="buttons" (click)="removeItem()"> - </button>
-            <ion-badge slot="end" color="danger">{{ itemCount }}</ion-badge>
+            <ion-badge slot="end" color="secondary">{{ itemCount }}</ion-badge>
             <button class="buttons" (click)="addItem()"> + </button>
           </div>
           <!--------------->

@@ -1,0 +1,22 @@
+import { Component } from '@angular/core';
+import { PopoverController } from '@ionic/angular';
+import { Router } from '@angular/router';
+@Component({
+  selector: 'app-avatar-popover',
+  templateUrl: './avatar-popover.component.html',
+  styleUrls: ['./avatar-popover.component.scss'],
+})
+export class AvatarPopoverComponent {
+
+  constructor(private popoverController: PopoverController, private router: Router) { }
+
+  dismissPopover(action: string) {
+    this.popoverController.dismiss({
+      action: action
+    });
+  }
+
+  irAlPerfil() {
+    this.router.navigate(['/perfil']);
+  }  
+}

@@ -1,0 +1,17 @@
+<ion-list >
+  <div class="container">
+    <ion-avatar>
+      <img alt="Avatar" src="assets/Lazcano.png"/>
+    </ion-avatar>
+    <p class="nombre">Christian Lazcano</p>
+    <p class="email">cr.lazcano&#64;autoplanet.cl</p>
+  </div> 
+  <ion-item button (click)="dismissPopover('gestion-perfil')">
+    <ion-icon name="person-outline" slot="start"></ion-icon>
+    <ion-label (click)="irAlPerfil()">Administrar Perfil</ion-label>
+  </ion-item>
+  <ion-item button (click)="dismissPopover('logout')">
+    <ion-icon name="log-out-outline" slot="start"></ion-icon>
+    <ion-label>Cerrar Sesión</ion-label>
+  </ion-item>
+</ion-list>

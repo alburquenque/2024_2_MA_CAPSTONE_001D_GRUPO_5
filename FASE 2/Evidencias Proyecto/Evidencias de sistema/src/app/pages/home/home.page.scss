@@ -1,21 +1,68 @@
-.icono {
-  font-size: 160px;
-  margin-top: 40px;
-  margin-bottom: 10%;
-  width:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+ion-content {
+    --background: #f4f5f8;
 }
 
-.boton {
-  margin-top: 20px;
-  background-color: #488aff; 
-  border-radius: 45px; 
-  color: white;
+* {
+    font-family: "Inter", sans-serif;
+}
+  
+h1 {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+}
+  
+  
+.icon-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+&:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-.boton2 {
-  margin-top: 10px;
 
+ion-card-header {
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    ion-icon {
+        font-size: 32px;
+        color: white;
+    }
+}
+
+
+  
+ion-card-content {
+    flex-grow: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 12px;
+    margin: auto;
+
+    h2 {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+    }
+  
+    p {
+        font-size: 12px;
+        color: #666;
+        margin: auto;
+      }
+    }
+}
+  
+ion-col {
+    margin-top: 10px;
 }
