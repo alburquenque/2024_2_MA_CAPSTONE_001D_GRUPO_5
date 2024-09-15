@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="medium" (click)="cancel()">Cancelar</ion-button>
+    </ion-buttons>
+    <ion-title>Editar Perfil</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="confirm()">Confirmar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <div class="centrar">
+  <img src="assets/Lazcano.png">
+  <ion-icon name="create-outline" class="editar-icono"></ion-icon>
+  </div>
+  <ion-item>
+    <ion-input labelPlacement="stacked" label="Nombre" placeholder="Christian"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input labelPlacement="stacked" label="Apellido" placeholder="Lazcano"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input labelPlacement="stacked" label="Email" placeholder="cr.lazcano@autoplanet.cl"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input labelPlacement="stacked" label="Dirección" placeholder="Papasime 1526, Cerro Navia"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input labelPlacement="stacked" label="Telefono" placeholder="+56 9 5363 1110"></ion-input>
+  </ion-item>
+
+</ion-content>

@@ -1,0 +1,32 @@
+.centrar{
+    display: flex; /* Usamos flexbox para centrar los elementos */
+    justify-content: center;
+    align-items: center; /* Alinea verticalmente si es necesario */
+    position: relative; /* Posición relativa para que el ícono se ajuste a este contenedor */
+    margin-bottom: 20px;
+
+    
+    img {
+        width: auto;
+        height: 150px;
+        border-radius: 50%;
+        padding: 0;
+        margin: 0;
+        border: 1px solid #ccc;
+        margin-left: 10px;
+
+      }
+
+      .editar-icono {
+        position: absolute;
+        bottom: 0px; /* Ajusta la posición justo debajo de la imagen */
+        right: 25%;  /* Ajusta la posición a la derecha de la imagen */
+        background-color: white;
+        border-radius: 50%;
+        padding: 5px;
+        font-size: 20px;
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+}
+
