@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { EditProfileComponent } from 'src/app/components/edit-profile/edit-profile.component';
+import { EditPasswordComponent } from 'src/app/components/edit-password/edit-password.component';
 
 @Component({
   selector: 'app-perfil',
@@ -21,6 +22,19 @@ export class PerfilPage implements OnInit {
   async openModal() {
     const modal = await this.modalCtrl.create({
       component: EditProfileComponent,
+    });
+    modal.present();
+
+    const { data, role } = await modal.onWillDismiss();
+
+    if (role === 'confirm') {
+      this.message = `Hello, ${data}!`;
+    }
+  }
+
+  async openModal2() {
+    const modal = await this.modalCtrl.create({
+      component: EditPasswordComponent,
     });
     modal.present();
 

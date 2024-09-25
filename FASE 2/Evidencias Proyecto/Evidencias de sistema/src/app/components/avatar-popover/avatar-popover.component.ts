@@ -19,4 +19,8 @@ export class AvatarPopoverComponent {
   irAlPerfil() {
     this.router.navigate(['/perfil']);
   }  
+
+  irAlLogin() {
+    this.router.navigate(['/login']);
+  }  
 }
