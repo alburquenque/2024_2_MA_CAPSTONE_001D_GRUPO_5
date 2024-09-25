@@ -1,0 +1,32 @@
+.contenedorUsers{
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    place-items: center;
+    row-gap: 15px;
+}
+
+.foto-user{
+    margin: 10px;
+    width: 60px;
+    height: 60px;
+    border-radius: 20%;
+    object-fit: cover;
+    animation: breathe 4s ease-in-out infinite;
+  
+  @keyframes breathe {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+  }
+}
+
+.ngcontent{
+    margin: 10px;
+}
+
+.card{
+    background-color: rgb(235, 235, 235);
+}
