@@ -3,6 +3,7 @@ import { AvatarPopoverComponent } from '../avatar-popover/avatar-popover.compone
 import { PopoverController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -18,6 +19,7 @@ export class HeaderComponent {
     this.router.navigate(['/carrito']);
   }
 
+
   async presentPopover(ev: any) {
     const popover = await this.popoverController.create({
       component: AvatarPopoverComponent,
@@ -28,4 +30,6 @@ export class HeaderComponent {
     });
     return await popover.present();
   }
+
+  
 }

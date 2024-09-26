@@ -9,18 +9,20 @@
   <h1>Bienvenido a ScanBuy!</h1>
   <p>Ingresa tus credenciales para iniciar sesión</p>
 
-  <form>
+  <form [formGroup]="credentials" (ngSubmit)="login()">
     <div class="form-group">
-      <label for="email">Email</label>
-      <input type="email" id="email" placeholder="ch.lazcano@autoplanet.cl">
+      <label>Email</label>
+      <input type="email" inputmode="email" formControlName="email" placeholder="ch.lazcano@autoplanet.cl">
+      <ion-note slot="error" *ngIf="(email.dirty || email.touched) && email.errors">Porfavor ingresa tu Email</ion-note>
     </div>
     <div class="form-group">
-      <label for="email">Contraseña</label>
-      <input type="password" id="password">
+      <label>Contraseña</label>
+      <input type="password" formControlName="password" placeholder="Contraseña">
+      <ion-note slot="error" *ngIf="(password.dirty || password.touched) && password.errors">Porfavor ingresa tu contraseña</ion-note>
     </div>
 
 
-    <ion-button routerLink="/home" color="dark" expand="block">Iniciar Sesión</ion-button>
+    <ion-button type="submit" expand="block" strong="true" color="dark" [disabled]="!credentials.valid">Iniciar Sesión</ion-button>
     <ion-button routerLink="/registro" color="secondary" expand="block" style="margin-top: 10px;">Registrar</ion-button>
 
     <p>

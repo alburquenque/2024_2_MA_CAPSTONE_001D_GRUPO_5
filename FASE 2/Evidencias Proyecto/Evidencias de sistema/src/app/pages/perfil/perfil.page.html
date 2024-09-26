@@ -18,8 +18,8 @@
 
       <ion-col size="8" class="text-columns">
         <div style="margin-top: 10px;">
-          <h1>Jhon Doe</h1>
-          <p>jhonexample&#64;gmail.com</p>
+          <h1>{{ nombre }} {{ apellido }}</h1>
+          <p>{{ user?.email }}</p>
         </div>
           <ion-button size="small" class="boton" (click)="openModal()" style="margin-top: 10px;"><h1>Editar Perfil</h1></ion-button>
           <ion-button size="small" class="boton" (click)="openModal2()"><h1>Cambiar Contraseña</h1></ion-button>
@@ -34,13 +34,13 @@
       <ion-col size="5" class="texto-personal" style="margin-left: 5px; width: 50%;">
         <div>
         <h2>Nombre</h2>
-        <p>Jhon Doe</p>
+        <p>{{ nombre }} {{apellido}}</p>
       </div>
       </ion-col>
       <ion-col size="6" class="texto-personal" style="width: 50%;">
         <div>
         <h2>Correo Electrónico</h2>
-        <p>Jhon&#64;example.com</p>
+        <p>{{ user?.email }}</p>
       </div>
       <!-------------------->
       </ion-col>

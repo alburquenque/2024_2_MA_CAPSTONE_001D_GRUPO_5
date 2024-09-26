@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-avatar-popover',
   templateUrl: './avatar-popover.component.html',
@@ -8,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class AvatarPopoverComponent {
 
-  constructor(private popoverController: PopoverController, private router: Router) { }
+  constructor(private popoverController: PopoverController, private router: Router, private authService: AuthService) { }
 
   dismissPopover(action: string) {
     this.popoverController.dismiss({
@@ -26,4 +27,10 @@ export class AvatarPopoverComponent {
   irAlLogin() {
     this.router.navigate(['/login']);
   }  
+
+  logout() {
+    this.authService.signOut().then(() => {
+      this.router.navigateByUrl('/login', { replaceUrl: true }); // Redirige al login después de cerrar sesión
+    });
+  }
 }
