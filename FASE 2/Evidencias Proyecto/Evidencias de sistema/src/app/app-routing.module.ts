@@ -4,7 +4,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'registro',
     pathMatch: 'full'
   },
   {
@@ -26,7 +26,8 @@ const routes: Routes = [
   {
     path: 'perfil',
     loadChildren: () => import('./pages/perfil/perfil.module').then( m => m.PerfilPageModule)
-  },  {
+  },
+  {
     path: 'carrito-realtime',
     loadChildren: () => import('./pages/carrito-realtime/carrito-realtime.module').then( m => m.CarritoRealtimePageModule)
   },
