@@ -30,7 +30,11 @@ const routes: Routes = [
   {
     path: 'carrito-realtime',
     loadChildren: () => import('./pages/carrito-realtime/carrito-realtime.module').then( m => m.CarritoRealtimePageModule)
+  },  {
+    path: 'detalle-carritos',
+    loadChildren: () => import('./pages/detalle-carritos/detalle-carritos.module').then( m => m.DetalleCarritosPageModule)
   },
+
 
 ];
 
