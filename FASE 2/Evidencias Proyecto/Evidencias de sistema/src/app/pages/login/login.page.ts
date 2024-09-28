@@ -50,7 +50,7 @@ export class LoginPage {
     this.authService.signIn(this.credentials.getRawValue()).then(async (data) => {
       await loading.dismiss()
       if (data.error) {
-        this.showAlert('Login failed', data.error.message) 
+        this.showAlert('Inicio de sesión fallido', data.error.message) 
       }
       else {
         this.router.navigateByUrl('/home', { replaceUrl: true })

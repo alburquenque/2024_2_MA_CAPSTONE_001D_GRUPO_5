@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -17,25 +18,29 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule)
+    loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'carrito',
-    loadChildren: () => import('./pages/carrito/carrito.module').then( m => m.CarritoPageModule)
+    loadChildren: () => import('./pages/carrito/carrito.module').then( m => m.CarritoPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'perfil',
-    loadChildren: () => import('./pages/perfil/perfil.module').then( m => m.PerfilPageModule)
+    loadChildren: () => import('./pages/perfil/perfil.module').then( m => m.PerfilPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'carrito-realtime',
-    loadChildren: () => import('./pages/carrito-realtime/carrito-realtime.module').then( m => m.CarritoRealtimePageModule)
-  },  {
-    path: 'detalle-carritos',
-    loadChildren: () => import('./pages/detalle-carritos/detalle-carritos.module').then( m => m.DetalleCarritosPageModule)
+    loadChildren: () => import('./pages/carrito-realtime/carrito-realtime.module').then( m => m.CarritoRealtimePageModule),
+    canActivate: [AuthGuard]
   },
-
-
+  {
+    path: 'detalle-carritos',
+    loadChildren: () => import('./pages/detalle-carritos/detalle-carritos.module').then( m => m.DetalleCarritosPageModule),
+    canActivate: [AuthGuard]
+  }
 ];
 
 @NgModule({
