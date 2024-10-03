@@ -1,0 +1,32 @@
+.content-form{
+    margin: 10px;
+    padding: 10px;
+    border: solid 1px rgb(182, 182, 182);
+    border-radius: 5%;
+}
+.content-labels {
+    display: grid;
+    grid-template-columns: 100%;
+    margin-bottom: 5px;
+}
+
+.content-labels > div {
+    display: grid;
+    place-items: center;   
+    margin: 5px; 
+}
+
+.content-labels > div > img{
+    border-radius: 5%;
+    width: 200px;
+}
+.content-labels > label {
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.content-labels > input{
+    height: 30px;
+    border: solid rgb(196, 196, 196) 1px;
+    border-radius: 5px;
+}

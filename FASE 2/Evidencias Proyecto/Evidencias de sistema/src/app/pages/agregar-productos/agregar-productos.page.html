@@ -1,0 +1,45 @@
+<app-header [title]="'Agregar producto'"></app-header>
+<h1 style="margin-left: 20px;">Rellena los datos</h1>
+<ion-content>
+    <form class="content-form">
+      <!---->
+        <div class="content-labels">
+          <div>
+            <img src="assets/FARO.png" alt="Lazcano">
+          </div>
+          <div>
+            <input type="file" id="imagen" name="imagen" accept="image/*" required>
+          </div>
+        </div>
+        <!---->
+        <div class="content-labels">
+          <label for="barcode">Codigo de barra:</label>
+          <input type="text" id="barcode" name="barcode" required>
+          <!--Aqui se supone que debe de extraerlo desde el escaneo, pero de todas formas deberia poder colocarse manual-->
+        </div>
+        <!---->
+        <div class="content-labels">
+          <label for="nombre">Nombre:</label>
+          <input type="text" id="nombre" name="nombre" required>
+        </div>
+        <!---->
+        <div class="content-labels">
+          <label for="marca">Marca:</label>
+          <input type="text" id="marca" name="marca" required>
+        </div>
+        <!---->
+        <div class="content-labels">
+          <label for="annio">Año:</label>
+          <input type="number" id="annio" name="annio" required>
+        </div>
+        <!---->
+        <div class="content-labels">
+          <label for="precio">Precio:</label>
+          <input type="number" id="precio" name="precio" required>
+        </div>
+        <!---->
+        <div class="content-labels">
+        <ion-button>Guardar</ion-button>
+        </div>
+    </form>
+</ion-content>

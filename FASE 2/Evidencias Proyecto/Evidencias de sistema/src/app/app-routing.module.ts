@@ -24,7 +24,7 @@ const routes: Routes = [
   {
     path: 'carrito',
     loadChildren: () => import('./pages/carrito/carrito.module').then( m => m.CarritoPageModule),
-    canActivate: [AuthGuard]
+    //canActivate: [AuthGuard]
   },
   {
     path: 'perfil',
@@ -34,13 +34,19 @@ const routes: Routes = [
   {
     path: 'carrito-realtime',
     loadChildren: () => import('./pages/carrito-realtime/carrito-realtime.module').then( m => m.CarritoRealtimePageModule),
-    canActivate: [AuthGuard]
+    //canActivate: [AuthGuard]
   },
   {
     path: 'detalle-carritos',
     loadChildren: () => import('./pages/detalle-carritos/detalle-carritos.module').then( m => m.DetalleCarritosPageModule),
-    canActivate: [AuthGuard]
+    //canActivate: [AuthGuard]
+  },
+  {
+    path: 'agregar-productos',
+    loadChildren: () => import('./pages/agregar-productos/agregar-productos.module').then( m => m.AgregarProductosPageModule)
+    //canActivate: [AuthGuard]
   }
+
 ];
 
 @NgModule({
