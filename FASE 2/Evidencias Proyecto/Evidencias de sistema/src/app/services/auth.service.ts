@@ -62,13 +62,17 @@ export class AuthService {
     return this.supabase.auth.signInWithPassword(credentials)
   }
 
-  sendPwReset(email: any) {
-    return this.supabase.auth.resetPasswordForEmail(email)
-  }
-
   async signOut() {
     await this.supabase.auth.signOut()
     this.router.navigateByUrl('/', { replaceUrl: true })
+  }
+
+  reset_password(email: any) {
+    return this.supabase.auth.resetPasswordForEmail(email)
+  }
+
+  changePassword(newPassword: string) {
+    return this.supabase.auth.updateUser({ password: newPassword});
   }
 
   getCurrentUser(): Observable<User | boolean | null> {
@@ -116,7 +120,6 @@ export class AuthService {
             nombre,
             apellido,
             email,
-            password, 
             id_rol: 1, // Cliente por defecto. 2 es admin, y 3 es superadmin. Esos se crean de la BD.
             id_categoriacliente: 1 // Sin categoria al registrarse
           });
