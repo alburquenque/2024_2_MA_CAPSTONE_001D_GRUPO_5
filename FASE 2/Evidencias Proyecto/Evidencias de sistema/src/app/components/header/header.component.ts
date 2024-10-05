@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { AvatarPopoverComponent } from '../avatar-popover/avatar-popover.component';
 import { PopoverController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 
 
 @Component({
@@ -12,8 +12,15 @@ import { Router } from '@angular/router';
 
 export class HeaderComponent {
   @Input() title: string = 'Acme App';
+  isHomePage!: boolean;
 
-  constructor(private popoverController: PopoverController, private router: Router) {}
+  constructor(private popoverController: PopoverController, private router: Router) {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.isHomePage = this.router.url === '/home' || this.router.url === '/home-superadmin' || this.router.url === '/';
+      }
+    });
+  }
 
   irAlCarrito() {
     this.router.navigate(['/carrito']);

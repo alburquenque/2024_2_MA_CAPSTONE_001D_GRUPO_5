@@ -17,15 +17,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/registro/registro.module').then( m => m.RegistroPageModule)
   },
   {
-    path: 'forgot-password',
-    loadChildren: () => import('./pages/forgot-password/forgot-password.module').then( m => m.ForgotPasswordPageModule)
-  },
-  {
-    path: 'change-password',
-    loadChildren: () => import('./pages/change-password/change-password.module').then( m => m.ChangePasswordPageModule)
-    //canActivate: [AuthGuard]
-  },
-  {
     path: 'home',
     loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule),
     //canActivate: [AuthGuard]
@@ -55,8 +46,31 @@ const routes: Routes = [
     loadChildren: () => import('./pages/agregar-productos/agregar-productos.module').then( m => m.AgregarProductosPageModule)
     //canActivate: [AuthGuard]
   },
-
-
+  {
+    path: 'agregar-categoria',
+    loadChildren: () => import('./pages/agregar-categoria/agregar-categoria.module').then( m => m.AgregarCategoriaPageModule)
+  },
+  {
+    path: 'listar-categorias',
+    loadChildren: () => import('./pages/listar-categorias/listar-categorias.module').then( m => m.ListarCategoriasPageModule)
+  },
+  {
+    path: 'listar-productos',
+    loadChildren: () => import('./pages/listar-productos/listar-productos.module').then( m => m.ListarProductosPageModule)
+  },
+  {
+    path: 'home-superadmin',
+    loadChildren: () => import('./pages/home-superadmin/home-superadmin.module').then( m => m.HomeSuperadminPageModule)
+  },
+  {
+    path: 'forgot-password',
+    loadChildren: () => import('./pages/forgot-password/forgot-password.module').then( m => m.ForgotPasswordPageModule)
+  },
+  {
+    path: 'change-password',
+    loadChildren: () => import('./pages/change-password/change-password.module').then( m => m.ChangePasswordPageModule)
+    //canActivate: [AuthGuard]
+  },
 ];
 
 @NgModule({

@@ -4,9 +4,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { AgregarProductosPageRoutingModule } from './agregar-productos-routing.module';
+import { AgregarCategoriaPageRoutingModule } from './agregar-categoria-routing.module';
 
-import { AgregarProductosPage } from './agregar-productos.page';
+import { AgregarCategoriaPage } from './agregar-categoria.page';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
@@ -14,10 +14,10 @@ import { SharedModule } from 'src/app/shared/shared.module';
     CommonModule,
     FormsModule,
     IonicModule,
-    AgregarProductosPageRoutingModule,
+    AgregarCategoriaPageRoutingModule,
     SharedModule,
     ReactiveFormsModule
   ],
-  declarations: [AgregarProductosPage]
+  declarations: [AgregarCategoriaPage]
 })
-export class AgregarProductosPageModule {}
+export class AgregarCategoriaPageModule {}

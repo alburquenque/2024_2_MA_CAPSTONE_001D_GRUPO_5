@@ -1,45 +1,83 @@
 <app-header [title]="'Agregar producto'"></app-header>
-<h1 style="margin-left: 20px;">Rellena los datos</h1>
+<h3 style="margin: 20px">Completa los datos para agregar un producto</h3>
 <ion-content>
-    <form class="content-form">
-      <!---->
-        <div class="content-labels">
-          <div>
-            <img src="assets/FARO.png" alt="Lazcano">
-          </div>
-          <div>
-            <input type="file" id="imagen" name="imagen" accept="image/*" required>
-          </div>
-        </div>
-        <!---->
-        <div class="content-labels">
-          <label for="barcode">Codigo de barra:</label>
-          <input type="text" id="barcode" name="barcode" required>
-          <!--Aqui se supone que debe de extraerlo desde el escaneo, pero de todas formas deberia poder colocarse manual-->
-        </div>
-        <!---->
-        <div class="content-labels">
-          <label for="nombre">Nombre:</label>
-          <input type="text" id="nombre" name="nombre" required>
-        </div>
-        <!---->
-        <div class="content-labels">
-          <label for="marca">Marca:</label>
-          <input type="text" id="marca" name="marca" required>
-        </div>
-        <!---->
-        <div class="content-labels">
-          <label for="annio">Año:</label>
-          <input type="number" id="annio" name="annio" required>
-        </div>
-        <!---->
-        <div class="content-labels">
-          <label for="precio">Precio:</label>
-          <input type="number" id="precio" name="precio" required>
-        </div>
-        <!---->
-        <div class="content-labels">
-        <ion-button>Guardar</ion-button>
-        </div>
-    </form>
+  <form [formGroup]="productoForm" (ngSubmit)="agregar_producto()" class="content-form">
+    <!-- Imagen queda pendiente -->
+    <!-- Código de barra -->
+    <div class="content-labels">
+      <label for="barcode">Código de barra:</label>
+      <input type="text" id="barcode" formControlName="codigo_barras" 
+             [ngClass]="{'invalid-input': f['codigo_barras'].touched && f['codigo_barras'].invalid}">
+      <div *ngIf="f['codigo_barras'].touched && f['codigo_barras'].invalid" class="error-message">
+        <div *ngIf="f['codigo_barras'].errors?.['required']">El código de barras es requerido.</div>
+        <div *ngIf="f['codigo_barras'].errors?.['pattern']">El formato del código de barras debe ser el adecuado.</div>
+      </div>
+    </div>
+
+    <!-- Nombre -->
+    <div class="content-labels">
+      <label for="nombre">Nombre:</label>
+      <input type="text" id="nombre" formControlName="nombre"
+             [ngClass]="{'invalid-input': f['nombre'].touched && f['nombre'].invalid}">
+      <div *ngIf="f['nombre'].touched && f['nombre'].invalid" class="error-message">
+        <div *ngIf="f['nombre'].errors?.['required']">El nombre es requerido.</div>
+        <div *ngIf="f['nombre'].errors?.['maxlength']">El nombre no debe exceder 50 caracteres.</div>
+      </div>
+    </div>
+
+    <!-- Categoría -->
+    <div class="content-labels">
+      <label for="categoria">Categoría:</label>
+      <select id="categoria" formControlName="id_categoria"
+              [ngClass]="{'invalid-input': f['id_categoria'].touched && f['id_categoria'].invalid}">
+        <option [ngValue]="null" disabled>Seleccione una categoría</option>
+        <option *ngFor="let categoria of categorias" [ngValue]="categoria['id_categoria']">
+          {{categoria['nombre']}}
+        </option>
+      </select>
+      <div *ngIf="f['id_categoria'].touched && f['id_categoria'].invalid" class="error-message">
+        <div *ngIf="f['id_categoria'].errors?.['required']">La categoría es requerida.</div>
+      </div>
+    </div>
+
+    <!-- Marca -->
+    <div class="content-labels">
+      <label for="marca">Marca:</label>
+      <input type="text" id="marca" formControlName="marca"
+             [ngClass]="{'invalid-input': f['marca'].touched && f['marca'].invalid}">
+      <div *ngIf="f['marca'].touched && f['marca'].invalid" class="error-message">
+        <div *ngIf="f['marca'].errors?.['required']">La marca es requerida.</div>
+        <div *ngIf="f['marca'].errors?.['maxlength']">La marca no debe exceder 50 caracteres.</div>
+      </div>
+    </div>
+
+    <!-- Año -->
+    <div class="content-labels">
+      <label for="annio">Año:</label>
+      <input type="number" id="annio" formControlName="annio"
+             [ngClass]="{'invalid-input': f['annio'].touched && f['annio'].invalid}">
+      <div *ngIf="f['annio'].touched && f['annio'].invalid" class="error-message">
+        <div *ngIf="f['annio'].errors?.['required']">El año es requerido.</div>
+        <div *ngIf="f['annio'].errors?.['min']">Debe ser 1990 o posterior.</div>
+        <div *ngIf="f['annio'].errors?.['max']">No puede ser futuro.</div>
+      </div>
+    </div>
+
+    <!-- Precio -->
+    <div class="content-labels">
+      <label for="precio">Precio:</label>
+      <input type="number" id="precio" formControlName="precio"
+             [ngClass]="{'invalid-input': f['precio'].touched && f['precio'].invalid}">
+      <div *ngIf="f['precio'].touched && f['precio'].invalid" class="error-message">
+        <div *ngIf="f['precio'].errors?.['required']">El precio es requerido.</div>
+        <div *ngIf="f['precio'].errors?.['min']">El precio no puede ser negativo.</div>
+      </div>
+    </div>
+
+    <!-- Botón de enviar -->
+    <div class="content-labels">
+      <ion-button type="submit" [disabled]="!productoForm.valid">Agregar</ion-button>
+    </div>
+
+  </form>
 </ion-content>

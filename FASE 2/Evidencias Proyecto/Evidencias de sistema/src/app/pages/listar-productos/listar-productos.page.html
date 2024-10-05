@@ -1,0 +1,25 @@
+<app-header [title]="'Gestión de productos'"></app-header>
+
+<ion-content class="ion-padding">
+  <ion-list>
+    <ion-item *ngFor="let producto of productos">
+      <ion-label>
+        <h2>{{ producto.nombre }}</h2>
+        <p>{{ producto.codigo_barras }}</p>
+      </ion-label>
+      <ion-note slot="end" color="primary">${{ producto.precio.toFixed(2) }}</ion-note>
+      <ion-button fill="clear" slot="end">
+        <ion-icon name="create-outline" class="custom-icon"></ion-icon>
+      </ion-button>
+      <ion-button (click)="eliminarProducto(producto.id_producto)" fill="clear" slot="end">
+        <ion-icon name="trash-outline" class="custom-icon"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+  
+  <div class="button-container">
+    <ion-button expand="block" color="primary" routerLink="/agregar-productos">
+      Agregar Producto
+    </ion-button>
+  </div>
+</ion-content>

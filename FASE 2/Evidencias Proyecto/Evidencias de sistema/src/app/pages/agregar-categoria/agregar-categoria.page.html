@@ -1,0 +1,23 @@
+<app-header [title]="'Agregar categoría'"></app-header>
+<h3 style="margin: 20px">Completa los datos para agregar una categoría</h3>
+<ion-content>
+  <form class="content-form" [formGroup]="categoriaForm" (ngSubmit)="agregar_categoria()">
+    <div class="content-labels">
+      <label for="nombre">Nombre:</label>
+      <input type="text" id="nombre" formControlName="nombre" [ngClass]="{'invalid-input': f['nombre'].invalid && f['nombre'].touched}" required>
+      <div *ngIf="f['nombre'].invalid && f['nombre'].touched" class="error-message">
+        El nombre es requerido y debe tener máximo 50 caracteres.
+      </div>
+    </div>
+    <div class="content-labels">
+      <label for="descripcion">Descripción:</label>
+      <input type="text" id="descripcion" formControlName="descripcion" [ngClass]="{'invalid-input': f['descripcion'].invalid && f['descripcion'].touched}" required>
+      <div *ngIf="f['descripcion'].invalid && f['descripcion'].touched" class="error-message">
+        La descripción es requerida y debe tener máximo 50 caracteres.
+      </div>
+    </div>
+    <div class="content-labels">
+      <ion-button type="submit" [disabled]="categoriaForm.invalid">Guardar</ion-button>
+    </div>
+  </form>
+</ion-content>

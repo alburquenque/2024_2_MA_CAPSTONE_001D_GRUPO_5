@@ -1,0 +1,23 @@
+<app-header [title]="'Gestión de categorías'"></app-header>
+
+<ion-content class="ion-padding">
+  <ion-list>
+    <ion-item *ngFor="let categoria of categorias">
+      <ion-label>
+        <h2>{{ categoria.nombre }}</h2>
+      </ion-label>
+      <ion-button fill="clear" slot="end">
+        <ion-icon name="create-outline" class="custom-icon"></ion-icon>
+      </ion-button>
+      <ion-button (click)="eliminarCategoria(categoria.id_categoria)" fill="clear" slot="end">
+        <ion-icon name="trash-outline" class="custom-icon"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+  
+  <div class="button-container">
+    <ion-button expand="block" color="primary" routerLink="/agregar-categoria">
+      Agregar Categoría
+    </ion-button>
+  </div>
+</ion-content>

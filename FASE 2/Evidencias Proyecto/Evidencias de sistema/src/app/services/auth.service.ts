@@ -62,6 +62,7 @@ export class AuthService {
     return this.supabase.auth.signInWithPassword(credentials)
   }
 
+
   async signOut() {
     await this.supabase.auth.signOut()
     this.router.navigateByUrl('/', { replaceUrl: true })
@@ -70,7 +71,6 @@ export class AuthService {
   reset_password(email: any) {
     return this.supabase.auth.resetPasswordForEmail(email)
   }
-
   changePassword(newPassword: string) {
     return this.supabase.auth.updateUser({ password: newPassword});
   }
