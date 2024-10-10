@@ -93,11 +93,11 @@ export class AuthService {
   }
 
   getUserDetails(userId: string): Observable<any> {
-    const userIdInt = parseInt(userId, 10);
+    //const userIdInt = parseInt(userId, 10);
     return from(this.supabase
       .from('usuario')
       .select('*')
-      .eq('id_usuario', userIdInt)
+      .eq('id_usuario', userId)
       .single());
   }
 
@@ -114,9 +114,11 @@ export class AuthService {
         password
       });
       if (data?.user) {
+        const id_usuario = data.user?.id;
         const { error: profileError } = await this.supabaseService.getSupabase()
           .from('usuario')
           .insert({
+            id_usuario,
             nombre,
             apellido,
             email,

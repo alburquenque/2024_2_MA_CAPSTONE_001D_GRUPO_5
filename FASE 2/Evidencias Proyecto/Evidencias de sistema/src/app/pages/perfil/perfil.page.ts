@@ -28,6 +28,7 @@ export class PerfilPage implements OnInit {
           this.apellido = userDetails.data.apellido;
           this.user = user;  // Asignamos los datos del usuario
           console.log('Datos del usuario:', this.user);
+          console.log("este es mi id de usuario: ", this.user.id)
         });
       }
     });
