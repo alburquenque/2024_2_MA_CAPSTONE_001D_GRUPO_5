@@ -1,0 +1,18 @@
+<app-header [title]="'Scanner'"></app-header>
+
+
+<ion-content class="ion-padding">
+  <h1>Bienvenido, Kevin!</h1>
+  <p>Explora las diferentes funciones que tenemos para ti</p>
+
+  
+  <zxing-scanner [formats]="allowedFormats" (scanSuccess)="onScanSuccess($event)"></zxing-scanner>
+
+  <ion-alert *ngIf="scanError" message="{{ scanError }}" header="Error" buttons="OK"></ion-alert>
+
+  <h1>{{scanError}}</h1>
+
+  <h2>Código escaneado: {{ scanResult }}</h2>
+
+
+</ion-content>

@@ -8,7 +8,7 @@
   <ion-grid>
     <ion-row>
       <ion-col size="6" *ngFor="let itemHome of itemsHome">
-        <ion-card class="icon-card">
+        <ion-card class="icon-card" [routerLink]="itemHome.link">
           <ion-card-header color="secondary">
             <ion-icon [name]="itemHome.icon" size="large"></ion-icon>
           </ion-card-header>
