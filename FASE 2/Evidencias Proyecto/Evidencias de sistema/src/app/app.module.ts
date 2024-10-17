@@ -6,12 +6,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { ZXingScannerModule } from '@zxing/ngx-scanner';
+
+
 
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, FormsModule, IonicModule.forRoot(), AppRoutingModule, ReactiveFormsModule, ZXingScannerModule],
+  imports: [BrowserModule, FormsModule, IonicModule.forRoot(), AppRoutingModule, ReactiveFormsModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

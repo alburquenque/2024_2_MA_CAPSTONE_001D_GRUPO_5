@@ -10,7 +10,7 @@ import { ScannerPage } from './scanner.page';
 
 import { SharedModule } from 'src/app/shared/shared.module';
 
-import { ZXingScannerModule } from '@zxing/ngx-scanner';
+
 
 @NgModule({
   imports: [
@@ -19,7 +19,8 @@ import { ZXingScannerModule } from '@zxing/ngx-scanner';
     IonicModule,
     ScannerPageRoutingModule,
     SharedModule,
-    ZXingScannerModule
+
+
   ],
   declarations: [ScannerPage]
 })
