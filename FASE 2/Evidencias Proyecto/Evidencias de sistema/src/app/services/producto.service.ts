@@ -44,7 +44,6 @@ export class ProductoService {
     }
   }
 
-
   async eliminarProducto(id: number) {
     const { data, error } = await this.supabase
       .from('producto')

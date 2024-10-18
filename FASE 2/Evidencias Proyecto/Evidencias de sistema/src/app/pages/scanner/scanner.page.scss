@@ -1,0 +1,42 @@
+ion-modal{
+    ion-toolbar{
+        --background: #0163AA;
+        color: white;
+        ion-button{
+            width: 2rem;
+        }
+        ion-icon{
+            font-size: 2rem;
+        }
+    }
+
+ion-content{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-template-columns: 1fr;
+    img{
+        border-radius: 15px;
+        width: 256px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        margin-left: 20%;
+        margin-right: 20%;
+    }
+    h2{
+        margin: 20px;
+    }
+    h4{
+        margin-left: 20px;
+        margin-bottom: -10px;
+    }
+    p{
+        margin: 20px;
+        font-size: 1rem;
+    }
+    ion-button{
+        width: 10px;
+        
+    }
+}
+}

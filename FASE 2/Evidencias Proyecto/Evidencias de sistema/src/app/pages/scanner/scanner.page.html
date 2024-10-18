@@ -1,16 +1,46 @@
-<app-header [title]="'Scanner'"></app-header>
-
-
+<app-header [title]="'Escaneo'"></app-header>
 <ion-content class="ion-padding">
-  <h1>Bienvenido, Kevin!</h1>
-  <p>Explora las diferentes funciones que tenemos para ti</p>
+  <h1>Bienvenido {{nombreUser}}</h1>
+  <!-- @if(!scanResult){ -->
+    <h3>¡Escanea un producto!</h3>
+    <p>Recuerda que el producto debe tener un codigo similar a este:</p>
+    <img src="assets/EAN13.png" alt="Codigo de barra">
+  <!-- }@else { -->
+    <ion-modal
+    #productScanned
+    [isOpen]="isScanned"
+    (didDismiss)="isScanned=false">
+    <ng-template>
+      <ion-header class="ion-no-border">
+        <ion-toolbar>
+          <ion-title>¡Has escaneado el producto!</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="productScanned.dismiss()" color="dark"></ion-button>
+            <ion-icon name="close-outline"></ion-icon>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content>
+        <img src="assets/FARO.png">
+        <h2>{{name}}</h2>
+        <h4>Precio: {{price}}</h4>
+        <h4>Año: {{annioProduct}}</h4>
+        <h4>Categoria: {{categoryTemp}}</h4>
+        <h4>Marca: {{brand}}</h4>
+        <p>Descripcion: {{description}}</p>
+
+            <ion-button style="width: 80%; margin-top: 10%; margin-left: 10%; margin-right: 10%;">Agregar al carrito</ion-button>
+
+      </ion-content>
+    </ng-template>
+
+    </ion-modal>
+
+  <!-- } -->
+  <ion-button style="width: 80%; margin-bottom: 10%; margin-left: 10%; margin-right: 10%;" (click)="scanBarcode()">Iniciar Escaneo</ion-button> 
 
 
-  <ion-button (click)="scanBarcode()">Iniciar Escaneo</ion-button>
-
-
-
-  <h1>Resultado del escaneo: {{scanResult}}</h1>
 
 
 </ion-content>

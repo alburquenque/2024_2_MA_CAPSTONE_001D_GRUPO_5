@@ -19,7 +19,4 @@ export class SupabaseService {
   getSupabase() {
     return this.supabase;
   }
-
-
-
 }
