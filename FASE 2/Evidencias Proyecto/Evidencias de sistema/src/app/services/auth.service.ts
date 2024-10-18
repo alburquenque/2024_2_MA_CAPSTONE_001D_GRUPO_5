@@ -101,7 +101,30 @@ export class AuthService {
       .single());
   }
 
+
+  async getCarrito(userId: string) {
+    try {
+      const { data, error } = await this.supabase
+      .from('carrito')
+      .select('*')
+      .eq('id_usuario', userId)
+      .single();
+
+      if (error){
+        return null;
+      } 
+      return data;
+    } catch (error) {
+      console.error('Error obteniendo carrito: ', error);
+      return null;
+    }
+  }
+
   
+
+
+
+
 
 
 

@@ -3,6 +3,7 @@ import { CapacitorBarcodeScanner } from '@capacitor/barcode-scanner';
 import { User } from '@supabase/supabase-js';
 import { AuthService } from 'src/app/services/auth.service';
 import { ProductoService } from 'src/app/services/producto.service';
+import { CarritoService } from 'src/app/services/carrito.service';
 
 @Component({
   selector: 'app-scanner',
@@ -11,42 +12,31 @@ import { ProductoService } from 'src/app/services/producto.service';
 })
 export class ScannerPage implements OnInit {
   nombreUser: string = '';
+  id_user: string = '';
   scanActive = false;
   scanResult: string | null = null;
   productos: any[] = [];
-  name: any;
-  description:any;
-  price:any;
-  brand: any;
-  categoryTemp:any;
-  annioProduct: any;
+  productoEscaneado: any
   isScanned = false;
 
 
 
-  constructor(private authService: AuthService, private productoService : ProductoService) {}
+  constructor(private authService: AuthService, 
+              private productoService : ProductoService,
+              private carritoService: CarritoService) {}
 
   ngOnInit() {
-    this.cargarProductos();
     this.authService.getCurrentUser().subscribe((user: User | boolean | null) => {
       if (user && typeof user !== 'boolean') {
         this.authService.getUserDetails(user.id).subscribe(userDetails => {
-          console.log('Detalles del usuario:', userDetails); // Muestra todos los detalles del usuario
           // Aquí puedes guardar los detalles en una propiedad del componente
           this.nombreUser = userDetails.data.nombre;
+          this.id_user = userDetails.data.id_usuario;
         });
       }
     });
   }
 
-  async cargarProductos() {
-    try {
-      this.productos = await this.productoService.obtenerProductos();
-      console.log('Productos cargados', this.productos)
-    } catch (error) {
-      console.error('Error obteniendo los datos:', error);
-    }
-  }
 
   async startScan(val?: number) {
     try {
@@ -70,22 +60,27 @@ export class ScannerPage implements OnInit {
         return;
       }
       this.scanResult = code; 
-      const productoEscaneado = this.productos.find(prod => prod.codigo_barras === this.scanResult);
+      this.productoEscaneado = await this.productoService.obtenerProductoEspecifico(this.scanResult);
+      console.log("producto: ", this.productoEscaneado)
   
-      if (productoEscaneado) {
-        this.name = productoEscaneado.nombre;
-        this.description = productoEscaneado.descripcion;
-        this.price = productoEscaneado.precio;
-        this.categoryTemp = productoEscaneado.id_categoria;
-        this.brand = productoEscaneado.marca;
-        this.annioProduct = productoEscaneado.annio;
-        console.log("Producto escaneado:", productoEscaneado.nombre);
-        this.isScanned = true;
-      } else {
+      if (this.productoEscaneado === null) {
         console.log("Producto no encontrado");
+      } else {
+        this.isScanned = true;
       }
     } catch (e) {
       console.error("Error al escanear el código de barras:", e);
+    }
+  }
+
+  async agregarProducto() {
+    try {
+      this.carritoService.agregarProducto(this.productoEscaneado.precio, 1, 
+        this.productoEscaneado.precio, this.productoEscaneado.id_producto, 4, this.id_user );
+        console.log("si llegue aca")
+
+    } catch (error) {
+      console.error('No se pudo agregar el producto porque: ', error);
     }
   }
 

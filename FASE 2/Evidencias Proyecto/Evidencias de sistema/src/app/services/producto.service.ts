@@ -53,6 +53,25 @@ export class ProductoService {
     if (error) throw error;
     return data;
   }
+
+
+  async obtenerProductoEspecifico(codigo_barras: any) {
+    try {
+      const { data, error } = await this.supabase
+        .from('producto')
+        .select('*')
+        .eq('codigo_barras', codigo_barras)
+        .single();
+
+      if (error){
+        return null;
+      } 
+      return data;
+    } catch (error) {
+      console.error('Error obteniendo producto: ', error);
+      return null;
+    }
+  }
   
 
 

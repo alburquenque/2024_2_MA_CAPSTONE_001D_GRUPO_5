@@ -23,14 +23,14 @@
 
       <ion-content>
         <img src="assets/FARO.png">
-        <h2>{{name}}</h2>
-        <h4>Precio: {{price}}</h4>
-        <h4>Año: {{annioProduct}}</h4>
-        <h4>Categoria: {{categoryTemp}}</h4>
-        <h4>Marca: {{brand}}</h4>
-        <p>Descripcion: {{description}}</p>
+        <h2>{{productoEscaneado.nombre}}</h2>
+        <h4>Precio: {{productoEscaneado.precio}}</h4>
+        <h4>Año: {{productoEscaneado.annio}}</h4>
+        <h4>Categoria: {{productoEscaneado.id_categoria}}</h4>
+        <h4>Marca: {{productoEscaneado.marca}}</h4>
+        <p>Descripcion: {{productoEscaneado.descripcion}}</p>
 
-            <ion-button style="width: 80%; margin-top: 10%; margin-left: 10%; margin-right: 10%;">Agregar al carrito</ion-button>
+            <ion-button style="width: 80%; margin-top: 10%; margin-left: 10%; margin-right: 10%;" (click)="agregarProducto()">Agregar al carrito</ion-button>
 
       </ion-content>
     </ng-template>
