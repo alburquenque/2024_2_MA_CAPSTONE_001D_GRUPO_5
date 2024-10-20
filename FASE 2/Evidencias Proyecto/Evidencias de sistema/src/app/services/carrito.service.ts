@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { SupabaseClient, createClient } from '@supabase/supabase-js';
 import { environment } from 'src/environments/environment';
 import { AuthService } from './auth.service';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,10 +10,15 @@ import { AuthService } from './auth.service';
 export class CarritoService {
 
   private supabase: SupabaseClient;
+  public promesaItemsCarrito = new BehaviorSubject<any[]>([]);
 
   constructor(private authService:AuthService) {
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
    }
+
+   get itemsCarrito$(): Observable<any[]> {
+    return this.promesaItemsCarrito.asObservable();
+  }
 
    //Aqui se van a agregar los productos que se vayan agregando a los carritos
    async agregarProducto(precio_unitario: any, cantidad: any, total: any, id_producto:any, id_carrito:any, userId:any) {
@@ -106,6 +112,7 @@ export class CarritoService {
     }
   }
 
+  //Funciones Kevin
   async actualizarCantidadProducto(nuevaCantidad: any, id_refcarrito: any) {
     try {
       const { data, error } = await this.supabase
@@ -187,7 +194,44 @@ export class CarritoService {
       throw error;
     }
   }
-  
+  /////////////////////////////////////////////
+
+
+  //DE AQUI PARA ABAJO ES LO QUE HICE
+  async obtenerProductosCarrito(idCarrito: any) {
+    try {
+      const { data, error } = await this.supabase
+        .from('ref_carrito')
+        .select(`
+          *,
+          producto:producto(id_producto, nombre, descripcion, precio)  
+        `)
+        .eq('id_carrito', idCarrito);
+      if (error) {
+        console.log('Hubo un error obteniendo los datos', error);
+        return null;
+      }
+      return data;
+    } catch (error) {
+      console.error('Error obteniendo los productos del carrito: ', error);
+      throw error;
+    }
+  }
+
+  async limpiarCarrito(userId: any) {
+    const carrito = await this.authService.getCarrito(userId);
+    if (carrito) {
+      const { error } = await this.supabase
+      .from('ref_carrito')
+      .delete()
+      .eq('id_carrito', carrito.id_carrito);
+
+      if (error) {
+        console.error('Ocurrió un error al intentar limpiar el carrito: ', error);
+        throw error;
+      }
+    }
+  }
 
 
 

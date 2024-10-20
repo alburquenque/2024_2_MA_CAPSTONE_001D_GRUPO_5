@@ -1,31 +1,31 @@
 <app-header [title]="'Carrito de compras'"></app-header>
-
 <ion-content>
-  <h5 class="direccion">Puerto Montt, Calle Génesis, 821</h5>
-  <ion-card>
-    <ion-card-header>
-      <ion-card-subtitle class="cardcarrito">Productos</ion-card-subtitle>
-    </ion-card-header>
-
+  <ion-card *ngFor="let item of itemsCarrito">
     <ion-card-content>
       <div class="content-carrito">
-        <!--------------->
         <div>
           <img class="imgcarrito" src="assets/FARO.png">
         </div>
         <div>
-          <h2>Name Producto</h2>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Saepe, explicabo?</p>
-          <button class="buttons" (click)="removeItem()"> - </button>
-          <ion-badge slot="end" color="secondary">{{ itemCount }}</ion-badge>
-          <button class="buttons" (click)="addItem()"> + </button>
+          <h2>{{ item.producto?.nombre || 'Nombre del Producto' }}</h2>
+          <p>{{ item.precio_unitario | currency }}</p>
+          <button class="buttons" (click)="actualizarCantidad(item, -1)"> - </button>
+          <ion-badge slot="end" color="secondary">{{ item.cantidad }}</ion-badge>
+          <button class="buttons" (click)="actualizarCantidad(item, 1)"> + </button>
         </div>
-        <!--------------->
       </div>
     </ion-card-content>
   </ion-card>
-  <ion-fab class="footer" slot="fixed">
-    <ion-button class="cleanButton">Limpiar</ion-button>
-    <ion-button class="cleanButton">Pagar</ion-button>
-  </ion-fab>
+  <ion-card *ngIf="itemsCarrito.length === 0">
+    <ion-card-content>
+      El carrito está vacío.
+    </ion-card-content>
+  </ion-card>
+  <div *ngIf="itemsCarrito.length > 0" class="total-section">
+    <div class="total-info">
+      <p>Envío: <strong>Gratis</strong></p>
+      <h2>Total: {{ total | currency }}</h2>
+    </div>
+    <ion-button expand="block" class="pay-button">Continuar compra</ion-button>
+  </div>
 </ion-content>

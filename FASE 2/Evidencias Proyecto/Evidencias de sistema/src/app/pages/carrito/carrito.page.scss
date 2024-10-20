@@ -1,3 +1,10 @@
+* {
+    font-family: "Inter", sans-serif;
+}
+
+
+
+
 //Clase de la condicion del card <700px
 .paddingCarrito {
     padding-bottom: 100px;
@@ -46,4 +53,32 @@ h5 {
     padding: 20px;
     z-index: 1000;
     bottom: 0;
+}
+
+.total-section {
+    background-color: #fff;
+    padding: 20px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    border-top: solid 1px #eaeaec;
+}
+
+.total-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.total-info h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.pay-button {
+    background-color: #3483fa;
+    color: white;
+    border-radius: 8px;
+    font-size: 18px;
 }
