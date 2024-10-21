@@ -29,6 +29,7 @@ export class CarritoService {
       console.log("carrito: ",carrito)
       if (!carrito || carrito === null) {
         console.log('El carrito está vacío');
+        const habiaCarrito = 0
         try {
           const { data, error } = await this.supabase
             .from('carrito')
@@ -47,27 +48,28 @@ export class CarritoService {
         }
         
       }
-      //Aqui termina la creacion del carrito en caso de no tenerlo.
 
       //Luego el siguiente try insertamos datos en la tabla "ref_carrito" que es donde obtendremos la informacion para mostrarla en el carrito.
       try{
 
-        const carrito2 = await this.authService.getCarrito(userId); //Obtenemos los datos del carrito filtrando por la id del usuario
-        const id_carrito2=carrito2.id_carrito //Aqui solo almacenamos la id del carrito de ref_carrito, ya que con el obtendremos la informacion hacia las demas tablas
-        const refcarrito = await this.obtenerDataRefCarrito(id_carrito2);
-        console.log('Estoy aca en 3.5 para ver lo que obtenemos de id_carrito2: ',id_carrito2);
-        //Para no escanear de nuevo el id del carrito de Kevin es: 6
-        console.log('Estoy aca en 3.8 para ver lo que obtengo de refcarrito: ',refcarrito)
-        const productoExistente = await refcarrito?.find(item => item.id_producto === id_producto)
+        const carrito2 = await this.authService.getCarrito(userId);
+        const id_carrito2=carrito2.id_carrito
+        const productoExistente = await this.obtenerProductoRefCarrito(id_producto, id_carrito2);
+        //const productoExistente = await refcarrito?.find(item => item.id_producto === id_producto)
         if(productoExistente){
           const nuevaCantidad = productoExistente.cantidad + cantidad;
+          const totalCarrito = nuevaCantidad*productoExistente.precio_unitario
+          console.log("total carrito", totalCarrito)
+          console.log("Nueva cantidad", nuevaCantidad)
+          console.log("productoExistente.precio_unitario: ", productoExistente.precio_unitario)
           await this.actualizarCantidadProducto(nuevaCantidad, productoExistente.id_refcarrito);
           await this.actualizarCantidadEnCarrito(nuevaCantidad, id_carrito2);
-          await this.actualizarTotalEnCarrito(nuevaCantidad, id_carrito2, productoExistente.precio_unitario);
+          await this.actualizarTotalEnCarrito(totalCarrito, id_carrito2);
           await this.actualizarTotalEnRef(nuevaCantidad, productoExistente.id_refcarrito, productoExistente.precio_unitario)
 
         }
         else{
+          //En caso de que el producto escaneado sea uno nuevo
           const { data, error } = await this.supabase
           .from('ref_carrito')
           .insert({
@@ -77,10 +79,20 @@ export class CarritoService {
           id_producto,
           id_carrito:id_carrito2,
           })  
-          if (error) console.log("error: ",error);
-          
-          console.log("Estoy aca 4")
-          return carrito;
+            if(carrito){
+            //Cambiar el total y cantidad en carrito
+            const cantidadEnCarrito = carrito2.cantidad
+            console.log("Cantidad de productos en el carrito: ",cantidadEnCarrito)
+            const nuevaCantidad = cantidadEnCarrito + 1
+            console.log("Supuesta nueva cantidad", nuevaCantidad)
+            const totalCarrito = precio_unitario+carrito2.total
+            await this.actualizarCantidadEnCarrito(nuevaCantidad, id_carrito2);
+            await this.actualizarTotalEnCarrito(totalCarrito, id_carrito2);
+          }
+            if (error) console.log("error: ",error);
+            
+            console.log("Estoy aca 4")
+            return carrito;
         }
       }
       catch (error) {
@@ -93,12 +105,14 @@ export class CarritoService {
     }
   }
 
-  async obtenerDataRefCarrito(idCarrito: any) {
+  async obtenerProductoRefCarrito(idProducto: any, idcarrito:any) {
     try {
       const { data, error } = await this.supabase
         .from('ref_carrito')
         .select('*')
-        .eq('id_carrito', idCarrito);
+        .eq('id_producto', idProducto)
+        .eq('id_carrito', idcarrito)
+        .single();
   
       if (error) {
         console.log('Hubo un error obteniendo los datos', error);
@@ -125,7 +139,6 @@ export class CarritoService {
         throw error;
       }
   
-      console.log('Cantidad actualizada correctamente', data);
     } catch (error) {
       console.error('Error actualizando la cantidad del producto: ', error);
       throw error;
@@ -145,20 +158,19 @@ export class CarritoService {
         console.error("Error actualizando la cantidad: ", error);
         throw error;
       }
-  
-      console.log('Cantidad actualizada correctamente', data);
+  ;
     } catch (error) {
       console.error('Error actualizando la cantidad del producto: ', error);
       throw error;
     }
   }
 
-  async actualizarTotalEnCarrito(nuevaCantidad: any, id_carrito: any, precio: any) {
+  async actualizarTotalEnCarrito(nuevaCantidad: any, id_carrito: any) {
     try {
       const { data, error } = await this.supabase
         .from('carrito')
         .update({ 
-          total: nuevaCantidad*precio
+          total: nuevaCantidad
          })
         .eq('id_carrito', id_carrito);
   
@@ -167,7 +179,6 @@ export class CarritoService {
         throw error;
       }
   
-      console.log('Cantidad actualizada correctamente', data);
     } catch (error) {
       console.error('Error actualizando la cantidad del producto: ', error);
       throw error;
@@ -188,7 +199,6 @@ export class CarritoService {
         throw error;
       }
   
-      console.log('Cantidad actualizada correctamente', data);
     } catch (error) {
       console.error('Error actualizando la cantidad del producto: ', error);
       throw error;

@@ -52,10 +52,11 @@ export class CarritoPage implements OnInit {
 
   async actualizarCantidad(item: any, cambio: number) {
     const nuevaCantidad = item.cantidad + cambio;
+    const nuevoTotal = item.cantidad*item.precio_unitario
     if (nuevaCantidad > 0) {
       await this.carritoService.actualizarCantidadProducto(nuevaCantidad, item.id_refcarrito);
       await this.carritoService.actualizarCantidadEnCarrito(nuevaCantidad, item.id_carrito);
-      await this.carritoService.actualizarTotalEnCarrito(nuevaCantidad, item.id_carrito, item.precio_unitario);
+      await this.carritoService.actualizarTotalEnCarrito(nuevoTotal, item.id_carrito);
       await this.carritoService.actualizarTotalEnRef(nuevaCantidad, item.id_refcarrito, item.precio_unitario);
     } else {
       // AQUI HABRIA QUE ELIMINAR EL ITEM DEL CARRITO, LO IDEAL SERIA CREAR UN METODO EN EL SERVICIO DE CARRITO PARA ELIMINAR UN ITEM, LO DEJO PARA OTRO COMMIT

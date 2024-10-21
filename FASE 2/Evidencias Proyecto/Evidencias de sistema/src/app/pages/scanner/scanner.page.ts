@@ -4,6 +4,8 @@ import { User } from '@supabase/supabase-js';
 import { AuthService } from 'src/app/services/auth.service';
 import { ProductoService } from 'src/app/services/producto.service';
 import { CarritoService } from 'src/app/services/carrito.service';
+import { LoadingController, AlertController } from '@ionic/angular'
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-scanner',
@@ -23,7 +25,10 @@ export class ScannerPage implements OnInit {
 
   constructor(private authService: AuthService, 
               private productoService : ProductoService,
-              private carritoService: CarritoService) {}
+              private carritoService: CarritoService,
+              private loadingController: LoadingController,
+              private alertController: AlertController,
+              private router: Router) {}
 
   ngOnInit() {
     this.authService.getCurrentUser().subscribe((user: User | boolean | null) => {
@@ -59,13 +64,17 @@ export class ScannerPage implements OnInit {
         console.log("No se pudo escanear el producto");
         return;
       }
-      this.scanResult = code; 
+      this.scanResult = code;
+      const loading = await this.loadingController.create()
+      await loading.present()
       this.productoEscaneado = await this.productoService.obtenerProductoEspecifico(this.scanResult);
       console.log("producto: ", this.productoEscaneado)
   
       if (this.productoEscaneado === null) {
-        console.log("Producto no encontrado");
+        await loading.dismiss()
+        this.showAlert('Producto no encontrado', 'Intenta escanear el producto nuevamente')
       } else {
+        await loading.dismiss()
         this.isScanned = true;
       }
     } catch (e) {
@@ -74,14 +83,34 @@ export class ScannerPage implements OnInit {
   }
 
   async agregarProducto() {
+    
     try {
-      this.carritoService.agregarProducto(this.productoEscaneado.precio, 1, 
-        this.productoEscaneado.precio, this.productoEscaneado.id_producto, 4, this.id_user );
-        console.log("si llegue aca")
+      const loading = await this.loadingController.create()
+      await loading.present()
+      await this.carritoService.agregarProducto(this.productoEscaneado.precio, 1, 
+      this.productoEscaneado.precio, this.productoEscaneado.id_producto, 4, this.id_user );
+      await this.cerrarProducto();
+      await loading.dismiss()
+
+      await this.router.navigateByUrl('/carrito', { replaceUrl: true });
 
     } catch (error) {
       console.error('No se pudo agregar el producto porque: ', error);
     }
+  }
+
+
+  async cerrarProducto(){
+    this.isScanned = false;
+  }
+
+  async showAlert(title:string, msg:any) {
+    const alert = await this.alertController.create({
+      header: title,
+      message: msg,
+      buttons: ['OK'],
+    })
+    await alert.present()
   }
 
 
