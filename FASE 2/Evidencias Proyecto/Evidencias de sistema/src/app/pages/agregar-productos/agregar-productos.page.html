@@ -1,7 +1,8 @@
 <app-header [title]="'Agregar producto'"></app-header>
 <h3 style="margin: 20px">Completa los datos para agregar un producto</h3>
 <ion-content>
-  <form [formGroup]="productoForm" (ngSubmit)="agregar_producto()" class="content-form">
+  <button (click)="scanBarcode()">Escanear producto</button>
+  <form [formGroup]="productoForm" (ngSubmit)="tipoFuncion()" class="content-form">
     <!-- Imagen queda pendiente -->
     <!-- Código de barra -->
     <div class="content-labels">
@@ -12,6 +13,7 @@
         <div *ngIf="f['codigo_barras'].errors?.['required']">El código de barras es requerido.</div>
         <div *ngIf="f['codigo_barras'].errors?.['pattern']">El formato del código de barras debe ser el adecuado.</div>
       </div>
+      
     </div>
 
     <!-- Nombre -->
@@ -71,6 +73,17 @@
       <div *ngIf="f['precio'].touched && f['precio'].invalid" class="error-message">
         <div *ngIf="f['precio'].errors?.['required']">El precio es requerido.</div>
         <div *ngIf="f['precio'].errors?.['min']">El precio no puede ser negativo.</div>
+      </div>
+    </div>
+
+    <!-- descripcion -->
+    <div class="content-labels">
+      <label for="descripcion">descripcion:</label>
+      <input type="text" id="descripcion" formControlName="descripcion"
+             [ngClass]="{'invalid-input': f['descripcion'].touched && f['descripcion'].invalid}">
+      <div *ngIf="f['descripcion'].touched && f['descripcion'].invalid" class="error-message">
+        <div *ngIf="f['descripcion'].errors?.['required']">El descripcion es requerido.</div>
+        <div *ngIf="f['descripcion'].errors?.['maxlength']">El descripcion no debe exceder 50 caracteres.</div>
       </div>
     </div>
 

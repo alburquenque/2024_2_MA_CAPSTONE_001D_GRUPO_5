@@ -29,6 +29,24 @@ export class ProductoService {
     }
   }
 
+  async editarProducto(id_producto:any, nombre:any, marca:any, annio:any, precio:any, id_categoria:any, descripcion:any) {
+    try {
+      const { data, error } = await this.supabase
+        .from('producto')
+        .update({ id_producto, nombre, marca, annio, precio, id_categoria, descripcion })
+        .eq('id_producto', id_producto)
+        .single();
+
+      if (error) throw error;
+
+      return data;
+    } catch (error) {
+      console.error('Error editando el producto: ', error);
+      throw error;
+    }
+  }
+
+
   async obtenerProductos() {
     try {
       const { data, error } = await this.supabase
