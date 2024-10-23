@@ -6,20 +6,21 @@
     <p>Recuerda que el producto debe tener un codigo similar a este:</p>
     <img src="assets/EAN13.png" alt="Codigo de barra">
   <!-- }@else { -->
-    <ion-modal
-    #productScanned
-    [isOpen]="isScanned"
-    (didDismiss)="isScanned=false">
-    <ng-template>
-      <ion-header class="ion-no-border">
-        <ion-toolbar>
-          <ion-title>¡Has escaneado el producto!</ion-title>
-          <ion-buttons slot="end">
-            <ion-button (click)="productScanned.dismiss()" color="dark"></ion-button>
+  <ion-modal
+  #productScanned
+  [isOpen]="isScanned"
+  (didDismiss)="isScanned=false">
+  <ng-template>
+    <ion-header class="ion-no-border">
+      <ion-toolbar>
+        <ion-title>¡Has escaneado el producto!</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="productScanned.dismiss()" color="dark">
             <ion-icon name="close-outline"></ion-icon>
-          </ion-buttons>
-        </ion-toolbar>
-      </ion-header>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
 
       <ion-content>
         <img src="assets/FARO.png">
