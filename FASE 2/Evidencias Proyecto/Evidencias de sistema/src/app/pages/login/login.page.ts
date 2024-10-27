@@ -1,5 +1,5 @@
 import { AuthService } from './../../services/auth.service'
-import { Component } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { FormBuilder, Validators, FormGroup } from '@angular/forms'
 import { Router } from '@angular/router'
 import { LoadingController, AlertController } from '@ionic/angular'
@@ -10,10 +10,10 @@ import { LoadingController, AlertController } from '@ionic/angular'
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage {
+export class LoginPage implements OnInit {
 
   
-  credentials:FormGroup;
+  credentialsLogin!:FormGroup;
 
   constructor(
     private fb: FormBuilder,
@@ -24,30 +24,45 @@ export class LoginPage {
   ) {
 
 
-    this.credentials = this.fb.group({
-      email: ['', Validators.required],
-      password: ['', Validators.required],
-    })
     this.authService.getCurrentUser().subscribe((user) => {
       if (user) {
-        this.router.navigateByUrl('/groups', { replaceUrl: true })
+        this.router.navigateByUrl('/home', { replaceUrl: true })
       }
     })
   }
 
+  ionViewWillEnter() {
+    this.initForm(); 
+  }
+
+  ngOnInit() {
+    this.initForm()
+  }
+
+
+  initForm() {
+    this.credentialsLogin = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]],
+    });
+  }
+
+
+
+
   get email() {
-    return this.credentials.get('email')?.value;
+    return this.credentialsLogin.get('email')?.value;
   }
 
   get password() {
-    return this.credentials.get('password')?.value;
+    return this.credentialsLogin.get('password')?.value;
   }
 
   async login() {
     const loading = await this.loadingController.create()
     await loading.present()
 
-    this.authService.signIn(this.credentials.getRawValue()).then(async (data) => {
+    this.authService.signIn(this.credentialsLogin.getRawValue()).then(async (data) => {
       await loading.dismiss()
       if (data.error) {
         this.showAlert('Inicio de sesión fallido', data.error.message) 

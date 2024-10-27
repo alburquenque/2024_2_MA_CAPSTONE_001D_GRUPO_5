@@ -92,6 +92,12 @@ export class AuthService {
     return this.supabase.auth.signInWithOtp({ email })
   }
 
+  verifyOTP(email: string, token:any) {
+    return this.supabase.auth.verifyOtp(
+      {"email": email, "token": token, "type": "email"}
+    )
+  }
+
   getUserDetails(userId: string): Observable<any> {
     //const userIdInt = parseInt(userId, 10);
     return from(this.supabase

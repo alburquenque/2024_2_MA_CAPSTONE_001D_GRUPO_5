@@ -1,7 +1,7 @@
   import { AuthService } from './../../services/auth.service'
   import { Component, OnInit } from '@angular/core'
   import { FormBuilder, Validators, FormGroup } from '@angular/forms'
-  import { Router } from '@angular/router'
+  import { Router, RouterLink } from '@angular/router'
   import { LoadingController, AlertController } from '@ionic/angular'
 
 @Component({
@@ -11,7 +11,7 @@
 })
 export class ForgotPasswordPage implements OnInit {
 
-  credentials:FormGroup;
+  credentialsFP!:FormGroup;
 
   constructor(
     private fb: FormBuilder,
@@ -22,9 +22,7 @@ export class ForgotPasswordPage implements OnInit {
   ) {
 
 
-    this.credentials = this.fb.group({
-      email: ['', Validators.required]
-    })
+
     this.authService.getCurrentUser().subscribe((user) => {
       if (user) {
         this.router.navigateByUrl('/groups', { replaceUrl: true })
@@ -33,22 +31,30 @@ export class ForgotPasswordPage implements OnInit {
   }
 
   get email() {
-    return this.credentials.get('email')?.value;
+    return this.credentialsFP.get('email')?.value;
+  }
+
+  initForm() {
+    this.credentialsFP = this.fb.group({
+      email: ['', Validators.required]
+    })
   }
 
 
   async reset_password() {
-    console.log('email: ',this.credentials.get('email')?.value)
+    console.log('email: ',this.credentialsFP.get('email')?.value)
     const loading = await this.loadingController.create()
     await loading.present()
 
-    this.authService.reset_password(this.credentials.get('email')?.value).then(async (data) => {
+    this.authService.reset_password(this.credentialsFP.get('email')?.value).then(async (data) => {
       await loading.dismiss()
       if (data.error) {
-        this.showAlert('Reseteo de contraseña fallido', data.error.message) 
+        this.showAlert('Envío de email fallido', data.error.message) 
       }
       else {
-        this.showAlert('¡Email enviado!', 'Revisa tu correo y sigue las instrucciones')
+        await this.showAlert('¡Email enviado!', 'Revisa tu correo y sigue las instrucciones')
+        this.router.navigate(['/forgot-password2'], { state: { email: this.credentialsFP.get('email')?.value } });
+        
       }
     })
   }
@@ -64,6 +70,11 @@ export class ForgotPasswordPage implements OnInit {
 
 
   ngOnInit() {
+    this.initForm()
+  }
+
+  ionViewWillEnter() {
+    this.initForm(); // Esto restablecerá el formulario
   }
 
 }

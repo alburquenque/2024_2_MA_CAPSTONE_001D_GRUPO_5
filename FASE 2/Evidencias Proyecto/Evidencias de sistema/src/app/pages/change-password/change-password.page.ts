@@ -33,8 +33,8 @@ export class ChangePasswordPage implements OnInit {
 
 
     this.credentials = this.fb.group({
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      password2: ['', Validators.required]
+      chpassword: ['', [Validators.required, Validators.minLength(6)]],
+      chpassword2: ['', Validators.required]
       
     }, { validator: this.coincidenciaPassword })
     
@@ -48,24 +48,27 @@ export class ChangePasswordPage implements OnInit {
   }
 
   coincidenciaPassword(group: FormGroup) {
-    const password = group.get('password')?.value;
-    const password2 = group.get('password2')?.value;
-    return password === password2 ? null : { diferentes: true };
+    const chpassword = group.get('chpassword')?.value;
+    const chpassword2 = group.get('chpassword2')?.value;
+    return chpassword === chpassword2 ? null : { diferentes: true };
   }
 
   get password() {
-    return this.credentials.get('password')?.value;
+    return this.credentials.get('chpassword')?.value;
   }
 
   async change_password() {
-    const newPassword = this.credentials.get('password')?.value;
-
+    const newPassword = this.credentials.get('chpassword')?.value;
+    const loading = await this.loadingController.create()
+    await loading.present()
     // Call the AuthService to reset the password using the token
     this.authService.changePassword(newPassword).then(async (response) => {
       if (response.error) {
-        this.showError('Error', response.error.message);
+        await loading.dismiss()
+        await this.showError('Error', response.error.message);
       } else {
-        this.showAlert('¡Contraseña Cambiada!', '¡Ya puedes volver a iniciar sesión en ScanBuy!');
+        await loading.dismiss()
+        await this.showAlert('¡Contraseña Cambiada!', '¡Ya puedes volver a iniciar sesión en ScanBuy!');
       }
     });
   }
