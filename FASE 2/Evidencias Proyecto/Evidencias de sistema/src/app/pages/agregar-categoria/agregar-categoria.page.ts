@@ -33,7 +33,7 @@ export class AgregarCategoriaPage  {
         await this.categoriaService.agregarCategoria(this.categoriaForm.value);
         this.showAlert('Éxito', 'Categoría agregada correctamente.');
         this.categoriaForm.reset();
-        this.router.navigate(['/listar-categorias']); // Redirigir después de agregar la categoría
+        this.router.navigate(['/listar-categorias']); 
       } catch (error) {
         console.error('Error agregando la categoría:', error);
         this.showAlert('Error', 'No se pudo agregar la categoría.');

@@ -59,12 +59,15 @@ export class CarritoPage implements OnInit {
       await this.carritoService.actualizarTotalEnCarrito(nuevoTotal, item.id_carrito);
       await this.carritoService.actualizarTotalEnRef(nuevaCantidad, item.id_refcarrito, item.precio_unitario);
     } else {
-      // AQUI HABRIA QUE ELIMINAR EL ITEM DEL CARRITO, LO IDEAL SERIA CREAR UN METODO EN EL SERVICIO DE CARRITO PARA ELIMINAR UN ITEM, LO DEJO PARA OTRO COMMIT
-    }
+      await this.eliminarProducto(item);}
     await this.actualizarItemsCarrito();
   }
+
   
-  
+  async eliminarProducto(item: any) {
+    await this.carritoService.eliminarItemCarrito(item.id_refcarrito);
+    await this.actualizarItemsCarrito();
+  }
 
   async limpiarCarrito() {
     await this.carritoService.limpiarCarrito(this.userId);

@@ -1,29 +1,35 @@
 <app-header [title]="'Carrito de compras'"></app-header>
 <ion-content>
-  <ion-card *ngFor="let item of itemsCarrito">
+  <ion-card *ngFor="let item of itemsCarrito" class="cart-item">
     <ion-card-content>
       <div class="content-carrito">
-        <div>
-          <img class="imgcarrito" src="assets/FARO.png">
+        <div class="image-container">
+          <img class="imgcarrito" [src]="item.producto?.imagen || 'assets/FARO.png'" alt="{{ item.producto?.nombre || 'Producto' }}">
         </div>
-        <div>
-          <h2>{{ item.producto?.nombre || 'Nombre del Producto' }}</h2>
-          <p>{{ item.precio_unitario | currency }}</p>
-          <button class="buttons" (click)="actualizarCantidad(item, -1)"> - </button>
-          <ion-badge slot="end" color="secondary">{{ item.cantidad }}</ion-badge>
-          <button class="buttons" (click)="actualizarCantidad(item, 1)"> + </button>
+        <div class="item-details">
+          <h2 class="item-title">{{ item.producto?.nombre || 'Nombre del Producto' }}</h2>
+          <p class="item-price">{{ item.precio_unitario | currency }}</p>
+          <div class="quantity-controls">
+            <button class="button-quantity" (click)="actualizarCantidad(item, -1)"> - </button>
+            <ion-badge slot="end" color="secondary" class="quantity-badge">{{ item.cantidad }}</ion-badge>
+            <button class="button-quantity" (click)="actualizarCantidad(item, 1)"> + </button>
+            <button class="button-delete" (click)="eliminarProducto(item)" >
+              <ion-icon name="trash-outline"></ion-icon>
+            </button>
+          </div>
         </div>
       </div>
     </ion-card-content>
   </ion-card>
-  <ion-card *ngIf="itemsCarrito.length === 0">
+
+  <ion-card *ngIf="itemsCarrito.length === 0" class="empty-cart">
     <ion-card-content>
       El carrito está vacío.
     </ion-card-content>
   </ion-card>
+
   <div *ngIf="itemsCarrito.length > 0" class="total-section">
     <div class="total-info">
-      <p>Envío: <strong>Gratis</strong></p>
       <h2>Total: {{ total | currency }}</h2>
     </div>
     <ion-button expand="block" class="pay-button">Continuar compra</ion-button>

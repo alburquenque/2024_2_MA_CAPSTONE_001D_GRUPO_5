@@ -214,7 +214,7 @@ export class CarritoService {
         .from('ref_carrito')
         .select(`
           *,
-          producto:producto(id_producto, nombre, descripcion, precio)  
+          producto:producto(id_producto, nombre, descripcion, precio, imagen)  
         `)
         .eq('id_carrito', idCarrito);
       if (error) {
@@ -241,6 +241,21 @@ export class CarritoService {
         throw error;
       }
     }
+  }
+
+  async eliminarItemCarrito(id_refcarrito: any) {
+
+    const { data, error } = await this.supabase
+      .from('ref_carrito')
+      .delete()
+      .eq('id_refcarrito', id_refcarrito);
+
+    if (error) {
+      console.error('Error eliminando el producto del carrito: ', error);
+      throw error;
+    }
+
+    return data;
   }
 
 

@@ -3,7 +3,13 @@
 <ion-content>
   <button (click)="scanBarcode()">Escanear producto</button>
   <form [formGroup]="productoForm" (ngSubmit)="tipoFuncion()" class="content-form">
-    <!-- Imagen queda pendiente -->
+
+    <!-- Imagen del producto -->
+    <div class="content-labels">
+      <label for="imagen">Imagen del producto:</label>
+      <input type="file" id="imagen" (change)="onFileChange($event)">
+    </div>
+
     <!-- Código de barra -->
     <div class="content-labels">
       <label for="barcode">Código de barra:</label>
@@ -13,7 +19,6 @@
         <div *ngIf="f['codigo_barras'].errors?.['required']">El código de barras es requerido.</div>
         <div *ngIf="f['codigo_barras'].errors?.['pattern']">El formato del código de barras debe ser el adecuado.</div>
       </div>
-      
     </div>
 
     <!-- Nombre -->
@@ -76,14 +81,14 @@
       </div>
     </div>
 
-    <!-- descripcion -->
+    <!-- Descripción -->
     <div class="content-labels">
-      <label for="descripcion">descripcion:</label>
+      <label for="descripcion">Descripción:</label>
       <input type="text" id="descripcion" formControlName="descripcion"
              [ngClass]="{'invalid-input': f['descripcion'].touched && f['descripcion'].invalid}">
       <div *ngIf="f['descripcion'].touched && f['descripcion'].invalid" class="error-message">
-        <div *ngIf="f['descripcion'].errors?.['required']">El descripcion es requerido.</div>
-        <div *ngIf="f['descripcion'].errors?.['maxlength']">El descripcion no debe exceder 50 caracteres.</div>
+        <div *ngIf="f['descripcion'].errors?.['required']">La descripción es requerida.</div>
+        <div *ngIf="f['descripcion'].errors?.['maxlength']">La descripción no debe exceder 500 caracteres.</div>
       </div>
     </div>
 

@@ -12,6 +12,7 @@ import { CapacitorBarcodeScanner } from '@capacitor/barcode-scanner';
   styleUrls: ['./agregar-productos.page.scss'],
 })
 export class AgregarProductosPage implements OnInit {
+  imageFile: File | null = null;
 
   productoForm!: FormGroup;
   categorias: any[] = [];
@@ -56,16 +57,27 @@ export class AgregarProductosPage implements OnInit {
     }
   }
 
+  onFileChange(event: Event) {
+    const fileInput = (event.target as HTMLInputElement).files;
+    if (fileInput && fileInput.length > 0) {
+      this.imageFile = fileInput[0];
+    }
+  }
+
+  // Updated agregar_producto method
   async agregar_producto() {
-    if (this.productoForm.valid) {
+    if (this.productoForm.valid && this.imageFile) {
       try {
-        await this.productoService.agregarProducto(this.productoForm.value);
+        await this.productoService.agregarProducto(this.productoForm.value, this.imageFile);
         this.showAlert('Éxito', 'Producto agregado correctamente.');
         this.productoForm.reset();
+        this.imageFile = null; // reset imageFile after successful upload
       } catch (error) {
         console.error('Error agregando el producto:', error);
         this.showAlert('Error', 'No se pudo agregar el producto.');
       }
+    } else if (!this.imageFile) {
+      this.showAlert('Error', 'Por favor, seleccione una imagen.');
     } else {
       this.showAlert('Error de validación', 'Por favor, corrija los errores en el formulario.');
     }

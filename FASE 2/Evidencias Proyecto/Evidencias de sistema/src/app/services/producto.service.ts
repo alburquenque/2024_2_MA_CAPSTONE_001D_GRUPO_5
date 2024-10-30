@@ -13,8 +13,37 @@ export class ProductoService {
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
   }
 
-  async agregarProducto(productoData: any) {
+  async subirImagenProducto(file: File): Promise<string | null> {
     try {
+      const fileName = `${Date.now()}_${file.name}`;
+      const { data, error } = await this.supabase
+        .storage
+        .from('productos-bucket')
+        .upload(fileName, file);
+
+      if (error) throw error;
+
+      const { data: urlData } = this.supabase
+        .storage
+        .from('productos-bucket')
+        .getPublicUrl(fileName);
+
+      return urlData?.publicUrl || null; // Return publicUrl correctly
+    } catch (error) {
+      console.error('Error subiendo imagen: ', error);
+      return null;
+    }
+  }
+
+
+
+  async agregarProducto(productoData: any, imageFile: File) {
+    try {
+      const imageUrl = await this.subirImagenProducto(imageFile);
+      if (!imageUrl) throw new Error('Error uploading image');
+
+      productoData.imagen = imageUrl;
+
       const { data, error } = await this.supabase
         .from('producto')
         .insert(productoData)
@@ -28,6 +57,7 @@ export class ProductoService {
       throw error;
     }
   }
+
 
   async editarProducto(id_producto:any, nombre:any, marca:any, annio:any, precio:any, id_categoria:any, descripcion:any) {
     try {
