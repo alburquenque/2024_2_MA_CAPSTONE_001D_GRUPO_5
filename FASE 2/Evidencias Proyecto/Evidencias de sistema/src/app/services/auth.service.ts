@@ -58,9 +58,32 @@ export class AuthService {
     return this.supabase.auth.signUp(credentials)
   }
 
-  signIn(credentials: { email: any, password: any }) {
-    return this.supabase.auth.signInWithPassword(credentials)
+  async signIn(credentials: { email: any, password: any }): Promise<any> {
+    try {
+      const { data, error } = await this.supabase.auth.signInWithPassword(credentials);
+  
+      if (error) {
+        console.error('Error en inicio de sesión:', error);
+        return { error };
+      }
+  
+      if (data.user) {
+        const userId = data.user.id;
+        const userDetails = await this.getUserDetails(userId); // Obtén los detalles del usuario
+  
+        if (userDetails) {
+          localStorage.setItem('userData', JSON.stringify(userDetails)); // Guarda en el local storage
+          console.log('Datos de usuario guardados en local storage:', userDetails);
+        }
+      }
+  
+      return { data, error };
+    } catch (error) {
+      console.error('Error en el proceso de inicio de sesión:', error);
+      return { error };
+    }
   }
+  
 
 
   async signOut() {
@@ -98,15 +121,25 @@ export class AuthService {
     )
   }
 
-  getUserDetails(userId: string): Observable<any> {
-    //const userIdInt = parseInt(userId, 10);
-    return from(this.supabase
+  async getUserDetails(userId: string): Promise<any> {
+    const { data, error } = await this.supabase
       .from('usuario')
       .select('*')
       .eq('id_usuario', userId)
-      .single());
+      .single();
+  
+    if (error) {
+      console.error('Error obteniendo detalles del usuario:', error);
+      throw error;
+    }
+  
+    return data;
   }
 
+  getLocalUserData(){
+    const userData = localStorage.getItem('userData');
+    return userData ? JSON.parse(userData) : null;
+  };
 
   async getCarrito(userId: string) {
     try {

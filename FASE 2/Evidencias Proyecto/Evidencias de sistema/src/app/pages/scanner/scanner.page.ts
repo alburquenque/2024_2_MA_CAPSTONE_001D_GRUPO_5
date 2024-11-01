@@ -29,18 +29,24 @@ export class ScannerPage implements OnInit {
               private loadingController: LoadingController,
               private alertController: AlertController,
               private router: Router) {}
-
-  ngOnInit() {
-    this.authService.getCurrentUser().subscribe((user: User | boolean | null) => {
-      if (user && typeof user !== 'boolean') {
-        this.authService.getUserDetails(user.id).subscribe(userDetails => {
-          // Aquí puedes guardar los detalles en una propiedad del componente
-          this.nombreUser = userDetails.data.nombre;
-          this.id_user = userDetails.data.id_usuario;
-        });
+              
+async ngOnInit() {
+  this.authService.getCurrentUser().subscribe(async (user: User | boolean | null) => {
+    if (user && typeof user !== 'boolean') {
+      try {
+        const userDetails = await this.authService.getUserDetails(user.id); // Esperamos los detalles del usuario
+        // Guardamos los detalles en propiedades del componente
+        this.nombreUser = userDetails.data.nombre;
+        this.id_user = userDetails.data.id_usuario;
+        console.log('Nombre de usuario:', this.nombreUser);
+        console.log('ID de usuario:', this.id_user);
+      } catch (error) {
+        console.error('Error al obtener los detalles del usuario:', error);
       }
-    });
-  }
+    }
+  });
+}
+
 
 
   async startScan(val?: number) {

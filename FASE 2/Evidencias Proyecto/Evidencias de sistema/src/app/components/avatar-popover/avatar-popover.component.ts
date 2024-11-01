@@ -8,8 +8,13 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./avatar-popover.component.scss'],
 })
 export class AvatarPopoverComponent {
+  localUserData: any; 
 
   constructor(private popoverController: PopoverController, private router: Router, private authService: AuthService) { }
+
+  ngOnInit() {
+    this.localUserData = this.authService.getLocalUserData();
+  }
 
   dismissPopover(action: string) {
     this.popoverController.dismiss({

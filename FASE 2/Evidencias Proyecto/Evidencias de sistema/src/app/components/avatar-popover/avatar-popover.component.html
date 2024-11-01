@@ -3,8 +3,8 @@
     <ion-avatar>
       <img alt="Avatar" src="assets/Lazcano.png"/>
     </ion-avatar>
-    <p class="nombre">Christian Lazcano</p>
-    <p class="email">cr.lazcano&#64;autoplanet.cl</p>
+    <p class="nombre">{{localUserData.nombre}} {{localUserData.apellido}}</p>
+    <p class="email">{{localUserData.email}}</p>
   </div>
   <ion-item button (click)="dismissPopover('home')">
     <ion-icon name="home-outline" slot="start"></ion-icon>

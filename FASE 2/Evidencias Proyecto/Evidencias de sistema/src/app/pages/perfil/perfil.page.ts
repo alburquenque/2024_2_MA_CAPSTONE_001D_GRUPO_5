@@ -15,26 +15,14 @@ export class PerfilPage implements OnInit {
   user: User | null = null;
   nombre: string = '';
   apellido: string = ''; 
+  localUserData: any; 
 
   constructor(private modalCtrl: ModalController, private authService: AuthService) {}
 
-  ngOnInit() {
-    this.authService.getCurrentUser().subscribe((user: User | boolean | null) => {
-      if (user && typeof user !== 'boolean') {
-        this.authService.getUserDetails(user.id).subscribe(userDetails => {
-          console.log('Detalles del usuario:', userDetails); // Muestra todos los detalles del usuario
-          // Aquí puedes guardar los detalles en una propiedad del componente
-          this.nombre = userDetails.data.nombre;
-          this.apellido = userDetails.data.apellido;
-          this.user = user;  // Asignamos los datos del usuario
-          console.log('Datos del usuario:', this.user);
-          console.log("este es mi id de usuario: ", this.user.id)
-        });
-      }
-    });
-  }
+ ngOnInit() {
+  this.localUserData = this.authService.getLocalUserData();
+}
 
-  
   message = 'This modal example uses the modalController to present and dismiss modals.';
 
 
@@ -64,7 +52,5 @@ export class PerfilPage implements OnInit {
       this.message = `Hello, ${data}!`;
     }
   }
-
-
 
 }
