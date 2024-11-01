@@ -42,7 +42,6 @@ export class AuthService {
 
   async loadUser() {
     if (this.currentUser.value) {
-      // User is already set, no need to do anything else
       return
     }
     const user = await this.supabase.auth.getUser()
@@ -53,6 +52,8 @@ export class AuthService {
       this.currentUser.next(false)
     }
   }
+
+  ///////////////////////////////////////////
 
   signUp(credentials: { email: any; password: any }) {
     return this.supabase.auth.signUp(credentials)
@@ -70,10 +71,9 @@ export class AuthService {
       if (data.user) {
         const userId = data.user.id;
         const userDetails = await this.getUserDetails(userId); // Obtén los detalles del usuario
-  
         if (userDetails) {
           localStorage.setItem('userData', JSON.stringify(userDetails)); // Guarda en el local storage
-          console.log('Datos de usuario guardados en local storage:', userDetails);
+          localStorage.setItem('accessToken', data.session?.access_token);
         }
       }
   
@@ -84,12 +84,34 @@ export class AuthService {
     }
   }
   
-
-
   async signOut() {
     await this.supabase.auth.signOut()
     this.router.navigateByUrl('/', { replaceUrl: true })
+    localStorage.clear()
   }
+
+  //Para que el inicio de sesión sea constante
+async checkSession() {
+  const accessToken = localStorage.getItem('accessToken');
+  if (accessToken) { 
+    // Puedes usar el token para verificar o restaurar la sesión
+    const { data, error } = await this.supabase.auth.getUser(accessToken);
+    if (!error && data.user) {
+      // Sesión restaurada exitosamente
+      this.router.navigateByUrl('/home');
+      return data.user;
+    } else {
+      // Si el token es inválido, cierra sesión automáticamente
+      this.signOut();
+      return null;
+    }
+  }
+  else{
+    return null;
+  }
+}
+
+  ////////////////////////////////////
 
   reset_password(email: any) {
     return this.supabase.auth.resetPasswordForEmail(email)
@@ -169,35 +191,53 @@ export class AuthService {
 
 
   async register(email: string, password: string, nombre: string, apellido: string) {
-    try {
+    let consulta: number;
+    const { data, error } = await this.supabase
+    .from('usuario')
+    .select('*')
+    .eq('email', email)
+    .single();
 
-      const { data, error } = await this.supabaseService.getSupabase().auth.signUp({
-        email,
-        password
-      });
-      if (data?.user) {
-        const id_usuario = data.user?.id;
-        const { error: profileError } = await this.supabaseService.getSupabase()
-          .from('usuario')
-          .insert({
-            id_usuario,
-            nombre,
-            apellido,
-            email,
-            id_rol: 1, // Cliente por defecto. 2 es admin, y 3 es superadmin. Esos se crean de la BD.
-            id_categoriacliente: 1 // Sin categoria al registrarse
-          });
-
-        if (profileError) {
-          console.error('Error al insertar en la tabla usuario:', profileError);
-          throw profileError;
-        }
-      }
-
-      return data;
-    } catch (error) {
-      console.error('Error en el registro:', error);
-      throw error;
+    if (error){
+      consulta=1;
     }
-  }
+    if(data){
+      consulta=2
+      return consulta;
+    }
+    if(consulta = 1){
+      try {
+        const { data, error } = await this.supabaseService.getSupabase().auth.signUp({
+          email,
+          password
+        });
+        if (data?.user) {
+          const id_usuario = data.user?.id;
+          const { error: profileError } = await this.supabaseService.getSupabase()
+            .from('usuario')
+            .insert({
+              id_usuario,
+              nombre,
+              apellido,
+              email,
+              id_rol: 1, // Cliente por defecto. 2 es admin, y 3 es superadmin. Esos se crean de la BD.
+              id_categoriacliente: 1 // Sin categoria al registrarse
+            });
+
+          if (profileError) {
+            console.error('Error al insertar en la tabla usuario:', profileError);
+            throw profileError;
+          }
+        }
+
+        return data;
+      } catch (error) {
+        console.error('Error en el registro:', error);
+        return null;
+      }
+     }
+     else{
+      return 1;
+     }
+    }
 }

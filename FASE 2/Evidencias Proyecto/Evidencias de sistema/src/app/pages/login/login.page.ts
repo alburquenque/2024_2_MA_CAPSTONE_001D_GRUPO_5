@@ -1,5 +1,5 @@
 import { AuthService } from './../../services/auth.service'
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core'
 import { FormBuilder, Validators, FormGroup } from '@angular/forms'
 import { Router } from '@angular/router'
 import { LoadingController, AlertController } from '@ionic/angular'
@@ -20,7 +20,8 @@ export class LoginPage implements OnInit {
     private authService: AuthService,
     private loadingController: LoadingController,
     private alertController: AlertController,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {
 
 
@@ -62,16 +63,20 @@ export class LoginPage implements OnInit {
     const loading = await this.loadingController.create()
     await loading.present()
 
-    this.authService.signIn(this.credentialsLogin.getRawValue()).then(async (data) => {
-      await loading.dismiss()
+    await this.authService.signIn(this.credentialsLogin.getRawValue()).then(async (data) => {
+
       if (data.error) {
+        await loading.dismiss()
         this.showAlert('Inicio de sesión fallido', data.error.message) 
       }
       else {
-        this.router.navigateByUrl('/home', { replaceUrl: true })
+        await loading.dismiss()
+        this.router.navigate(['/home', { timestamp: new Date().getTime() }]);
       }
     })
   }
+
+
 
   async showAlert(title:string, msg:any) {
     const alert = await this.alertController.create({
@@ -81,6 +86,5 @@ export class LoginPage implements OnInit {
     })
     await alert.present()
   }
-
   
 }

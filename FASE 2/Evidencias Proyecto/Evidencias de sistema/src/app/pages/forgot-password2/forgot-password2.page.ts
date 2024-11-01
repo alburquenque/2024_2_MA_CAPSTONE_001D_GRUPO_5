@@ -28,11 +28,7 @@ export class ForgotPassword2Page implements OnInit {
         this.router.navigateByUrl('/groups', { replaceUrl: true })
       }
     })
-
-    const navigation = this.router.getCurrentNavigation();
-    if (navigation?.extras?.state) {
-      this.email = navigation.extras.state['email'];
-    }
+    this.email = localStorage.getItem('resetEmail')
   }
 
   ionViewWillEnter() {

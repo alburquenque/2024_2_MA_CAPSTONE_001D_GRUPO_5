@@ -53,7 +53,8 @@ export class ForgotPasswordPage implements OnInit {
       }
       else {
         await this.showAlert('¡Email enviado!', 'Revisa tu correo y sigue las instrucciones')
-        this.router.navigate(['/forgot-password2'], { state: { email: this.credentialsFP.get('email')?.value } });
+        localStorage.setItem('resetEmail', this.credentialsFP.get('email')?.value);
+        this.router.navigate(['/forgot-password2']);
         
       }
     })
