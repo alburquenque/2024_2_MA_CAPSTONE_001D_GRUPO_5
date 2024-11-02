@@ -19,7 +19,7 @@
       <ion-col size="8" class="text-columns">
         <div style="margin-top: 10px;">
           <h1>{{ localUserData.nombre }} {{ localUserData.apellido }}</h1>
-          <p>{{ user?.email }}</p>
+          <p>{{ localUserData.email }}</p>
         </div>
           <ion-button size="small" class="boton" (click)="openModal()" style="margin-top: 10px;"><h1>Editar Perfil</h1></ion-button>
           <ion-button size="small" class="boton" (click)="openModal2()"><h1>Cambiar Contraseña</h1></ion-button>

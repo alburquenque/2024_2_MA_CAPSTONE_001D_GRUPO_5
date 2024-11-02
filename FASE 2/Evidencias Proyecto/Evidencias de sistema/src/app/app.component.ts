@@ -24,14 +24,8 @@ export class AppComponent implements OnInit {
 
 
     ngOnInit() {
-      this.checkSession();
     }
 
 
-    async checkSession() {
-      const isLoggedIn = await this.authService.checkSession();
-      if (isLoggedIn) {
-        this.router.navigateByUrl('/home'); // redirige si no está autenticado
-      }
-    }
+
 }

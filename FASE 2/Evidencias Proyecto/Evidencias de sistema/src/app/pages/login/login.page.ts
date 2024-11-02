@@ -67,11 +67,14 @@ export class LoginPage implements OnInit {
 
       if (data.error) {
         await loading.dismiss()
-        this.showAlert('Inicio de sesión fallido', data.error.message) 
+        return this.showAlert('Inicio de sesión fallido', data.error.message) 
       }
       else {
         await loading.dismiss()
-        this.router.navigate(['/home', { timestamp: new Date().getTime() }]);
+        this.router.navigate(['/home']);
+        this.cdr.detectChanges()
+
+
       }
     })
   }

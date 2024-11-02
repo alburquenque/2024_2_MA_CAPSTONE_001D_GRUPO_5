@@ -67,14 +67,8 @@ export class AuthService {
         console.error('Error en inicio de sesión:', error);
         return { error };
       }
-  
-      if (data.user) {
-        const userId = data.user.id;
-        const userDetails = await this.getUserDetails(userId); // Obtén los detalles del usuario
-        if (userDetails) {
-          localStorage.setItem('userData', JSON.stringify(userDetails)); // Guarda en el local storage
-          localStorage.setItem('accessToken', data.session?.access_token);
-        }
+      else{
+        await this.guardarInfo(data.user.id, data.session?.access_token)
       }
   
       return { data, error };
@@ -98,7 +92,7 @@ async checkSession() {
     const { data, error } = await this.supabase.auth.getUser(accessToken);
     if (!error && data.user) {
       // Sesión restaurada exitosamente
-      this.router.navigateByUrl('/home');
+      console.log("sesion restaurada")
       return data.user;
     } else {
       // Si el token es inválido, cierra sesión automáticamente
@@ -108,6 +102,15 @@ async checkSession() {
   }
   else{
     return null;
+  }
+}
+
+async guardarInfo(id: any, token:any){
+  const userId = id;
+  const userDetails = await this.getUserDetails(userId); // Obtén los detalles del usuario
+  if (userDetails) {
+    localStorage.setItem('userData', JSON.stringify(userDetails)); // Guarda en el local storage
+    localStorage.setItem('accessToken', token);
   }
 }
 
