@@ -19,7 +19,7 @@
         <ion-icon name="cart-outline"></ion-icon>
       </ion-button>
       <ion-avatar (click)="presentPopover($event)">
-        <img alt="Avatar" src="assets/Lazcano.png"/>
+        <img alt="Avatar" [src]="localUserData.imagen"/> 
       </ion-avatar>
     </ion-buttons>
   </ion-toolbar>

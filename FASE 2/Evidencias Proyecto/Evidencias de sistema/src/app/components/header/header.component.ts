@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { AvatarPopoverComponent } from '../avatar-popover/avatar-popover.component';
 import { NavController, PopoverController } from '@ionic/angular';
 import { Router, NavigationEnd } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 
 @Component({
@@ -13,13 +14,18 @@ import { Router, NavigationEnd } from '@angular/router';
 export class HeaderComponent {
   @Input() title: string = 'Acme App';
   isHomePage!: boolean;
+  localUserData: any; 
 
-  constructor(private popoverController: PopoverController, private router: Router, private navCtrl: NavController) {
+  constructor(private popoverController: PopoverController, private router: Router, private navCtrl: NavController, private authService: AuthService) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.isHomePage = this.router.url === '/home' || this.router.url === '/home-superadmin' || this.router.url === '/';
       }
     });
+  }
+
+  ngOnInit() {
+    this.localUserData = this.authService.getLocalUserData();
   }
 
   irAlCarrito() {

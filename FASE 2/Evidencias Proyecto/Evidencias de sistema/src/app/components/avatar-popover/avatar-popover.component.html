@@ -1,7 +1,7 @@
 <ion-list >
   <div class="container">
     <ion-avatar>
-      <img alt="Avatar" src="assets/Lazcano.png"/>
+      <img alt="Avatar" [src]="localUserData.imagen"/>          
     </ion-avatar>
     <p class="nombre">{{localUserData.nombre}} {{localUserData.apellido}}</p>
     <p class="email">{{localUserData.email}}</p>

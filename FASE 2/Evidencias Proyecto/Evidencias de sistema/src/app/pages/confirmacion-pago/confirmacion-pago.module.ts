@@ -4,21 +4,19 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { CarritoPageRoutingModule } from './carrito-routing.module';
+import { ConfirmacionPagoPageRoutingModule } from './confirmacion-pago-routing.module';
 
-import { CarritoPage } from './carrito.page';
+import { ConfirmacionPagoPage } from './confirmacion-pago.page';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    CarritoPageRoutingModule,
-    SharedModule,
-    HttpClientModule
+    ConfirmacionPagoPageRoutingModule,
+    SharedModule
   ],
-  declarations: [CarritoPage]
+  declarations: [ConfirmacionPagoPage]
 })
-export class CarritoPageModule {}
+export class ConfirmacionPagoPageModule {}

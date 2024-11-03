@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CarritoService } from 'src/app/services/carrito.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { PagoService } from 'src/app/services/pago.service';
+import { LoadingController } from '@ionic/angular';
 @Component({
   selector: 'app-carrito',
   templateUrl: './carrito.page.html',
@@ -12,8 +14,7 @@ export class CarritoPage implements OnInit {
   userId!: string;
   total: number = 0;
 
-  constructor(private carritoService: CarritoService, private authService: AuthService) {
-    (window as any).checkCardHeight = this.CheckCard.bind(this);
+  constructor(private carritoService: CarritoService, private authService: AuthService, private pagoService: PagoService, private loadingController: LoadingController) { 
   }
 
   async ngOnInit() {
@@ -75,34 +76,62 @@ export class CarritoPage implements OnInit {
     console.log("La limpieza funciona...")
   }
 
+  async iniciarPago() {
+    const loading = await this.loadingController.create({
+      message: 'Iniciando pago...',
+      translucent: true
+    });
+    await loading.present();
 
+    try {
+      const paymentData = {
+        amount: Math.round(this.total),
+        buyOrder: 'ORDEN' + Date.now(),
+        sessionId: 'SESION' + Date.now(),
+        returnUrl: `${window.location.origin}/payment/confirmation`
+      };
 
+      this.pagoService.initiatePayment(paymentData).subscribe({
+        next: (response) => {
+          loading.dismiss();
+          if (response?.url && response?.token) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = response.url;
 
+            const tokenInput = document.createElement('input');
+            tokenInput.type = 'hidden';
+            tokenInput.name = 'token_ws';
+            tokenInput.value = response.token;
 
-  //Temas de diseño
-
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.CheckCard(); // Llama a la función después de un pequeño retraso
-    }, 100);
-  }
-
- //Pa chequear el tamaño del card y que se modifique cuando sea <700px
-  CheckCard() {
-    const card = document.querySelector('ion-card');
-    if (card) {
-      const cardHeight = card.clientHeight;
-      const cardContent = card.querySelector('ion-card-content');
-      if (cardContent) { 
-        console.log("La altura ahora es de",cardHeight)
-        if (cardHeight < 700) {
-          cardContent.classList.remove('paddingCarrito'); 
-        } else {
-          cardContent.classList.add('paddingCarrito'); 
+            form.appendChild(tokenInput);
+            document.body.appendChild(form);
+            form.submit();
+          } else {
+            throw new Error('Respuesta de WebPay incompleta');
+          }
+        },
+        error: (error) => {
+          loading.dismiss();
+          console.error('Error al iniciar pago:', error);
+          this.presentError('Error al iniciar el pago. Por favor, intenta nuevamente.');
         }
-      }
+      });
+    } catch (error) {
+      loading.dismiss();
+      console.error('Error en la transacción:', error);
+      this.presentError('Error al procesar el pago. Por favor, intenta nuevamente.');
     }
   }
 
-
+  async presentError(message: string) {
+    alert(message);
+  }
 }
+
+
+
+
+
+
+

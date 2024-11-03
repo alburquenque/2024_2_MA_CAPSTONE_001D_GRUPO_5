@@ -88,14 +88,11 @@ export class AuthService {
 async checkSession() {
   const accessToken = localStorage.getItem('accessToken');
   if (accessToken) { 
-    // Puedes usar el token para verificar o restaurar la sesión
     const { data, error } = await this.supabase.auth.getUser(accessToken);
     if (!error && data.user) {
-      // Sesión restaurada exitosamente
       console.log("sesion restaurada")
       return data.user;
     } else {
-      // Si el token es inválido, cierra sesión automáticamente
       this.signOut();
       return null;
     }
@@ -107,9 +104,9 @@ async checkSession() {
 
 async guardarInfo(id: any, token:any){
   const userId = id;
-  const userDetails = await this.getUserDetails(userId); // Obtén los detalles del usuario
+  const userDetails = await this.getUserDetails(userId); 
   if (userDetails) {
-    localStorage.setItem('userData', JSON.stringify(userDetails)); // Guarda en el local storage
+    localStorage.setItem('userData', JSON.stringify(userDetails)); 
     localStorage.setItem('accessToken', token);
   }
 }
@@ -216,6 +213,7 @@ async guardarInfo(id: any, token:any){
         });
         if (data?.user) {
           const id_usuario = data.user?.id;
+          const avatarDefectoUsuario = `${environment.supabaseUrl}/storage/v1/object/public/perfiles/default_avatar.jpg`;
           const { error: profileError } = await this.supabaseService.getSupabase()
             .from('usuario')
             .insert({
@@ -224,7 +222,8 @@ async guardarInfo(id: any, token:any){
               apellido,
               email,
               id_rol: 1, // Cliente por defecto. 2 es admin, y 3 es superadmin. Esos se crean de la BD.
-              id_categoriacliente: 1 // Sin categoria al registrarse
+              id_categoriacliente: 1, // Sin categoria al registrarse,
+              imagen: avatarDefectoUsuario
             });
 
           if (profileError) {

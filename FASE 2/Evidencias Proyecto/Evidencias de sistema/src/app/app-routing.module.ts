@@ -79,8 +79,10 @@ const routes: Routes = [
     path: 'forgot-password2',
     loadChildren: () => import('./pages/forgot-password2/forgot-password2.module').then( m => m.ForgotPassword2PageModule)
   },
-
-
+  {
+    path: 'payment/confirmation',
+    loadChildren: () => import('./pages/confirmacion-pago/confirmacion-pago.module').then( m => m.ConfirmacionPagoPageModule)
+  },
 ];
 
 @NgModule({

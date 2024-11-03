@@ -16,7 +16,7 @@ export class PerfilPage implements OnInit {
   nombre: string = '';
   apellido: string = ''; 
   localUserData: any; 
-
+  
   constructor(private modalCtrl: ModalController, private authService: AuthService) {}
 
  ngOnInit() {

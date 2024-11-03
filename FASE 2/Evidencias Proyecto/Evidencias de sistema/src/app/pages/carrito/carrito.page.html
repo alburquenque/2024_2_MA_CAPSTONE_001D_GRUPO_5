@@ -32,6 +32,7 @@
     <div class="total-info">
       <h2>Total: {{ total | currency }}</h2>
     </div>
-    <ion-button expand="block" class="pay-button">Continuar compra</ion-button>
+    <ion-button expand="block" class="pay-button" (click)="iniciarPago()">Continuar compra</ion-button>
   </div>
 </ion-content>
+
