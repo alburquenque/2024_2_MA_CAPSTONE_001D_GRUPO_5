@@ -13,10 +13,14 @@ export class CarritoRealtimePage implements OnInit {
 
   ngOnInit() {
   }
-  // Aqui se va tener que modificar para que lo filtre por ID del cliente y sus productos pero ya despues.
+  
   async irAlDetalle() {
-    await this.popoverController.dismiss();
+    try {
+      await this.popoverController.dismiss(); // Intenta cerrar el popover solo si está presente
+    } catch (error) {
+      console.log('Popover no estaba presente:', error);
+    }
+    console.log('asi es');
     this.router.navigate(['/detalle-carritos']);
-    close
-  }  
+  } 
 }

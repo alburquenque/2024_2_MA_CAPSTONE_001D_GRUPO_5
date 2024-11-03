@@ -17,11 +17,6 @@ export class DetalleCarritosPage implements OnInit {
   ngOnInit() {
   }
 
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.CheckCard(); // Llama a la función después de un pequeño retraso
-    }, 100);
-  }
 
   irCarritoRealtime() {
     this.router.navigate(['/carrito-realtime']);

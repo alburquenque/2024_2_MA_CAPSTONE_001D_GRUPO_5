@@ -15,8 +15,9 @@
         <ion-toolbar>
           <ion-title>¡Has escaneado el producto!</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="productScanned.dismiss()" color="dark"></ion-button>
-            <ion-icon name="close-outline"></ion-icon>
+            <ion-button style="width: 40px; height: 40px;" (click)="productScanned.dismiss()">
+              <ion-icon name="close-outline" style="font-size: 100px;"></ion-icon>
+            </ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
@@ -24,10 +25,10 @@
       <ion-content>
         <img src="assets/FARO.png">
         <h2>{{productoEscaneado.nombre}}</h2>
-        <h4>Precio: {{productoEscaneado.precio}}</h4>
-        <h4>Año: {{productoEscaneado.annio}}</h4>
-        <h4>Categoria: {{productoEscaneado.id_categoria}}</h4>
-        <h4>Marca: {{productoEscaneado.marca}}</h4>
+        <p>Precio: {{productoEscaneado.precio}}</p>
+        <p>Año: {{productoEscaneado.annio}}</p>
+        <p>Categoria: {{productoEscaneado.id_categoria}}</p>
+        <p>Marca: {{productoEscaneado.marca}}</p>
         <p>Descripcion: {{productoEscaneado.descripcion}}</p>
 
             <ion-button style="width: 80%; margin-top: 10%; margin-left: 10%; margin-right: 10%;" (click)="agregarProducto()">Agregar al carrito</ion-button>

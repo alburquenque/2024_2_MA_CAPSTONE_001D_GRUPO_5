@@ -8,7 +8,9 @@
         </svg>
       </ng-container>
       <ng-template #backButton>
-        <ion-back-button defaultHref="/home"></ion-back-button>
+        <ion-buttons style="width: 40px; height: 40px;" (click)="goBack()">
+          <ion-icon style="font-size: 30px;" name="chevron-back-outline"></ion-icon>
+        </ion-buttons>
       </ng-template>
       <ion-title>{{ title }}</ion-title>
     </div>

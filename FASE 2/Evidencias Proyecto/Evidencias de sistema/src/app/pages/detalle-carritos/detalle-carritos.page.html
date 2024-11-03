@@ -1,88 +1,104 @@
 <app-header [title]="'Carrito de compras'"></app-header>
 
 <ion-content>
-  <ion-card>
-    <div class="contenedor-perfil">
-      <img class="img-perfil" src="assets/Lazcano.png">
-      <div class="info-perfil">
-        <h2>Nombre: Christian Lazcano <br>
-          Cantidad de articulos: 9
-        </h2>
-      </div>
+  <div class="profile-container">
+    <ion-avatar class="profile-avatar">
+      <img src="assets/Lazcano.png" alt="Producto">
+    </ion-avatar>
+    <div>
+      <h3>Christian Lazcano</h3>
+      <p>Cantidad de artículos: 4</p>
     </div>
-    <ion-card-content>
-      <h2>Lista de productos</h2>
-      <br>
-      <div class="content-carrito">
-        <!--------------->
-        <div>
-          <img class="imgcarrito" src="assets/FARO.png">
-        </div>
-        <div>
-          <h2>Name Producto</h2>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Saepe, explicabo?</p>
-        </div>
-        <!--------------->
-        <div>
-          <img class="imgcarrito" src="assets/FARO.png">
-        </div>
-        <div>
-          <h2>Name Producto</h2>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Saepe, explicabo?</p>
-        </div>
-        <!--------------->
-        <div>
-          <img class="imgcarrito" src="assets/FARO.png">
-        </div>
-        <div>
-          <h2>Name Producto</h2>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Saepe, explicabo?</p>
-        </div>
-        <!--------------->
-        <div>
-          <img class="imgcarrito" src="assets/FARO.png">
-        </div>
-        <div>
-          <h2>Name Producto</h2>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Saepe, explicabo?</p>
-        </div>
-        <!--------------->
-        <div>
-          <img class="imgcarrito" src="assets/FARO.png">
-        </div>
-        <div>
-          <h2>Name Producto</h2>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Saepe, explicabo?</p>
-        </div>
-        <!--------------->
-        <div>
-          <img class="imgcarrito" src="assets/FARO.png">
-        </div>
-        <div>
-          <h2>Name Producto</h2>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Saepe, explicabo?</p>
-        </div>
-        <!--------------->
-        <div>
-          <img class="imgcarrito" src="assets/FARO.png">
-        </div>
-        <div>
-          <h2>Name Producto</h2>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Saepe, explicabo?</p>
-        </div>
-        <!--------------->
-        <div>
-          <img class="imgcarrito" src="assets/FARO.png">
-        </div>
-        <div>
-          <h2>Name Producto</h2>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Saepe, explicabo?</p>
-        </div>
-        <!--------------->
-      </div>
-    </ion-card-content>
-  </ion-card>
-  <ion-fab class="volver-footer" slot="fixed">
-    <ion-button class="buttons" (click)="irCarritoRealtime()">Volver</ion-button>
-</ion-fab>
+  </div>
+
+  <ion-text class="product-list-title">
+    <h2>Lista de productos</h2>
+  </ion-text>
+
+  <div class="product-list">
+    <ion-card class="product-card">
+      <ion-item lines="none">
+        <ion-thumbnail slot="start">
+          <img src="assets/FARO.png" alt="Producto">
+        </ion-thumbnail>
+        <ion-label>
+          <h3>Nombre</h3>
+          <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam, id?</p>
+          <h2>$1000</h2>
+          <p class="cantidad">Cantidad: 1</p>
+        </ion-label>
+      </ion-item>
+    </ion-card>
+    <!----->
+    <ion-card class="product-card">
+      <ion-item lines="none">
+        <ion-thumbnail slot="start">
+          <img src="assets/FARO.png" alt="Producto">
+        </ion-thumbnail>
+        <ion-label>
+          <h3>Nombre</h3>
+          <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam, id?</p>
+          <h2>$1000</h2>
+          <p class="cantidad">Cantidad: 1</p>
+        </ion-label>
+      </ion-item>
+    </ion-card>
+    <!----->
+    <ion-card class="product-card">
+      <ion-item lines="none">
+        <ion-thumbnail slot="start">
+          <img src="assets/FARO.png" alt="Producto">
+        </ion-thumbnail>
+        <ion-label>
+          <h3>Nombre</h3>
+          <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam, id?</p>
+          <h2>$1000</h2>
+          <p class="cantidad">Cantidad: 1</p>
+        </ion-label>
+      </ion-item>
+    </ion-card>
+    <!----->
+    <ion-card class="product-card">
+      <ion-item lines="none">
+        <ion-thumbnail slot="start">
+          <img src="assets/FARO.png" alt="Producto">
+        </ion-thumbnail>
+        <ion-label>
+          <h3>Nombre</h3>
+          <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam, id?</p>
+          <h2>$1000</h2>
+          <p class="cantidad">Cantidad: 1</p>
+        </ion-label>
+      </ion-item>
+    </ion-card>
+    <!----->
+    <ion-card class="product-card">
+      <ion-item lines="none">
+        <ion-thumbnail slot="start">
+          <img src="assets/FARO.png" alt="Producto">
+        </ion-thumbnail>
+        <ion-label>
+          <h3>Nombre</h3>
+          <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam, id?</p>
+          <h2>$1000</h2>
+          <p class="cantidad">Cantidad: 1</p>
+        </ion-label>
+      </ion-item>
+    </ion-card>
+    <!----->
+    <ion-card class="product-card">
+      <ion-item lines="none">
+        <ion-thumbnail slot="start">
+          <img src="assets/FARO.png" alt="Producto">
+        </ion-thumbnail>
+        <ion-label>
+          <h3>Nombre</h3>
+          <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam, id?</p>
+          <h2>$1000</h2>
+          <p class="cantidad">Cantidad: 1</p>
+        </ion-label>
+      </ion-item>
+    </ion-card>
+  </div>
 </ion-content>
+

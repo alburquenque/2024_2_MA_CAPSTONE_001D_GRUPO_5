@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { AvatarPopoverComponent } from '../avatar-popover/avatar-popover.component';
-import { PopoverController } from '@ionic/angular';
+import { NavController, PopoverController } from '@ionic/angular';
 import { Router, NavigationEnd } from '@angular/router';
 
 
@@ -14,7 +14,7 @@ export class HeaderComponent {
   @Input() title: string = 'Acme App';
   isHomePage!: boolean;
 
-  constructor(private popoverController: PopoverController, private router: Router) {
+  constructor(private popoverController: PopoverController, private router: Router, private navCtrl: NavController) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.isHomePage = this.router.url === '/home' || this.router.url === '/home-superadmin' || this.router.url === '/';
@@ -36,6 +36,10 @@ export class HeaderComponent {
       alignment: 'end'
     });
     return await popover.present();
+  }
+
+  goBack(){
+    this.navCtrl.back();
   }
 
   
