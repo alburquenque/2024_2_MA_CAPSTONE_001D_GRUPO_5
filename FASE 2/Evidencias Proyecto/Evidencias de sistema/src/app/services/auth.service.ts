@@ -242,4 +242,51 @@ async guardarInfo(id: any, token:any){
       return 1;
      }
     }
+
+  async subirFotoPerfil(file: File, idUsuario: any): Promise<string | null> {
+    try {
+      const fileName = `${Date.now()}_${file.name}`;
+      const { data, error } = await this.supabase
+        .storage
+        .from('perfiles')
+        .upload(fileName, file);
+
+      if (error) throw error;
+
+      const { data: urlData } = this.supabase
+        .storage
+        .from('perfiles')
+        .getPublicUrl(fileName);
+
+      return urlData?.publicUrl || null; 
+    } catch (error) {
+      console.error('Error subiendo imagen: ', error);
+      return null;
+    }
+  }
+
+  async actualizarPerfil(profileData: {
+    id_usuario: string;
+    nombre: string;
+    apellido: string;
+    imagen: string;
+  }) {
+    try {
+      const { error } = await this.supabase
+        .from('usuario')
+        .update({
+          nombre: profileData.nombre,
+          apellido: profileData.apellido,
+          imagen: profileData.imagen
+        })
+        .eq('id_usuario', profileData.id_usuario);
+
+      if (error) throw error;
+      
+      return true;
+    } catch (error) {
+      console.error('Error al actualizar perfil:', error);
+      throw error;
+    }
+  }
 }

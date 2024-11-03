@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { EditProfileComponent } from 'src/app/components/edit-profile/edit-profile.component';
 import { EditPasswordComponent } from 'src/app/components/edit-password/edit-password.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { AuthSession, User } from '@supabase/supabase-js';
-
+import { EditarPerfilPage } from '../editar-perfil/editar-perfil.page';
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.page.html',
@@ -29,7 +28,7 @@ export class PerfilPage implements OnInit {
 
   async openModal() {
     const modal = await this.modalCtrl.create({
-      component: EditProfileComponent,
+      component: EditarPerfilPage,
     });
     modal.present();
 

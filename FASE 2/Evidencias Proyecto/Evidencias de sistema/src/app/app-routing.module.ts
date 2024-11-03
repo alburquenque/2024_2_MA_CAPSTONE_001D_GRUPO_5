@@ -83,6 +83,10 @@ const routes: Routes = [
     path: 'payment/confirmation',
     loadChildren: () => import('./pages/confirmacion-pago/confirmacion-pago.module').then( m => m.ConfirmacionPagoPageModule)
   },
+  {
+    path: 'editar-perfil',
+    loadChildren: () => import('./pages/editar-perfil/editar-perfil.module').then( m => m.EditarPerfilPageModule)
+  },
 ];
 
 @NgModule({

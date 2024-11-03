@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="medium" (click)="cancel()">Cancelar</ion-button>
+    </ion-buttons>
+    <ion-title>Editar Perfil</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="confirmarCambios()">Confirmar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="centrar">
+    <div class="image-container">
+      <img [src]="profileData.imagen || 'assets/Lazcano.png'" alt="Profile picture">
+      <label for="file-input" class="editar-icono">
+        <ion-icon name="image-outline"></ion-icon>
+      </label>
+      <input 
+        type="file" 
+        id="file-input" 
+        accept="image/*" 
+        (change)="onFileSelected($event)" 
+        style="display: none;">
+    </div>
+  </div>
+
+  <ion-item>
+    <ion-input 
+      labelPlacement="stacked" 
+      label="Nombre"
+      [(ngModel)]="profileData.nombre">
+    </ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-input 
+      labelPlacement="stacked" 
+      label="Apellido"
+      [(ngModel)]="profileData.apellido">
+    </ion-input>
+  </ion-item>
+</ion-content>
