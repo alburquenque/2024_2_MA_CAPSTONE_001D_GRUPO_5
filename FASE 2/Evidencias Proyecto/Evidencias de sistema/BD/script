@@ -1,0 +1,89 @@
+DROP TABLE IF EXISTS ref_compra;
+DROP TABLE IF EXISTS compra;
+DROP TABLE IF EXISTS ref_carrito;
+DROP TABLE IF EXISTS carrito;
+DROP TABLE IF EXISTS voucher;
+DROP TABLE IF EXISTS producto;
+DROP TABLE IF EXISTS categoria;
+DROP TABLE IF EXISTS usuario;
+DROP TABLE IF EXISTS rol;
+DROP TABLE IF EXISTS categoria_cliente;
+
+CREATE TABLE categoria (
+    id_categoria SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion TEXT NOT NULL
+);
+
+CREATE TABLE producto (
+    id_producto SERIAL PRIMARY KEY,
+    codigo_barras VARCHAR(50) UNIQUE,
+    nombre VARCHAR(100) NOT NULL,
+    marca VARCHAR(100) NOT NULL,
+    annio INT,
+    precio INT,
+    id_categoria INT REFERENCES categoria(id_categoria)
+);
+
+CREATE TABLE rol (
+    id_rol SERIAL PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE categoria_cliente (
+    id_categoriacliente SERIAL PRIMARY KEY,
+    descripcion VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE usuario (
+    id_usuario UUID PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    apellido VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    id_rol INT REFERENCES rol(id_rol),
+    id_categoriacliente INT REFERENCES categoria_cliente(id_categoriacliente)
+);
+
+CREATE TABLE carrito (
+    id_carrito SERIAL PRIMARY KEY,
+    estado VARCHAR(50),
+    cantidad INT,
+    total INT
+);
+
+CREATE TABLE ref_carrito (
+    id_refcarrito SERIAL PRIMARY KEY,
+    precio_unitario INT,
+    cantidad INT,
+    total INT,
+    id_usuario UUID REFERENCES usuario(id_usuario),
+    id_producto INT REFERENCES producto(id_producto),
+    id_carrito INT REFERENCES carrito(id_carrito)
+);
+
+CREATE TABLE compra (
+    id_compra SERIAL PRIMARY KEY,
+    estado VARCHAR(50),
+    cantidad INT,
+    total INT
+);
+
+CREATE TABLE voucher (
+    id_voucher SERIAL PRIMARY KEY,
+    cantidad INT,
+    total INT,
+    fecha_emision TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    estado VARCHAR(50),
+    id_compra INT REFERENCES compra(id_compra)
+);
+
+CREATE TABLE ref_compra (
+    id_refcompra SERIAL PRIMARY KEY,
+    precio_unitario INT,
+    cantidad INT,
+    total INT,
+    id_usuario UUID REFERENCES usuario(id_usuario),
+    id_producto INT REFERENCES producto(id_producto),
+    id_compra INT REFERENCES compra(id_compra)
+);
