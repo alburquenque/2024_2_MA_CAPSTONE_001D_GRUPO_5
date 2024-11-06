@@ -13,7 +13,7 @@ import { TruncatePipe } from './truncate.pipe';
 
 
 @NgModule({
-  declarations: [AppComponent, TruncatePipe],
+  declarations: [AppComponent],
   imports: [BrowserModule, FormsModule, IonicModule.forRoot(), AppRoutingModule, ReactiveFormsModule, IonicStorageModule, HttpClientModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

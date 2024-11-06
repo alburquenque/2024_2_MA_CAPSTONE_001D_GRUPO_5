@@ -258,6 +258,31 @@ export class CarritoService {
     return data;
   }
 
+  async guardarCompra(compraData: { estado: string, cantidad: number, total: number }): Promise<number | null> {
+    try {
+      const { data, error } = await this.supabase
+        .from('compra')
+        .insert([
+          {
+            estado: compraData.estado,
+            cantidad: compraData.cantidad,
+            total: compraData.total
+          }
+        ])
+        .select('id_compra')  // Selecciona el id_compra recién insertado
+        .single();
 
+      if (error) {
+        console.error('Error al guardar la compra:', error);
+        return null;
+      }
+
+      console.log('Compra guardada con éxito:', data);
+      return data.id_compra;  // Devuelve el id_compra para usarlo en la generación del QR
+    } catch (error) {
+      console.error('Error inesperado al guardar la compra:', error);
+      return null;
+    }
+  }
 
 }

@@ -8,12 +8,15 @@
           <ion-icon name="checkmark-circle" color="success" style="font-size: 48px;"></ion-icon>
         </ion-card-title>
       </ion-card-header>
-      <!-- Estaria bueno mostrar los productos igual, queda para otro momento-->
+            <!-- Estaria bueno mostrar los productos igual, queda para otro momento-->
       <ion-card-content class="ion-text-center">
         <h2>Pago Registrado</h2>
         <p>Tu pago ha sido registrado y está pendiente de confirmación.</p>
         <p>Estado actual: Pendiente</p>
-        <ion-button expand="block" class="voucher">Generar Voucher</ion-button>
+        <div *ngIf="qrCodeData">
+          <img [src]="qrCodeData" alt="Código QR de la compra" style="margin-top: 20px; width: 150px; height: 150px;">
+          <p style="margin-top: 10px;">¡Ahora muestrale el QR al encargado para validar tu compra!</p>
+        </div>
       </ion-card-content>
     </ion-card>
 

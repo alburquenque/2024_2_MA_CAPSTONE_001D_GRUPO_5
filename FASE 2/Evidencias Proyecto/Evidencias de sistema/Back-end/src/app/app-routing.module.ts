@@ -19,7 +19,7 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule),
-    //canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'carrito',
@@ -87,6 +87,11 @@ const routes: Routes = [
     path: 'editar-perfil',
     loadChildren: () => import('./pages/editar-perfil/editar-perfil.module').then( m => m.EditarPerfilPageModule)
   },
+  {
+    path: 'scanner-qr',
+    loadChildren: () => import('./pages/scanner-qr/scanner-qr.module').then( m => m.ScannerQrPageModule)
+  },
+
 ];
 
 @NgModule({

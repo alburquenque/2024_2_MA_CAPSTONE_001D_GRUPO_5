@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CarritoService } from 'src/app/services/carrito.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { LoadingController, AlertController } from '@ionic/angular';
+import QRCode from 'qrcode';
+
 @Component({
   selector: 'app-confirmacion-pago',
   templateUrl: './confirmacion-pago.page.html',
@@ -12,6 +14,7 @@ export class ConfirmacionPagoPage implements OnInit {
   paymentStatus: string = '';
   token: string = '';
   loading: any;
+  qrCodeData: string | null = null; // Almacenar el QR generado
 
   constructor(
     private route: ActivatedRoute,
@@ -43,13 +46,20 @@ export class ConfirmacionPagoPage implements OnInit {
             total: carrito.total
           };
 
-
-          await this.carritoService.limpiarCarrito(userId);
+          const compraId = await this.carritoService.guardarCompra(compraData);
+      
+          
 
           this.paymentStatus = 'success';
           await this.dismissLoading();
           await this.mostrarMensajeExito();
-          
+          if (compraId) {
+            
+            this.qrCodeData = await this.generateQRCode(compraId.toString());
+          }
+          await this.carritoService.limpiarCarrito(userId);
+
+
         } catch (error) {
           console.error('Error al procesar la confirmación:', error);
           this.paymentStatus = 'error';
@@ -122,5 +132,19 @@ export class ConfirmacionPagoPage implements OnInit {
     });
     await alert.present();
   }
+
+  async generateQRCode(text: string): Promise<string> {
+    try {
+      return await QRCode.toDataURL(text, {
+        errorCorrectionLevel: 'H',
+        width: 200,
+        margin: 2
+      });
+    } catch (error) {
+      console.error('Error al generar QR:', error);
+      return '';
+    }
+  }
+  
 
 }
