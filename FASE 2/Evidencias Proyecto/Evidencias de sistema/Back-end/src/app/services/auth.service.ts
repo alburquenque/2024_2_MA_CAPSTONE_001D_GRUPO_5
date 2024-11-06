@@ -181,6 +181,61 @@ async guardarInfo(id: any, token:any){
     }
   }
 
+  async getCarritoRealtime(){
+    try {
+      const { data, error } = await this.supabase
+      .from('carrito')
+      .select(`
+        id_carrito,
+        estado,
+        cantidad,
+        total,
+        id_usuario,
+        usuario (
+          nombre,
+          apellido,
+          imagen
+        )
+      `)
+      .eq('estado', 'Activo')
+
+      if (error){
+        return null;
+      } 
+      return data;
+    } catch (error) {
+      console.error('Error obteniendo carrito: ', error);
+      return null;
+    }
+  }
+
+  async getDetallesCarritoRealtime(id:any){
+    try {
+      const { data, error } = await this.supabase
+      .from('usuario')
+      .select(`
+        nombre,
+        apellido,
+        imagen,
+        carrito(
+          *,
+          ref_carrito(*,
+            producto(*)
+            )
+          )
+      `)
+      .eq('id_usuario', id)
+
+      if (error){
+        return null;
+      } 
+      return data;
+    } catch (error) {
+      console.error('Error obteniendo carrito: ', error);
+      return null;
+    }
+  }
+
   
 
 

@@ -8,14 +8,14 @@
   </ion-text>
 
   <ion-list lines="none">
-    <ion-item>
+    <ion-item *ngFor="let carrito of carritos">
       <ion-avatar slot="start">
-        <img src="assets/Lazcano.png" alt="Avatar">
+        <img src="{{carrito.usuario.imagen}}" alt="Avatar">
       </ion-avatar>
       <ion-label>
-        <h3>Nombre usuario</h3>
+        <h3>{{carrito.usuario.nombre}} {{carrito.usuario.apellido}}</h3>
       </ion-label>
-      <ion-button slot="end" size="small" (click)="irAlDetalle()" >Ver carrito</ion-button>
+      <ion-button slot="end" size="small" (click)="irAlDetalle(carrito.id_usuario)" >Ver carrito</ion-button>
     </ion-item>
     <!------------------------------------------------------------------------------>
     <ion-item style="--border-width: 0;">
@@ -25,7 +25,7 @@
       <ion-label>
         <h3>Nombre usuario</h3>
       </ion-label>
-      <ion-button slot="end" size="small" (click)="irAlDetalle()">Ver carrito</ion-button>
+      <ion-button slot="end" size="small" >Ver carrito</ion-button>
     </ion-item>
   </ion-list>
 

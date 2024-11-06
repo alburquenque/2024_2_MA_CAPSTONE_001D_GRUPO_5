@@ -1,13 +1,13 @@
 <app-header [title]="'Carrito de compras'"></app-header>
 
 <ion-content>
-  <div class="profile-container">
+  <div *ngFor="let user of carritos" class="profile-container">
     <ion-avatar class="profile-avatar">
-      <img src="assets/Lazcano.png" alt="Producto">
+      <img src="{{user.imagen}}" alt="Persona">
     </ion-avatar>
     <div>
-      <h3>Christian Lazcano</h3>
-      <p>Cantidad de artículos: 4</p>
+      <h3>{{user.nombre}} {{user.apellido}}</h3>
+      <p>Cantidad de artículos: {{user.carrito.cantidad}}</p>
     </div>
   </div>
 
@@ -15,90 +15,21 @@
     <h2>Lista de productos</h2>
   </ion-text>
 
-  <div class="product-list">
-    <ion-card class="product-card">
+  <div class="product-list" *ngFor="let item of carritos">
+    <ion-card *ngFor="let carrito of item.carrito.ref_carrito" class="product-card">
       <ion-item lines="none">
         <ion-thumbnail slot="start">
-          <img src="assets/FARO.png" alt="Producto">
+          <img src="{{carrito.producto.imagen}}" alt="Producto">
         </ion-thumbnail>
         <ion-label>
-          <h3>Nombre</h3>
-          <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam, id?</p>
-          <h2>$1000</h2>
-          <p class="cantidad">Cantidad: 1</p>
+          <h3>{{carrito.producto.nombre}}</h3>
+          <p>{{ carrito.producto.descripcion | truncate: 100 }}</p>
+          <h2>${{carrito.producto.precio}}</h2>
+          <p class="cantidad">Cantidad: {{carrito.cantidad}}</p>
         </ion-label>
       </ion-item>
     </ion-card>
     <!----->
-    <ion-card class="product-card">
-      <ion-item lines="none">
-        <ion-thumbnail slot="start">
-          <img src="assets/FARO.png" alt="Producto">
-        </ion-thumbnail>
-        <ion-label>
-          <h3>Nombre</h3>
-          <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam, id?</p>
-          <h2>$1000</h2>
-          <p class="cantidad">Cantidad: 1</p>
-        </ion-label>
-      </ion-item>
-    </ion-card>
-    <!----->
-    <ion-card class="product-card">
-      <ion-item lines="none">
-        <ion-thumbnail slot="start">
-          <img src="assets/FARO.png" alt="Producto">
-        </ion-thumbnail>
-        <ion-label>
-          <h3>Nombre</h3>
-          <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam, id?</p>
-          <h2>$1000</h2>
-          <p class="cantidad">Cantidad: 1</p>
-        </ion-label>
-      </ion-item>
-    </ion-card>
-    <!----->
-    <ion-card class="product-card">
-      <ion-item lines="none">
-        <ion-thumbnail slot="start">
-          <img src="assets/FARO.png" alt="Producto">
-        </ion-thumbnail>
-        <ion-label>
-          <h3>Nombre</h3>
-          <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam, id?</p>
-          <h2>$1000</h2>
-          <p class="cantidad">Cantidad: 1</p>
-        </ion-label>
-      </ion-item>
-    </ion-card>
-    <!----->
-    <ion-card class="product-card">
-      <ion-item lines="none">
-        <ion-thumbnail slot="start">
-          <img src="assets/FARO.png" alt="Producto">
-        </ion-thumbnail>
-        <ion-label>
-          <h3>Nombre</h3>
-          <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam, id?</p>
-          <h2>$1000</h2>
-          <p class="cantidad">Cantidad: 1</p>
-        </ion-label>
-      </ion-item>
-    </ion-card>
-    <!----->
-    <ion-card class="product-card">
-      <ion-item lines="none">
-        <ion-thumbnail slot="start">
-          <img src="assets/FARO.png" alt="Producto">
-        </ion-thumbnail>
-        <ion-label>
-          <h3>Nombre</h3>
-          <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam, id?</p>
-          <h2>$1000</h2>
-          <p class="cantidad">Cantidad: 1</p>
-        </ion-label>
-      </ion-item>
-    </ion-card>
   </div>
 </ion-content>
 

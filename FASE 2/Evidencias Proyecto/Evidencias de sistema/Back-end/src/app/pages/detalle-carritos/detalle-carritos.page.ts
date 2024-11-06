@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { Router } from '@angular/router';
-
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-detalle-carritos',
@@ -10,11 +10,16 @@ import { Router } from '@angular/router';
 })
 export class DetalleCarritosPage implements OnInit {
 
-  constructor(private router: Router, private popoverController: PopoverController) { }
+  constructor(private router: Router, 
+              private popoverController: PopoverController,
+              private authService: AuthService) { }
 
   itemCount: number = 1;
+  carritos: any
 
   ngOnInit() {
+    this.obtenerDatos(localStorage.getItem('id_usuario'))
+    console.log("se obtuvieron los datos")
   }
 
 
@@ -46,5 +51,12 @@ export class DetalleCarritosPage implements OnInit {
         }
       }
     }
+  }
+
+
+  async obtenerDatos(id:any){
+    this.carritos = await this.authService.getDetallesCarritoRealtime(id)
+    console.log("Este es el carrito: ", this.carritos)
+    console.log("Refcarrito: ", this.carritos.carrito)
   }
 }
