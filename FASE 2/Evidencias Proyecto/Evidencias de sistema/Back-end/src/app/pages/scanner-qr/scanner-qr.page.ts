@@ -10,7 +10,7 @@ import { LoadingController, AlertController, Platform } from '@ionic/angular';
 })
 export class ScannerQrPage implements OnInit {
   datosUser: any;
-  isScanned = true;
+  isScanned = false;
   scanResult: string | null = null;
 
   constructor(
