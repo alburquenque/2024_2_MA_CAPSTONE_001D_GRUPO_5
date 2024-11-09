@@ -23,16 +23,74 @@
       </ion-header>
 
       <ion-content>
-        <img src="assets/FARO.png">
-        <h2>{{productoEscaneado.nombre}}</h2>
-        <p>Precio: {{productoEscaneado.precio}}</p>
-        <p>Año: {{productoEscaneado.annio}}</p>
-        <p>Categoria: {{productoEscaneado.id_categoria}}</p>
-        <p>Marca: {{productoEscaneado.marca}}</p>
-        <p>Descripcion: {{productoEscaneado.descripcion}}</p>
+        <div class="product-image-container">
+          <img src="{{productoEscaneado.imagen}}" alt="Producto escaneado" />
+        </div>
+        <ion-card-content>
+          <div class="product-info">
+            <div class="product-title-row">
+              <h2>{{productoEscaneado.nombre}}</h2>
+              <ion-badge color="secondary">AutoPlanet</ion-badge>
+            </div>
+            <div class="product-price">
+              <span class="price">${{productoEscaneado.precio | formatoDinero }}</span>
+              <span class="currency">CLP</span>
+            </div>
+          </div>
 
-            <ion-button style="width: 80%; margin-top: 10%; margin-left: 10%; margin-right: 10%;" (click)="agregarProducto()">Agregar al carrito</ion-button>
+          <ion-item-divider></ion-item-divider>
 
+          <div class="product-details">
+            <ion-grid>
+              <ion-row>
+                <ion-col size="6">
+                  <ion-text color="medium">Año:</ion-text>
+                  <p>{{productoEscaneado.annio}}</p>
+                </ion-col>
+                <ion-col size="6">
+                  <ion-text color="medium">Categoría:</ion-text>
+                  <p>{{productoEscaneado.categoria.nombre}}</p>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12">
+                  <ion-text color="medium">Marca:</ion-text>
+                  <p>{{productoEscaneado.marca}}</p>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12">
+                  <div class="description">
+                    <ion-text color="medium">Descripción:</ion-text>
+                    <p>
+                      {{productoEscaneado.descripcion}}
+                    </p>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+
+          </div>
+
+          <div class="quantity-selector">
+            <ion-button fill="clear" (click)="restarCantidad()">
+              <ion-icon name="remove-outline"></ion-icon>
+            </ion-button>
+            <span>{{cantidad}}</span>
+            <ion-button fill="clear" (click)="incrementarCantidad()">
+              <ion-icon name="add-outline"></ion-icon>
+            </ion-button>
+          </div>
+
+          <ion-button expand="block"  (click)="agregarProducto()">
+            <ion-icon name="cart-outline" slot="start"></ion-icon>
+            Agregar al carrito
+          </ion-button>
+          <ion-button expand="block" color="secondary" >
+            Pagar ahora
+            <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
+          </ion-button>
+        </ion-card-content>
       </ion-content>
     </ng-template>
 

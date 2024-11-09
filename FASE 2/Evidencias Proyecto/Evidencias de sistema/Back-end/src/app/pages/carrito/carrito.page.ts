@@ -53,7 +53,7 @@ export class CarritoPage implements OnInit {
 
   async actualizarCantidad(item: any, cambio: number) {
     const nuevaCantidad = item.cantidad + cambio;
-    const nuevoTotal = item.cantidad*item.precio_unitario
+    const nuevoTotal = nuevaCantidad*item.precio_unitario
     if (nuevaCantidad > 0) {
       await this.carritoService.actualizarCantidadProducto(nuevaCantidad, item.id_refcarrito);
       await this.carritoService.actualizarCantidadEnCarrito(nuevaCantidad, item.id_carrito);
@@ -67,6 +67,8 @@ export class CarritoPage implements OnInit {
   
   async eliminarProducto(item: any) {
     await this.carritoService.eliminarItemCarrito(item.id_refcarrito);
+    await this.carritoService.actualizarCantidadEnCarrito(0, item.id_carrito);
+    await this.carritoService.actualizarTotalEnCarrito(0, item.id_carrito);
     await this.actualizarItemsCarrito();
   }
 

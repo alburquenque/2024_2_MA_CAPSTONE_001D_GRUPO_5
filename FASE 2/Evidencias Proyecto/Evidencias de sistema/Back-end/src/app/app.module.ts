@@ -8,7 +8,8 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { HttpClientModule } from '@angular/common/http';
-import { TruncatePipe } from './truncate.pipe';
+import { TruncatePipe } from './pipes/truncate.pipe';
+import { FormatoDineroPipe } from './pipes/formato-dinero.pipe';
 
 
 

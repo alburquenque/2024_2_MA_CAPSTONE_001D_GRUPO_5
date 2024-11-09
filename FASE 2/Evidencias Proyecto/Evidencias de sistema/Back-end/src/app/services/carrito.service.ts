@@ -35,7 +35,7 @@ export class CarritoService {
             .from('carrito')
             .insert({
               estado:'Activo',
-              cantidad: 1,
+              cantidad: cantidad,
               total,
               id_usuario:userId
             });
@@ -59,9 +59,6 @@ export class CarritoService {
         if(productoExistente){
           const nuevaCantidad = productoExistente.cantidad + cantidad;
           const totalCarrito = nuevaCantidad*productoExistente.precio_unitario
-          console.log("total carrito", totalCarrito)
-          console.log("Nueva cantidad", nuevaCantidad)
-          console.log("productoExistente.precio_unitario: ", productoExistente.precio_unitario)
           await this.actualizarCantidadProducto(nuevaCantidad, productoExistente.id_refcarrito);
           await this.actualizarCantidadEnCarrito(nuevaCantidad, id_carrito2);
           await this.actualizarTotalEnCarrito(totalCarrito, id_carrito2);
@@ -82,10 +79,8 @@ export class CarritoService {
             if(carrito){
             //Cambiar el total y cantidad en carrito
             const cantidadEnCarrito = carrito2.cantidad
-            console.log("Cantidad de productos en el carrito: ",cantidadEnCarrito)
-            const nuevaCantidad = cantidadEnCarrito + 1
-            console.log("Supuesta nueva cantidad", nuevaCantidad)
-            const totalCarrito = precio_unitario+carrito2.total
+            const nuevaCantidad = cantidadEnCarrito + cantidad
+            const totalCarrito = (precio_unitario*nuevaCantidad)+carrito2.total
             await this.actualizarCantidadEnCarrito(nuevaCantidad, id_carrito2);
             await this.actualizarTotalEnCarrito(totalCarrito, id_carrito2);
           }

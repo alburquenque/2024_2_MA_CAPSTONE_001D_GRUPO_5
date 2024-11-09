@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CarritoService } from 'src/app/services/carrito.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { LoadingController, AlertController } from '@ionic/angular';
-import QRCode from 'qrcode';
+import * as QRCode from 'qrcode';
 
 @Component({
   selector: 'app-confirmacion-pago',

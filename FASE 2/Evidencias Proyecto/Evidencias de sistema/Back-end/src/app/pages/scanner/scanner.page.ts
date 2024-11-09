@@ -19,6 +19,7 @@ export class ScannerPage implements OnInit {
   productos: any[] = [];
   productoEscaneado: any
   isScanned = false;
+  cantidad: number = 1
 
 
 
@@ -80,7 +81,7 @@ async ngOnInit() {
     try {
       const loading = await this.loadingController.create()
       await loading.present()
-      await this.carritoService.agregarProducto(this.productoEscaneado.precio, 1, 
+      await this.carritoService.agregarProducto(this.productoEscaneado.precio, this.cantidad, 
       this.productoEscaneado.precio, this.productoEscaneado.id_producto, 4, this.datosUser.id_usuario );
       await this.cerrarProducto();
       await loading.dismiss()
@@ -105,6 +106,20 @@ async ngOnInit() {
     })
     await alert.present()
   }
+
+
+  //para la cantidad
+
+  restarCantidad() {
+    if (this.cantidad > 1) {
+      this.cantidad= this.cantidad-1;
+    }
+  }
+
+  incrementarCantidad() {
+    this.cantidad= this.cantidad+1;
+  }
+
 
 
 

@@ -10,6 +10,8 @@ import { ScannerPage } from './scanner.page';
 
 import { SharedModule } from 'src/app/shared/shared.module';
 
+import { FormatoDineroPipe } from 'src/app/pipes/formato-dinero.pipe';
+
 
 
 @NgModule({
@@ -19,6 +21,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     IonicModule,
     ScannerPageRoutingModule,
     SharedModule,
+    FormatoDineroPipe
 
 
   ],

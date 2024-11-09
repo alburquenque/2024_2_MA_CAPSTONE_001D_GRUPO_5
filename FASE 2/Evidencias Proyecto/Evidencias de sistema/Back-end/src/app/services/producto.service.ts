@@ -107,7 +107,9 @@ export class ProductoService {
     try {
       const { data, error } = await this.supabase
         .from('producto')
-        .select('*')
+        .select(`*,
+                  categoria(
+                  nombre)`)
         .eq('codigo_barras', codigo_barras)
         .single();
 

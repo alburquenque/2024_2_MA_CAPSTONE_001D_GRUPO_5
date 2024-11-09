@@ -8,7 +8,7 @@ import { DetalleCarritosPageRoutingModule } from './detalle-carritos-routing.mod
 
 import { DetalleCarritosPage } from './detalle-carritos.page';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { TruncatePipe } from 'src/app/truncate.pipe';
+import { TruncatePipe } from 'src/app/pipes/truncate.pipe';
 
 @NgModule({
   imports: [
