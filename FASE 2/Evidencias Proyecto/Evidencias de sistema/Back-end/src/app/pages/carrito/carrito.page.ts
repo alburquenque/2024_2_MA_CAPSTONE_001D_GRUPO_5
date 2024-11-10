@@ -54,6 +54,7 @@ export class CarritoPage implements OnInit {
   async actualizarCantidad(item: any, cambio: number) {
     const nuevaCantidad = item.cantidad + cambio;
     const nuevoTotal = nuevaCantidad*item.precio_unitario
+    console.log("nuevo total: ",nuevoTotal)
     if (nuevaCantidad > 0) {
       await this.carritoService.actualizarCantidadProducto(nuevaCantidad, item.id_refcarrito);
       await this.carritoService.actualizarCantidadEnCarrito(nuevaCantidad, item.id_carrito);

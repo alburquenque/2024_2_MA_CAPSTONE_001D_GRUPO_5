@@ -1,10 +1,32 @@
 <app-header [title]="'Escaneo'"></app-header>
 <ion-content class="ion-padding">
-  <h1>Bienvenido {{datosUser.nombre}}</h1>
-  <!-- @if(!scanResult){ -->
-    <h3>¡Escanea un producto!</h3>
-    <p>Recuerda que el producto debe tener un codigo similar a este:</p>
-    <img src="assets/EAN13.png" alt="Codigo de barra">
+    <!-- @if(!scanResult){ -->
+    <div class="scanner-container">
+      <div class="welcome-section">
+        <h1>¡Bienvenido Alonso! 👋</h1>
+        <p class="subtitle">Escanea un producto para ver sus detalles</p>
+      </div>
+
+      <div class="scan-area">
+        <div class="scan-frame">
+          <div class="scan-line"></div>
+          <ion-icon name="scan-outline" class="scan-icon"></ion-icon>
+        </div>
+        <p class="scan-instruction">
+          Coloca el código de barras dentro del marco
+        </p>
+      </div>
+
+      <div class="barcode-example">
+        <p class="example-text">El producto debe tener un código similar a:</p>
+        <img src="assets/EAN13.png" alt="Ejemplo de código de barras" />
+      </div>
+
+      <ion-button expand="block" class="scan-button" (click)="scanBarcode()">
+        <ion-icon name="camera-outline" slot="start"></ion-icon>
+        INICIAR ESCANEO
+      </ion-button>
+    </div>
   <!-- }@else { -->
     <ion-modal
     #productScanned
@@ -12,7 +34,7 @@
     (didDismiss)="isScanned=false">
     <ng-template>
       <ion-header class="ion-no-border">
-        <ion-toolbar>
+        <ion-toolbar class="toolbar">
           <ion-title>¡Has escaneado el producto!</ion-title>
           <ion-buttons slot="end">
             <ion-button style="width: 40px; height: 40px;" (click)="productScanned.dismiss()">
@@ -95,11 +117,6 @@
     </ng-template>
 
     </ion-modal>
-
-  <!-- } -->
-  <ion-button style="width: 80%; margin-bottom: 10%; margin-left: 10%; margin-right: 10%;" (click)="scanBarcode()">Iniciar Escaneo</ion-button> 
-
-
-
+ 
 
 </ion-content>

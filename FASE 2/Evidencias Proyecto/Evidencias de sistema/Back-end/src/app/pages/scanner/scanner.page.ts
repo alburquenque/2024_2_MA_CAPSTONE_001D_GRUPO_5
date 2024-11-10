@@ -83,6 +83,7 @@ async ngOnInit() {
       await loading.present()
       await this.carritoService.agregarProducto(this.productoEscaneado.precio, this.cantidad, 
       this.productoEscaneado.precio, this.productoEscaneado.id_producto, 4, this.datosUser.id_usuario );
+      console.log("cantidad: ",this.cantidad)
       await this.cerrarProducto();
       await loading.dismiss()
 

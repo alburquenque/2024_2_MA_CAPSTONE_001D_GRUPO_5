@@ -1,0 +1,7 @@
+Cosas que faltan hacer:
+
+-Arreglar guards para que el login persista y no se este bug cuando intentar meterte a otra page
+-Implementar guard para que rediriga al home  dependiendo del rol de la persona (user, admin, superadmin)
+-Terminar de implementar webpay para que al terminar la compra se vuelva a abrir la aplicación (actualmente abre el chrome y redirige al localhost)
+-Implementar vista para generación de reportes.
+-...(No recuerdo qué otras cosas más)

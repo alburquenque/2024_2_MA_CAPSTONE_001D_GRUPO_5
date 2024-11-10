@@ -1,39 +1,127 @@
-ion-modal{
-    ion-toolbar{
-        --background: #0163AA;
-        color: white;
-        ion-button{
-            width: 2rem;
-        }
-        ion-icon{
-            font-size: 2rem;
-        }
-    }
 
-ion-content{
+.toolbar{
+    --background: #0163AA;
+    color: white;
+    ion-button{
+        width: 2rem;
+    }
+    ion-icon{
+        font-size: 2rem;
+    }
+}
+
+
+
+.scanner-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1rem;
+}
+
+.welcome-section {
+  text-align: center;
+  margin-top: -20px;
+
+  h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--ion-color-dark);
+  }
+
+  .subtitle {
+    color: var(--ion-color-medium);
+    font-size: 1rem;
+  }
+}
+
+.scan-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin: 1px 0;
+
+  .scan-frame {
+    width: 280px;
+    height: 280px;
+    border: 2px solid var(--ion-color-primary);
+    border-radius: 16px;
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    grid-template-columns: 1fr;
-    img{
-        border-radius: 15px;
-        width: 256px;
-        margin-top: 20px;
-        margin-bottom: 10px;
-        margin-left: 20%;
-        margin-right: 20%;
+    background: rgba(var(--ion-color-primary-rgb), 0.05);
+
+    .scan-line {
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      background: var(--ion-color-primary);
+      animation: scan 2s linear infinite;
     }
-    h2{
-        margin-left: 20px;
-        font-size: 20px;
-        margin-bottom: 20px;
+
+    .scan-icon {
+      font-size: 3rem;
+      color: var(--ion-color-primary);
+      opacity: 0.5;
     }
-    p{
-        margin-top: -10px;
-        margin-left: 20px;
-        font-size: 1rem;
-    }
+  }
+
+  .scan-instruction {
+    color: var(--ion-color-medium);
+    font-size: 0.9rem;
+    text-align: center;
+  }
 }
+
+.barcode-example {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  padding: 1rem;
+  background: var(--ion-color-light);
+  border-radius: 12px;
+
+  .example-text {
+    color: var(--ion-color-medium);
+    font-size: 0.9rem;
+    margin: 0;
+  }
+
+  img {
+    max-width: 200px;
+    height: auto;
+  }
+}
+
+.scan-button {
+  margin-top: auto;
+  margin-bottom: 1rem;
+  --border-radius: 12px;
+  --padding-top: 1rem;
+  --padding-bottom: 1rem;
+}
+
+@keyframes scan {
+  0% {
+    transform: translateY(-140px);
+  }
+  50% {
+    transform: translateY(140px);
+  }
+  100% {
+    transform: translateY(-140px);
+  }
+}
+
+
+
+
+
 
 
   .product-image-container {
@@ -108,4 +196,4 @@ ion-content{
   ion-button {
     margin-top: 8px;
   }
-}
+
