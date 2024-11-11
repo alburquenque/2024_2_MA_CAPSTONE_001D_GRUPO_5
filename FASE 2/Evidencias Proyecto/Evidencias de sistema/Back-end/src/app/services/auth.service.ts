@@ -6,17 +6,15 @@ import { createClient, SupabaseClient, User } from '@supabase/supabase-js'
 import { BehaviorSubject, Observable, from } from 'rxjs'
 import { environment } from '../../environments/environment'
 
-
-
 @Injectable({
   providedIn: 'root'
 })
 
-
-
 export class AuthService {
   private supabase: SupabaseClient
   private currentUser: BehaviorSubject<User | boolean | null> = new BehaviorSubject<User | boolean | null>(null);
+  private userRole = new BehaviorSubject<number | null>(null);
+
   constructor(private supabaseService: SupabaseService, private router: Router) {
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey)
 
@@ -25,20 +23,17 @@ export class AuthService {
         console.log('SET USER')
 
     if (sess && sess.user) {
-      this.currentUser.next(sess.user); // Set the current user
+      this.currentUser.next(sess.user);
     } else {
-      this.currentUser.next(false); // Or handle this case as needed
+      this.currentUser.next(false); 
     }
   } else {
-    this.currentUser.next(false); // Set current user to false on sign out
+    this.currentUser.next(false); 
   }
     })
 
-    // Trigger initial session load
     this.loadUser()
   }
-
-  
 
   async loadUser() {
     if (this.currentUser.value) {
@@ -53,10 +48,9 @@ export class AuthService {
     }
   }
 
-  ///////////////////////////////////////////
-
-  signUp(credentials: { email: any; password: any }) {
-    return this.supabase.auth.signUp(credentials)
+  // Temas de login, registro, cierre de sesión
+  getUserRole(): Observable<number | null> {
+    return this.userRole.asObservable();
   }
 
   async signIn(credentials: { email: any, password: any }): Promise<any> {
@@ -67,8 +61,12 @@ export class AuthService {
         console.error('Error en inicio de sesión:', error);
         return { error };
       }
-      else{
-        await this.guardarInfo(data.user.id, data.session?.access_token)
+
+      if (data.user) {
+        const userDetails = await this.getUserDetails(data.user.id);
+        this.userRole.next(userDetails.id_rol);
+        await this.guardarInfo(data.user.id, data.session?.access_token);
+        await this.redirigirBasadoEnRol(userDetails.id_rol);
       }
   
       return { data, error };
@@ -77,6 +75,81 @@ export class AuthService {
       return { error };
     }
   }
+
+  private async redirigirBasadoEnRol(role: number) {
+    switch (role) {
+      case 1:
+        await this.router.navigate(['/home']);
+        break;
+      case 2:
+        await this.router.navigate(['/home-admin']);
+        break;
+      case 3:
+        await this.router.navigate(['/home-superadmin']);
+        break;
+      default:
+        await this.router.navigate(['/login']);
+    }
+  }
+
+  async register(email: string, password: string, nombre: string, apellido: string) {
+    let consulta: number;
+    const { data, error } = await this.supabase
+    .from('usuario')
+    .select('*')
+    .eq('email', email)
+    .single();
+
+    if (error){
+      consulta=1;
+    }
+    if(data){
+      consulta=2
+      return consulta;
+    }
+    if(consulta = 1){
+      try {
+        const { data, error } = await this.supabaseService.getSupabase().auth.signUp({
+          email,
+          password
+        });
+        if (data?.user) {
+          const id_usuario = data.user?.id;
+          const avatarDefectoUsuario = `${environment.supabaseUrl}/storage/v1/object/public/perfiles/default_avatar.jpg`;
+          const { error: profileError } = await this.supabaseService.getSupabase()
+            .from('usuario')
+            .insert({
+              id_usuario,
+              nombre,
+              apellido,
+              email,
+              id_rol: 1, // Cliente por defecto. 2 es admin, y 3 es superadmin. Esos se crean de la BD.
+              id_categoriacliente: 1, // Sin categoria al registrarse,
+              imagen: avatarDefectoUsuario
+            });
+
+          if (profileError) {
+            console.error('Error al insertar en la tabla usuario:', profileError);
+            throw profileError;
+          }
+        }
+
+        return data;
+      } catch (error) {
+        console.error('Error en el registro:', error);
+        return null;
+      }
+     }
+     else{
+      return 1;
+     }
+    }
+
+  signUp(credentials: { email: any; password: any }) {
+    return this.supabase.auth.signUp(credentials)
+  }
+
+
   
   async signOut() {
     await this.supabase.auth.signOut()
@@ -84,35 +157,39 @@ export class AuthService {
     localStorage.clear()
   }
 
-  //Para que el inicio de sesión sea constante
-async checkSession() {
-  const accessToken = localStorage.getItem('accessToken');
-  if (accessToken) { 
-    const { data, error } = await this.supabase.auth.getUser(accessToken);
-    if (!error && data.user) {
-      console.log("sesion restaurada")
-      return data.user;
-    } else {
-      this.signOut();
+  //Temas de sesión de usuario local, podría usarse otro método 
+  async checkSession() {
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken) { 
+      const { data, error } = await this.supabase.auth.getUser(accessToken);
+      if (!error && data.user) {
+        const userDetails = await this.getUserDetails(data.user.id);
+        this.userRole.next(userDetails.id_rol);
+        console.log("sesion restaurada");
+        return data.user;
+      } else {
+        this.userRole.next(null);
+        this.signOut();
+        return null;
+      }
+    }
+    else {
+      this.userRole.next(null);
       return null;
     }
   }
-  else{
-    return null;
+
+
+  async guardarInfo(id: any, token:any){
+    const userId = id;
+    const userDetails = await this.getUserDetails(userId); 
+    if (userDetails) {
+      localStorage.setItem('userData', JSON.stringify(userDetails)); 
+      localStorage.setItem('accessToken', token);
+    }
   }
-}
 
-async guardarInfo(id: any, token:any){
-  const userId = id;
-  const userDetails = await this.getUserDetails(userId); 
-  if (userDetails) {
-    localStorage.setItem('userData', JSON.stringify(userDetails)); 
-    localStorage.setItem('accessToken', token);
-  }
-}
-
-  ////////////////////////////////////
-
+  // Temas de cambio de contraseña
   reset_password(email: any) {
     return this.supabase.auth.resetPasswordForEmail(email)
   }
@@ -163,6 +240,7 @@ async guardarInfo(id: any, token:any){
     return userData ? JSON.parse(userData) : null;
   };
 
+  // Temas de carrito deberia ir en carrito, de ahi se mueve
   async getCarrito(userId: string) {
     try {
       const { data, error } = await this.supabase
@@ -236,68 +314,7 @@ async guardarInfo(id: any, token:any){
     }
   }
 
-  
-
-
-
-
-
-
-
-
-  async register(email: string, password: string, nombre: string, apellido: string) {
-    let consulta: number;
-    const { data, error } = await this.supabase
-    .from('usuario')
-    .select('*')
-    .eq('email', email)
-    .single();
-
-    if (error){
-      consulta=1;
-    }
-    if(data){
-      consulta=2
-      return consulta;
-    }
-    if(consulta = 1){
-      try {
-        const { data, error } = await this.supabaseService.getSupabase().auth.signUp({
-          email,
-          password
-        });
-        if (data?.user) {
-          const id_usuario = data.user?.id;
-          const avatarDefectoUsuario = `${environment.supabaseUrl}/storage/v1/object/public/perfiles/default_avatar.jpg`;
-          const { error: profileError } = await this.supabaseService.getSupabase()
-            .from('usuario')
-            .insert({
-              id_usuario,
-              nombre,
-              apellido,
-              email,
-              id_rol: 1, // Cliente por defecto. 2 es admin, y 3 es superadmin. Esos se crean de la BD.
-              id_categoriacliente: 1, // Sin categoria al registrarse,
-              imagen: avatarDefectoUsuario
-            });
-
-          if (profileError) {
-            console.error('Error al insertar en la tabla usuario:', profileError);
-            throw profileError;
-          }
-        }
-
-        return data;
-      } catch (error) {
-        console.error('Error en el registro:', error);
-        return null;
-      }
-     }
-     else{
-      return 1;
-     }
-    }
-
+  // Temas de perfil
   async subirFotoPerfil(file: File, idUsuario: any): Promise<string | null> {
     try {
       const fileName = `${Date.now()}_${file.name}`;
