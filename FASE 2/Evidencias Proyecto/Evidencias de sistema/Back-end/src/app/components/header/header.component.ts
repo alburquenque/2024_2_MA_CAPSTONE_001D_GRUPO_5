@@ -15,12 +15,16 @@ export class HeaderComponent {
   @Input() title: string = 'Acme App';
   isHomePage!: boolean;
   localUserData: any; 
+  rolUsuario: number |  null = null;
 
   constructor(private popoverController: PopoverController, private router: Router, private navCtrl: NavController, private authService: AuthService) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.isHomePage = this.router.url === '/home' || this.router.url === '/home-superadmin' || this.router.url === '/';
       }
+      this.authService.getUserRole().subscribe((rol) => {
+        this.rolUsuario = rol;
+      });
     });
   }
 

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SupabaseClient, createClient } from '@supabase/supabase-js';
 import { environment } from 'src/environments/environment';
+import * as Papa from 'papaparse'; 
 
 @Injectable({
   providedIn: 'root'
@@ -120,6 +121,55 @@ export class ProductoService {
     } catch (error) {
       console.error('Error obteniendo producto: ', error);
       return null;
+    }
+  }
+
+  async importarProductosCSV(file: File): Promise<any[]> {
+    try {
+      return new Promise((resolve, reject) => {
+        Papa.parse(file, {
+          header: true,
+          skipEmptyLines: true, 
+          complete: async (results) => {
+            try {
+              const productosValidos = results.data.filter((row: any) => {
+                return Object.values(row).some(value => 
+                  value !== null && value !== undefined && value.toString().trim() !== ''
+                );
+              });
+
+              const productos = productosValidos.map((row: any) => ({
+                codigo_barras: row.codigo_barras?.trim() || null,
+                nombre: row.nombre?.trim() || null,
+                marca: row.marca?.trim() || null,
+                annio: row.annio ? parseInt(row.annio) : null,
+                precio: row.precio ? parseFloat(row.precio) : null,
+                id_categoria: row.id_categoria ? parseInt(row.id_categoria) : null,
+                descripcion: row.descripcion?.trim() || null
+              }));
+
+              if (productos.length > 0) {
+                const { data, error } = await this.supabase
+                  .from('producto')
+                  .insert(productos);
+
+                if (error) throw error;
+                resolve(data || []);
+              } else {
+                reject(new Error('No se encontraron productos válidos en el archivo CSV'));
+              }
+            } catch (error) {
+              reject(error);
+            }
+          },
+          error: (error) => {
+            reject(error);
+          }
+        });
+      });
+    } catch (error) {
+      console.error('Error importando productos:', error);
+      throw error;
     }
   }
   

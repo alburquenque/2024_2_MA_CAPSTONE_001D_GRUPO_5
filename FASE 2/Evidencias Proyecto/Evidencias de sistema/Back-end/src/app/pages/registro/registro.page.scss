@@ -1,55 +1,104 @@
+ion-content {
+  --background: #f8f9fa;
+  padding: 16px;
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  padding: 5vh 0 3vh;
+}
+
+.logo svg {
+  width: 80px;
+  height: 80px;
+  color: #2c3e50;
+}
+
+h1, p {
+  text-align: center;
+  color: #2c3e50;
+}
+
 h1 {
   font-size: 32px;
   font-weight: bold;
-  margin-bottom: 8px;
-  text-align: center;
+  margin-bottom: 12px;
 }
 
 p {
-  text-align: center;
-  color: #9f9fa4
+  color: #6c757d;
+  font-size: 15px;
+  margin-bottom: 25px;
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 22px;
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #495057;
+  }
+
+  .input-container {
+    display: flex;
+    flex-direction: column;
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      font-size: 15px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+      &:focus {
+        border-color: #4a90e2;
+        box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
+      }
+
+      // Estilo para input inválido
+      &.ng-invalid.ng-touched,
+      &.ng-invalid.ng-dirty {
+        border-color: #dc3545;  // Rojo para indicar error
+        box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.1);
+      }
+    }
+  }
 }
 
-label {
+ion-text[color="danger"] {
   display: block;
-  margin-bottom: 8px;
-  font-weight: 500;
+  margin-top: 4px;
+  font-size: 13px;
+  color: #dc3545;
 }
 
-input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
+.border {
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 25px;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
-ion-button{
-  --border-radius: 7px;
+ion-button {
+  --border-radius: 8px;
+  --background: #2c3e50;
+  margin: 20px 0;
+
+  &:hover:not([disabled]) {
+    --background: #34495e;
+  }
 }
 
-input{
-  border-radius: 7px;
-}
-
-.border{
-  border: 2px solid #eaeaec;
-  border-radius: 10px; /* Redondea las esquinas si lo deseas */
-  padding: 10px;
-}
-
-.logo{
-  width: 50px;
-  height: 50px;
-  margin: auto;
-  float: left;
-}
-
-.already{
-  color: #9f9fa4;
-  text-align: left;
+.login-link {
+  display: block;
+  text-align: center;
+  color: #4a90e2;
+  text-decoration: none;
+  font-size: 14px;
+  margin-top: 15px;
 }

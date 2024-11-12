@@ -1,25 +1,93 @@
 <app-header [title]="'Gestión de productos'"></app-header>
 
 <ion-content class="ion-padding">
-  <ion-list>
-    <ion-item *ngFor="let producto of productos">
-      <ion-label>
-        <h2>{{ producto.nombre }}</h2>
-        <p>{{ producto.codigo_barras }}</p>
-      </ion-label>
-      <ion-note slot="end" color="primary">${{ producto.precio.toFixed(2) }}</ion-note>
-      <ion-button fill="clear" slot="end">
-        <ion-icon name="create-outline" class="custom-icon"></ion-icon>
-      </ion-button>
-      <ion-button (click)="eliminarProducto(producto.id_producto)" fill="clear" slot="end">
-        <ion-icon name="trash-outline" class="custom-icon"></ion-icon>
-      </ion-button>
-    </ion-item>
-  </ion-list>
-  
-  <div class="button-container">
-    <ion-button expand="block" color="primary" routerLink="/agregar-productos">
-      Agregar Producto
-    </ion-button>
+  <div class="control-section">
+    <ion-card>
+      <ion-card-content>
+        <h2 class="section-title">Método de ingreso</h2>
+        <ion-select 
+          [(ngModel)]="metodoIngreso" 
+          interface="action-sheet"
+          class="method-select"
+          placeholder="Seleccione método de ingreso">
+          <ion-select-option value="formulario">
+            <ion-icon name="create-outline"></ion-icon>
+            Agregar mediante formulario
+          </ion-select-option>
+          <ion-select-option value="csv">
+            <ion-icon name="document-outline"></ion-icon>
+            Importar desde CSV
+          </ion-select-option>
+        </ion-select>
+
+        <div class="action-buttons">
+          <ng-container *ngIf="metodoIngreso === 'formulario'">
+            <ion-button expand="block" color="primary" routerLink="/agregar-productos">
+              <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+              Agregar Producto
+            </ion-button>
+          </ng-container>
+
+          <ng-container *ngIf="metodoIngreso === 'csv'">
+            <ion-button expand="block" color="tertiary" (click)="fileInput.click()">
+              <ion-icon name="cloud-upload-outline" slot="start"></ion-icon>
+              Importar CSV
+            </ion-button>
+            <input
+              #fileInput
+              type="file"
+              accept=".csv"
+              (change)="importarCSV($event)"
+              style="display: none"
+            />
+          </ng-container>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <div class="products-section">
+    <h2 class="section-title">Listado de productos</h2>
+    <ion-label>Deslice hacia la izquierda para modificar o eliminar un producto</ion-label>
+    <ion-list>
+      <ion-item-sliding *ngFor="let producto of productos">
+        <ion-item lines="full" class="product-item">
+          <ion-thumbnail slot="start" *ngIf="producto.imagen">
+            <img [src]="producto.imagen" alt="Producto">
+          </ion-thumbnail>
+          <ion-label>
+            <h2>{{ producto.nombre }}</h2>
+            <p class="codigo">
+              <ion-icon name="barcode-outline"></ion-icon>
+              {{ producto.codigo_barras || 'Sin código' }}
+            </p>
+            <p class="marca" *ngIf="producto.marca">
+              <ion-icon name="bookmark-outline"></ion-icon>
+              {{ producto.marca }}
+            </p>
+          </ion-label>
+          <ion-badge slot="end" color="success" class="price-badge">
+            ${{ producto.precio.toFixed(2) }}
+          </ion-badge>
+        </ion-item>
+
+        <ion-item-options side="end">
+          <ion-item-option color="primary">
+            <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+          </ion-item-option>
+          <ion-item-option color="danger" (click)="eliminarProducto(producto.id_producto)">
+            <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+
+      <ion-item *ngIf="productos.length === 0" lines="none" class="empty-state">
+        <ion-label class="ion-text-center">
+          <ion-icon name="cart-outline" class="empty-icon"></ion-icon>
+          <h3>No hay productos</h3>
+          <p>Comience agregando productos mediante formulario o importando un archivo CSV</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
   </div>
 </ion-content>

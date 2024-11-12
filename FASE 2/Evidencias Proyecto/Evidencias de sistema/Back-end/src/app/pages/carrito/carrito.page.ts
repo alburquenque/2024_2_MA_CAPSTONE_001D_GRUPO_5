@@ -32,6 +32,10 @@ export class CarritoPage implements OnInit {
   }
 
 
+  formatearPesos(valor: number): string {
+    return '$' + valor.toLocaleString('es-CL');
+  }
+
   async actualizarItemsCarrito() {
     try {
       const carrito = await this.authService.getCarrito(this.userId);

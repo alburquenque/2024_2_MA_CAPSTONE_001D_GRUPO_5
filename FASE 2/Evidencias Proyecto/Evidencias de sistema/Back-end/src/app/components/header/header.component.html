@@ -15,7 +15,8 @@
       <ion-title>{{ title }}</ion-title>
     </div>
     <ion-buttons slot="end">
-      <ion-button (click)="irAlCarrito()">
+
+      <ion-button *ngIf="rolUsuario === 1" (click)="irAlCarrito()">
         <ion-icon name="cart-outline"></ion-icon>
       </ion-button>
       <ion-avatar (click)="presentPopover($event)">

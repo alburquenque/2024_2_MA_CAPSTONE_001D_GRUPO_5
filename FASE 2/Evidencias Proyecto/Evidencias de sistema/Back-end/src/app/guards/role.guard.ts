@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
-import { Observable, from } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
-import { map, take, switchMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -14,8 +14,10 @@ import { map, take, switchMap } from 'rxjs/operators';
       next: ActivatedRouteSnapshot,
       state: RouterStateSnapshot
     ): Observable<boolean | UrlTree> {
+
+
+      
       const requiredRoles: number[] = next.data['roles'];
-  
       return this.authService.getUserRole().pipe(
         map(role => {
           if (role === null) {

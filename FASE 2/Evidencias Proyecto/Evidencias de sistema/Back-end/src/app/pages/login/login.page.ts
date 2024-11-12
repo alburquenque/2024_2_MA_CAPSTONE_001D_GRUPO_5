@@ -60,7 +60,9 @@ export class LoginPage implements OnInit {
   }
 
   async login() {
-    const loading = await this.loadingController.create()
+    const loading = await this.loadingController.create({
+       message: 'Iniciando sesión, espere un momento...' 
+    })
     await loading.present()
 
     await this.authService.signIn(this.credentialsLogin.getRawValue()).then(async (data) => {
@@ -73,8 +75,6 @@ export class LoginPage implements OnInit {
         await loading.dismiss()
         this.router.navigate(['/home']);
         this.cdr.detectChanges()
-
-
       }
     })
   }

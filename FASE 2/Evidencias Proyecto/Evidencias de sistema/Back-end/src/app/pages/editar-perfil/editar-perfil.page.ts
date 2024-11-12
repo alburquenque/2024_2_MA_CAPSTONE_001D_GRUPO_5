@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, AlertController } from '@ionic/angular';
+import { ModalController, AlertController, LoadingController
+ } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -20,7 +21,8 @@ export class EditarPerfilPage implements OnInit {
   constructor(
     private modalCtrl: ModalController,
     private authService: AuthService,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private loadingController: LoadingController
   ) {}
 
   ngOnInit() {
@@ -53,6 +55,10 @@ export class EditarPerfilPage implements OnInit {
   }
 
   async confirmarCambios() {
+    const loading = await this.loadingController.create({
+      message: 'Guardando cambios...',
+    });
+    await loading.present();
     try {
       const hayCambios = 
         this.profileData.nombre !== this.userData.nombre ||
@@ -85,7 +91,8 @@ export class EditarPerfilPage implements OnInit {
         };
         localStorage.setItem('userData', JSON.stringify(updatedUserData));
 
-        await this.showAlert('Éxito', 'Datos de perfil modificados exitosamente.');
+        await this.showAlert('Éxito', 'Datos de perfil modificados exitosamente. Puede tomar un momento para reflejarse en la aplicación.');
+        await loading.dismiss();
         return this.modalCtrl.dismiss(this.profileData, 'confirm');
       } else {
         await this.showAlert('Advertencia', 'No puede confirmar, no ha realizado ningún cambio.');

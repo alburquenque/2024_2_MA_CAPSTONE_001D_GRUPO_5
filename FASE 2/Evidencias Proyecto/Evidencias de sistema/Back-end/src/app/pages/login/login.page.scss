@@ -1,50 +1,107 @@
+ion-content {
+  --background: #f8f9fa;  
+}
+
 h1 {
   font-size: 32px;
   font-weight: bold;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
   text-align: center;
+  color: #2c3e50; 
 }
 
 p {
   text-align: center;
-  color: #9f9fa4
+  color: #6c757d;  
+  font-size: 15px;
+  margin-bottom: 25px;
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 22px;
+  
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #495057; 
+  }
+  
+  input {
+    width: 100%;
+    padding: 12px 15px;  
+    border: 1px solid #dee2e6;  
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.2s ease;
+    
+    &:focus {
+      outline: none;
+      border-color: #4a90e2;  
+      box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);  
+    }
+    
+    &::placeholder {
+      color: #adb5bd;  
+    }
+  }
 }
 
-label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 500;
+ion-button {
+  --border-radius: 8px;
+  --box-shadow: none;
+  
+  &[color="dark"] {
+    --background: #2c3e50;  
+    margin-bottom: 12px;
+    
+    &:hover {
+      --background: #34495e;
+    }
+  }
+  
+  &[color="secondary"] {
+    --background: #f8f9fa;
+    --color: #2c3e50;
+    --border-color: #dee2e6;
+    --border-style: solid;
+    --border-width: 1px;
+  }
 }
 
-input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
+.border {
+  border: 1px solid #e9ecef;  
+  border-radius: 12px;
+  padding: 25px;  
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);  
 }
 
-ion-button{
-  --border-radius: 7px;
-}
-
-input{
-  border-radius: 7px;
-}
-
-.border{
-  border: 2px solid #eaeaec;
-  border-radius: 10px; /* Redondea las esquinas si lo deseas */
-  padding: 10px;
-}
-
-.logo{
+.logo {
   padding-top: 10%;
-  width: 90px;
-  height: 90px;
+  width: 85px;
+  height: 85px;
   margin: auto;
+  
+  svg {
+    color: #2c3e50;  
+    transition: color 0.2s ease;
+  }
+}
+
+a {
+  color: #4a90e2;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s ease;
+  
+  &:hover {
+    color: #357abd;
+  }
+}
+
+ion-note {
+  color: #dc3545;
+  font-size: 13px;
+  margin-top: 4px;
 }
