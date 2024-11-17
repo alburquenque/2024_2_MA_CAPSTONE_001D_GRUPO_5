@@ -1,0 +1,24 @@
+<app-header [title]="'Inicio'"></app-header>
+
+
+<ion-content class="ion-padding">
+  <h1>Bienvenido, {{localUserData.nombre}}!</h1>
+  <p>Supervisa los carritos de compra de los usuarios y confirma sus voucher de compra</p>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6" *ngFor="let itemHome of itemsHome">
+        <ion-card class="icon-card" [routerLink]="itemHome.link">
+          <ion-card-header color="secondary">
+            <ion-icon [name]="itemHome.icon" size="large"></ion-icon>
+          </ion-card-header>
+          <ion-card-content>
+            <h2>{{ itemHome.titulo }}</h2>
+            <p>{{ itemHome.descripcion }}</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

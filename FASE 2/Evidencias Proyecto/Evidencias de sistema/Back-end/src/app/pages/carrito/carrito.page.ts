@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CarritoService } from 'src/app/services/carrito.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { PagoService } from 'src/app/services/pago.service';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, Platform } from '@ionic/angular';
 @Component({
   selector: 'app-carrito',
   templateUrl: './carrito.page.html',
@@ -14,7 +14,7 @@ export class CarritoPage implements OnInit {
   userId!: string;
   total: number = 0;
 
-  constructor(private carritoService: CarritoService, private authService: AuthService, private pagoService: PagoService, private loadingController: LoadingController) { 
+  constructor(private carritoService: CarritoService, private authService: AuthService, private pagoService: PagoService, private loadingController: LoadingController, private platform: Platform) { 
   }
 
   async ngOnInit() {
@@ -89,31 +89,22 @@ export class CarritoPage implements OnInit {
       translucent: true
     });
     await loading.present();
-
+  
     try {
+      const returnUrl = 'https://webpay-scanbuy.onrender.com/api/pago/redirect';
+  
       const paymentData = {
         amount: Math.round(this.total),
         buyOrder: 'ORDEN' + Date.now(),
         sessionId: 'SESION' + Date.now(),
-        returnUrl: `${window.location.origin}/payment/confirmation`
+        returnUrl: returnUrl
       };
-
+  
       this.pagoService.initiatePayment(paymentData).subscribe({
         next: (response) => {
           loading.dismiss();
           if (response?.url && response?.token) {
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = response.url;
-
-            const tokenInput = document.createElement('input');
-            tokenInput.type = 'hidden';
-            tokenInput.name = 'token_ws';
-            tokenInput.value = response.token;
-
-            form.appendChild(tokenInput);
-            document.body.appendChild(form);
-            form.submit();
+            window.location.href = `${response.url}?token_ws=${response.token}`;
           } else {
             throw new Error('Respuesta de WebPay incompleta');
           }

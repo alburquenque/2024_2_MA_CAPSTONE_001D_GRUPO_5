@@ -58,7 +58,12 @@ const routes: Routes = [
   },
 
   // Rutas protegidas para Admin (Rol 2) falta home administrador
-
+  {
+    path: 'home-admin',
+    loadChildren: () => import('./pages/home-admin/home-admin.module').then( m => m.HomeAdminPageModule),
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: [2] }
+  },
   {
     path: 'carrito-realtime',
     loadChildren: () => import('./pages/carrito-realtime/carrito-realtime.module').then(m => m.CarritoRealtimePageModule),
@@ -126,7 +131,8 @@ const routes: Routes = [
   {
     path: '**',
     redirectTo: 'login'
-  }
+  },
+
 ];
 
 @NgModule({

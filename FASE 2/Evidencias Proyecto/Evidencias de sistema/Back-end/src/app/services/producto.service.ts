@@ -124,6 +124,44 @@ export class ProductoService {
     }
   }
 
+  async obtenerDetallesProducto(id: number) {
+    try {
+      const { data, error } = await this.supabase
+        .from('producto')
+        .select(`
+          *,
+          categoria (
+            id_categoria,
+            nombre
+          )
+        `)
+        .eq('id_producto', id)
+        .single();
+
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Error obteniendo detalles del producto:', error);
+      throw error;
+    }
+  }
+
+  async actualizacionRapida(id: number, cambios: Partial<any>) {
+    try {
+      const { data, error } = await this.supabase
+        .from('producto')
+        .update(cambios)
+        .eq('id_producto', id)
+        .single();
+
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Error en actualización rápida:', error);
+      throw error;
+    }
+  }
+
   async importarProductosCSV(file: File): Promise<any[]> {
     try {
       return new Promise((resolve, reject) => {

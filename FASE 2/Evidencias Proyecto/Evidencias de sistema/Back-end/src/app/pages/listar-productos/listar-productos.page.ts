@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductoService } from 'src/app/services/producto.service';
-import { AlertController, LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-listar-productos',
@@ -8,24 +8,41 @@ import { AlertController, LoadingController } from '@ionic/angular';
   styleUrls: ['./listar-productos.page.scss'],
 })
 export class ListarProductosPage implements OnInit {
-
+  todosLosProductos: any[] = [];
   productos: any[] = [];
   categorias: any[] = [];
   metodoIngreso: 'formulario' | 'csv' = 'formulario';
+  textoBusqueda = '';
 
-  constructor(private productoService: ProductoService, private alertController: AlertController, private loadingController: LoadingController) {}
+  constructor(private productoService: ProductoService, private alertController: AlertController, private loadingController: LoadingController, private modalController: ModalController) {}
 
   ngOnInit() {
     this.cargarProductos();
   }
 
+  buscarProductos(event: any) {
+    this.textoBusqueda = event.target.value.toLowerCase().trim();
+    
+    if (this.textoBusqueda === '') {
+      this.productos = [...this.todosLosProductos];
+      return;
+    }
+  
+    this.productos = this.todosLosProductos.filter(producto => 
+      (producto.nombre?.toLowerCase().includes(this.textoBusqueda) ||
+       producto.marca?.toLowerCase().includes(this.textoBusqueda) ||
+       producto.codigo_barras?.toString().includes(this.textoBusqueda))
+    );
+  }
   async cargarProductos() {
     try {
-      this.productos = await this.productoService.obtenerProductos();
+      this.todosLosProductos = await this.productoService.obtenerProductos();
+      this.productos = [...this.todosLosProductos]; 
     } catch (error) {
       console.error('Error obteniendo los datos:', error);
     }
   }
+
 
   async eliminarProducto(id: number) {
     const alert = await this.alertController.create({

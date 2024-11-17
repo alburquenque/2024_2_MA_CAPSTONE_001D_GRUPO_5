@@ -48,6 +48,12 @@
 
   <div class="products-section">
     <h2 class="section-title">Listado de productos</h2>
+    <ion-searchbar
+    placeholder="Buscar por nombre, marca o código"
+    (ionInput)="buscarProductos($event)"
+    [debounce]="300"
+    animated>
+  </ion-searchbar>
     <ion-label>Deslice hacia la izquierda para modificar o eliminar un producto</ion-label>
     <ion-list>
       <ion-item-sliding *ngFor="let producto of productos">

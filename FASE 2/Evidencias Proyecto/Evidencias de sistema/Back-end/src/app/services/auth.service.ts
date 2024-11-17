@@ -56,20 +56,17 @@ export class AuthService {
   async signIn(credentials: { email: any, password: any }): Promise<any> {
     try {
       const { data, error } = await this.supabase.auth.signInWithPassword(credentials);
+      if (error) throw error;
   
-      if (error) {
-        console.error('Error en inicio de sesión:', error);
-        return { error };
-      }
-
-      if (data.user) {
-        const userDetails = await this.getUserDetails(data.user.id);
-        this.userRole.next(userDetails.id_rol);
-        await this.guardarInfo(data.user.id, data.session?.access_token);
-        await this.redirigirBasadoEnRol(userDetails.id_rol);
-      }
+      const [userDetails, _] = await Promise.all([
+        this.getUserDetails(data.user.id),
+        this.guardarInfo(data.user.id, data.session?.access_token)
+      ]);
   
-      return { data, error };
+      this.userRole.next(userDetails.id_rol);
+      await this.redirigirBasadoEnRol(userDetails.id_rol);
+  
+      return { data };
     } catch (error) {
       console.error('Error en el proceso de inicio de sesión:', error);
       return { error };
