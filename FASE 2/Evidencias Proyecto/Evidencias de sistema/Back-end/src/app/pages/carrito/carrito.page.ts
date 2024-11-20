@@ -89,22 +89,33 @@ export class CarritoPage implements OnInit {
       translucent: true
     });
     await loading.present();
-  
+
     try {
-      const returnUrl = 'https://webpay-scanbuy.onrender.com/api/pago/redirect';
-  
+      const returnUrl = this.platform.is('capacitor') ? 'com.scanbuy.app://payment/confirmation' : `${window.location.origin}/payment/confirmation`;
+
       const paymentData = {
         amount: Math.round(this.total),
         buyOrder: 'ORDEN' + Date.now(),
         sessionId: 'SESION' + Date.now(),
         returnUrl: returnUrl
       };
-  
+
       this.pagoService.initiatePayment(paymentData).subscribe({
         next: (response) => {
           loading.dismiss();
           if (response?.url && response?.token) {
-            window.location.href = `${response.url}?token_ws=${response.token}`;
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = response.url;
+
+            const tokenInput = document.createElement('input');
+            tokenInput.type = 'hidden';
+            tokenInput.name = 'token_ws';
+            tokenInput.value = response.token;
+
+            form.appendChild(tokenInput);
+            document.body.appendChild(form);
+            form.submit();
           } else {
             throw new Error('Respuesta de WebPay incompleta');
           }

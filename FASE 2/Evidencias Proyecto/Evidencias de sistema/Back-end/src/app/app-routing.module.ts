@@ -35,7 +35,7 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule),
-    canActivate: [AuthGuard, RoleGuard],
+    canActivate: [RoleGuard],
     data: { roles: [1] }
   },
   {
@@ -58,12 +58,7 @@ const routes: Routes = [
   },
 
   // Rutas protegidas para Admin (Rol 2) falta home administrador
-  {
-    path: 'home-admin',
-    loadChildren: () => import('./pages/home-admin/home-admin.module').then( m => m.HomeAdminPageModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: { roles: [2] }
-  },
+
   {
     path: 'carrito-realtime',
     loadChildren: () => import('./pages/carrito-realtime/carrito-realtime.module').then(m => m.CarritoRealtimePageModule),
@@ -111,6 +106,12 @@ const routes: Routes = [
   {
     path: 'listar-productos',
     loadChildren: () => import('./pages/listar-productos/listar-productos.module').then(m => m.ListarProductosPageModule),
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: [3] }
+  },
+  {
+    path: 'reportes',
+    loadChildren: () => import('./pages/reportes/reportes.module').then( m => m.ReportesPageModule),
     canActivate: [AuthGuard, RoleGuard],
     data: { roles: [3] }
   },

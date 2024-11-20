@@ -3,6 +3,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core'
 import { FormBuilder, Validators, FormGroup } from '@angular/forms'
 import { Router } from '@angular/router'
 import { LoadingController, AlertController } from '@ionic/angular'
+import { HomePage } from '../home/home.page'
 
 
 @Component({
@@ -21,7 +22,7 @@ export class LoginPage implements OnInit {
     private loadingController: LoadingController,
     private alertController: AlertController,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {
 
 
@@ -73,8 +74,9 @@ export class LoginPage implements OnInit {
       }
       else {
         await loading.dismiss()
-        this.router.navigate(['/home']);
         this.cdr.detectChanges()
+        this.router.navigate(['/home']);
+        
       }
     })
   }

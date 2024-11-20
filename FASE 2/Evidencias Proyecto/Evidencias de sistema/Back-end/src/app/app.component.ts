@@ -5,6 +5,7 @@ import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
 import { Platform } from '@ionic/angular';
 import { App } from '@capacitor/app';
+import { AuthGuard } from './guards/auth.guard';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -13,9 +14,13 @@ import { App } from '@capacitor/app';
 export class AppComponent {
 
 
-  constructor(private authService: AuthService, private router: Router, private platform: Platform) {
-    this.initializeApp();
+  constructor(private authService: AuthService, private router: Router, private platform: Platform, private authguard : AuthGuard) {
     this.addAllIcons();
+  }
+
+  async ngOnInit() {
+    await this.authService.initializeSession();
+    console.log('Session a sido restaurada')
   }
 
   addAllIcons() {
@@ -23,8 +28,6 @@ export class AppComponent {
       closeOutline
     });
     }
-
-
 
   initializeApp() {
     this.platform.ready().then(() => {
@@ -42,7 +45,5 @@ export class AppComponent {
       });
     });
   }
-
-
 
 }

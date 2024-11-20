@@ -253,31 +253,50 @@ export class CarritoService {
     return data;
   }
 
-  async guardarCompra(compraData: { estado: string, cantidad: number, total: number }): Promise<number | null> {
+  async guardarRefCompra(refCompraData: { id_compra: number; id_producto: string; precio_unitario: number; cantidad: number; total: number }): Promise<void> {
+    try {
+      console.log('Datos a insertar en ref_compra:', refCompraData);
+  
+      const { error } = await this.supabase
+        .from('ref_compra')
+        .insert([refCompraData]);
+  
+      if (error) {
+        console.error('Error al guardar en ref_compra:', error);
+        throw error;
+      }
+  
+      console.log('Referencia de compra guardada exitosamente.');
+    } catch (error) {
+      console.error('Error inesperado en guardarRefCompra:', error);
+      throw error;
+    }
+  }
+
+  async guardarCompra(compraData: { estado: string; cantidad: number; total: number; id_usuario: string }): Promise<number | null> {
     try {
       const { data, error } = await this.supabase
         .from('compra')
-        .insert([
-          {
-            estado: compraData.estado,
-            cantidad: compraData.cantidad,
-            total: compraData.total
-          }
-        ])
-        .select('id_compra')  // Selecciona el id_compra recién insertado
+        .insert([compraData])
+        .select('id_compra')
         .single();
-
+  
       if (error) {
         console.error('Error al guardar la compra:', error);
         return null;
       }
-
+  
       console.log('Compra guardada con éxito:', data);
-      return data.id_compra;  // Devuelve el id_compra para usarlo en la generación del QR
+      return data.id_compra;
     } catch (error) {
       console.error('Error inesperado al guardar la compra:', error);
       return null;
     }
   }
 
+
+  
+
 }
+
+

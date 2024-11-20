@@ -2,7 +2,7 @@
 
 
 <ion-content class="ion-padding">
-  <h1>Bienvenido, {{localUserData.nombre}}!</h1>
+  <h1>Bienvenido, {{usuario.nombre}}! </h1>
   <p>Explora las diferentes funciones que tenemos para ti</p>
 
   <ion-grid>
@@ -21,4 +21,29 @@
     </ion-row>
   </ion-grid>
 
+<!-- Custom bottom navigation bar -->
+
+<ion-footer>
+  <div class="bottom-nav">
+    <ion-buttons class="nav-item" fill="clear">
+      <ion-icon name="home"></ion-icon>
+      <span>Inicio</span>
+    </ion-buttons>
+
+    <ion-buttons class="nav-item scan-button" fill="clear" (click)="goToScanner()">
+      <div class="scan-circle">
+        <ion-icon name="scan"></ion-icon>
+      </div>
+      <span>Escanear</span>
+    </ion-buttons>
+
+    <ion-buttons class="nav-item" fill="clear">
+      <ion-icon name="settings"></ion-icon>
+      <span>Configuracion</span>
+    </ion-buttons>
+  </div>
+</ion-footer>
+
 </ion-content>
+
+

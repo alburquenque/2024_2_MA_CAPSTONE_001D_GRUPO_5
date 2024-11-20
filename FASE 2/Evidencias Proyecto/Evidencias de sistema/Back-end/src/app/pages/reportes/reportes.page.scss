@@ -1,0 +1,27 @@
+.stat-label {
+    color: var(--ion-color-medium);
+    font-size: 0.9em;
+    margin-bottom: 4px;
+  }
+  .stat-value {
+    font-size: 1.8em;
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  .stat-change {
+    font-size: 0.8em;
+  }
+  .positive {
+    color: var(--ion-color-success);
+  }
+  .negative {
+    color: var(--ion-color-danger);
+  }
+  ion-card {
+    margin: 8px;
+    box-shadow: none;
+    border: 1px solid #eee;
+  }
+  ion-card-content {
+    padding: 16px;
+  }

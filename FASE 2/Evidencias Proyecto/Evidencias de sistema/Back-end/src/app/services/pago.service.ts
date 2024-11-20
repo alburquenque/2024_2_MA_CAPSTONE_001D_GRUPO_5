@@ -53,4 +53,20 @@ export class PagoService {
     }
   }
 
+  async crearRefCompra(refCompraData: any) {
+    try {
+      const { data, error } = await this.supabase
+        .from('ref_compra')
+        .insert(refCompraData)
+        .single();
+
+      if (error) throw error;
+
+      return data;
+    } catch (error) {
+      console.error('Error creando la referencia de compra: ', error);
+      throw error;
+    }
+  }
+
 }

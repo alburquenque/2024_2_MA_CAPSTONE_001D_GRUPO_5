@@ -14,7 +14,7 @@ export class ConfirmacionPagoPage implements OnInit {
   paymentStatus: string = '';
   token: string = '';
   loading: any;
-  qrCodeData: string | null = null; // Almacenar el QR generado
+  qrCodeData: string | null = null; 
 
   constructor(
     private route: ActivatedRoute,
@@ -43,23 +43,40 @@ export class ConfirmacionPagoPage implements OnInit {
           const compraData = {
             estado: 'Pendiente',
             cantidad: carrito.cantidad,
-            total: carrito.total
+            total: carrito.total,
+            id_usuario: userId, 
           };
 
           const compraId = await this.carritoService.guardarCompra(compraData);
-      
-          
+
+          if (compraId) {
+            console.log('Datos del carrito obtenidos:', carrito);
+            console.log('Items del carrito:', carrito.items);
+            
+            for (const item of carrito.items) {
+              const total = item.precio_unitario * item.cantidad;
+            
+              const refCompraData = {
+                id_compra: compraId,
+                id_producto: item.id_producto,
+                precio_unitario: item.precio_unitario,
+                cantidad: item.cantidad,
+                total: total,
+              };
+            
+              console.log('Datos a guardar en ref_compra:', refCompraData);
+            
+              await this.carritoService.guardarRefCompra(refCompraData);
+            
+            }
+
+            this.qrCodeData = await this.generateQRCode(compraId.toString());
+          }
 
           this.paymentStatus = 'success';
           await this.dismissLoading();
           await this.mostrarMensajeExito();
-          if (compraId) {
-            
-            this.qrCodeData = await this.generateQRCode(compraId.toString());
-          }
           await this.carritoService.limpiarCarrito(userId);
-
-
         } catch (error) {
           console.error('Error al procesar la confirmación:', error);
           this.paymentStatus = 'error';

@@ -14,25 +14,13 @@ export class AuthService {
   private supabase: SupabaseClient
   private currentUser: BehaviorSubject<User | boolean | null> = new BehaviorSubject<User | boolean | null>(null);
   private userRole = new BehaviorSubject<number | null>(null);
+  private sessionInitialized = false;
+
+
 
   constructor(private supabaseService: SupabaseService, private router: Router) {
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey)
 
-    this.supabase.auth.onAuthStateChange((event, sess) => {
-      if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
-        console.log('SET USER')
-
-    if (sess && sess.user) {
-      this.currentUser.next(sess.user);
-    } else {
-      this.currentUser.next(false); 
-    }
-  } else {
-    this.currentUser.next(false); 
-  }
-    })
-
-    this.loadUser()
   }
 
   async loadUser() {
@@ -64,6 +52,8 @@ export class AuthService {
       ]);
   
       this.userRole.next(userDetails.id_rol);
+      this.currentUser.next(userDetails)
+      this.sessionInitialized = true
       await this.redirigirBasadoEnRol(userDetails.id_rol);
   
       return { data };
@@ -154,26 +144,74 @@ export class AuthService {
     localStorage.clear()
   }
 
-  //Temas de sesión de usuario local, podría usarse otro método 
-  async checkSession() {
-    const accessToken = localStorage.getItem('accessToken');
-    if (accessToken) { 
-      const { data, error } = await this.supabase.auth.getUser(accessToken);
-      if (!error && data.user) {
-        const userDetails = await this.getUserDetails(data.user.id);
+  //  //Temas de sesión de usuario local, podría usarse otro método 
+  //  async checkSession(): Promise<boolean> {
+  //   if (this.sessionChecked) {
+  //     console.log('Se checkeo la wea')
+  //     // Si ya verificaste la sesión, evita redirecciones innecesarias
+  //     return !!this.currentUser.value;
+  //   }
+
+  //   const { data: session, error } = await this.supabase.auth.getSession();
+
+  //   if (error || !session?.session) {
+  //     this.sessionChecked = true; // Marca como verificada
+  //     this.currentUser.next(null);
+  //     this.userRole.next(null);
+  //     return false;
+  //   }
+
+  //   const user = session.session.user;
+
+  //   if (user) {
+  //     try {
+  //       const userDetails = await this.getUserDetails(user.id);
+  //       this.currentUser.next(user);
+  //       this.userRole.next(userDetails.id_rol);
+  //       this.sessionChecked = true; // Marca como verificada
+  //       return true;
+  //     } catch (err) {
+  //       console.error('Error al obtener detalles del usuario:', err);
+  //       this.signOut();
+  //       return false;
+  //     }
+  //   }
+
+  //   this.sessionChecked = true; // Marca como verificada
+  //   this.currentUser.next(null);
+  //   return false;
+  // }
+
+  async initializeSession(): Promise<void> {
+    if (this.sessionInitialized){
+      console.log("salí en 1")
+      return; // Evita que se llame varias veces
+    }  
+
+    const { data: session, error } = await this.supabase.auth.getSession();
+
+    if (error || !session?.session) {
+      this.currentUser.next(null);
+      this.userRole.next(null);
+    } else {
+      const user = session.session.user;
+
+      try {
+        const userDetails = await this.getUserDetails(user.id);
+        this.currentUser.next(user);
         this.userRole.next(userDetails.id_rol);
-        console.log("sesion restaurada");
-        return data.user;
-      } else {
+      } catch (err) {
+        console.error('Error al inicializar sesión:', err);
+        this.currentUser.next(null);
         this.userRole.next(null);
-        this.signOut();
-        return null;
       }
     }
-    else {
-      this.userRole.next(null);
-      return null;
-    }
+
+    this.sessionInitialized = true; // Marca la sesión como inicializada
+  }
+
+  get isAuthenticated(): boolean {
+    return !!this.currentUser.value;
   }
 
 
@@ -240,18 +278,34 @@ export class AuthService {
   // Temas de carrito deberia ir en carrito, de ahi se mueve
   async getCarrito(userId: string) {
     try {
+      // Se mejoró esto para además obtener los productos relacionados
       const { data, error } = await this.supabase
-      .from('carrito')
-      .select('*')
-      .eq('id_usuario', userId)
-      .single();
-
-      if (error){
+        .from('carrito')
+        .select(`
+          *,
+          items:ref_carrito(
+            id_producto,
+            cantidad,
+            precio_unitario,
+            producto:producto(
+              nombre,
+              descripcion,
+              precio,
+              imagen
+            )
+          )
+        `)
+        .eq('id_usuario', userId)
+        .single();
+  
+      if (error) {
+        console.error('Error al obtener el carrito:', error);
         return null;
-      } 
-      return data;
+      }
+  
+      return data; 
     } catch (error) {
-      console.error('Error obteniendo carrito: ', error);
+      console.error('Error obteniendo carrito:', error);
       return null;
     }
   }
