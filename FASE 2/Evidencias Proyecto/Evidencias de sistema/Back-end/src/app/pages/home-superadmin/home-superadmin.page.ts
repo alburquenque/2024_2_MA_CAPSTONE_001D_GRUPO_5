@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-home-superadmin',
@@ -7,8 +8,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./home-superadmin.page.scss'],
 })
 export class HomeSuperadminPage implements OnInit {
-
-  constructor(private router: Router) { }
+  localUserData: any; 
+  
+  constructor(private router: Router,private authService: AuthService) { }
   lastActivity: Date = new Date();
 
 
@@ -23,6 +25,8 @@ export class HomeSuperadminPage implements OnInit {
 
   ngOnInit() {
     this.actualizarUltimaActividad();
+    this.localUserData = this.authService.getLocalUserData(); // Llamada correcta
+    console.log('Datos del usuario en localStorage:', this.localUserData);
   }
 
   actualizarUltimaActividad() {

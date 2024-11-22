@@ -4,21 +4,18 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ScannerQrPageRoutingModule } from './scanner-qr-routing.module';
+import { HomeAdminPageRoutingModule } from './home-admin-routing.module';
 
-import { ScannerQrPage } from './scanner-qr.page';
+import { HomeAdminPage } from './home-admin.page';
 import { SharedModule } from 'src/app/shared/shared.module';
-
-
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ScannerQrPageRoutingModule,
-    SharedModule,
-    
+    HomeAdminPageRoutingModule,
+    SharedModule
   ],
-  declarations: [ScannerQrPage]
+  declarations: [HomeAdminPage]
 })
-export class ScannerQrPageModule {}
+export class HomeAdminPageModule {}

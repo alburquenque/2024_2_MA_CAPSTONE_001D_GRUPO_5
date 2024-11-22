@@ -8,6 +8,14 @@ import { ConfirmacionPagoPageRoutingModule } from './confirmacion-pago-routing.m
 
 import { ConfirmacionPagoPage } from './confirmacion-pago.page';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { RouterModule, Routes } from '@angular/router';
+
+const routes: Routes = [
+  {
+    path: '',
+    component: ConfirmacionPagoPage
+  }
+];
 
 @NgModule({
   imports: [
@@ -15,8 +23,10 @@ import { SharedModule } from 'src/app/shared/shared.module';
     FormsModule,
     IonicModule,
     ConfirmacionPagoPageRoutingModule,
-    SharedModule
+    SharedModule,
+    RouterModule
   ],
-  declarations: [ConfirmacionPagoPage]
+  declarations: [ConfirmacionPagoPage],
+  exports: [RouterModule]
 })
 export class ConfirmacionPagoPageModule {}

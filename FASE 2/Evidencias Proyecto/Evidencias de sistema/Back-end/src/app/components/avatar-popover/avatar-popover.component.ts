@@ -13,7 +13,8 @@ export class AvatarPopoverComponent {
   constructor(private popoverController: PopoverController, private router: Router, private authService: AuthService) { }
 
   ngOnInit() {
-    this.localUserData = this.authService.getLocalUserData();
+    this.localUserData = this.authService.getLocalUserData(); // Llamada correcta
+    console.log('Datos del usuario en localStorage:', this.localUserData);
   }
 
   dismissPopover(action: string) {

@@ -8,8 +8,6 @@ import { DetalleCarritosPageRoutingModule } from './detalle-carritos-routing.mod
 
 import { DetalleCarritosPage } from './detalle-carritos.page';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { TruncatePipe } from 'src/app/pipes/truncate.pipe';
-
 @NgModule({
   imports: [
     CommonModule,
@@ -18,6 +16,6 @@ import { TruncatePipe } from 'src/app/pipes/truncate.pipe';
     DetalleCarritosPageRoutingModule,
     SharedModule
   ],
-  declarations: [DetalleCarritosPage, TruncatePipe]
+  declarations: [DetalleCarritosPage]
 })
 export class DetalleCarritosPageModule {}

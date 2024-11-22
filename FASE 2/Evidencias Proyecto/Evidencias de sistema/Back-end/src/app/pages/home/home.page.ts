@@ -26,9 +26,15 @@ export class HomePage implements OnInit {
 
   constructor(private authService: AuthService, private router: Router) { }
 
-  async ngOnInit() {
-    await this.obtenerDatos()
+  ngOnInit() {
+    if (!localStorage.getItem('reloaded')) {
+      localStorage.setItem('reloaded', 'true'); // Marca la recarga
+      location.reload(); // Recarga la página
+    }
+    this.localUserData = this.authService.getLocalUserData(); // Llamada correcta
+    console.log('Datos del usuario en localStorage:', this.localUserData);
   }
+  
   
 
   async obtenerDatos() {

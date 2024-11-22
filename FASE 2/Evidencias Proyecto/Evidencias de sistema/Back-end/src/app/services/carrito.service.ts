@@ -294,6 +294,34 @@ export class CarritoService {
     }
   }
 
+  async guardarVoucher(voucherData: { cantidad: number; total: number; estado: string; id_compra: number }): Promise<number | null> {
+    try {
+      const { data, error } = await this.supabase
+        .from('voucher')
+        .insert([{
+          cantidad: voucherData.cantidad,
+          total: voucherData.total,
+          fecha_emision: new Date().toISOString(), // Fecha actual en formato ISO
+          estado: voucherData.estado,
+          id_compra: voucherData.id_compra
+        }])
+        .select('id_voucher')
+        .single(); // Obtiene el ID del voucher generado
+  
+      if (error) {
+        console.error('Error al guardar el voucher:', error);
+        return null;
+      }
+  
+      console.log('Voucher guardado con éxito:', data);
+      return data.id_voucher;
+    } catch (error) {
+      console.error('Error inesperado al guardar el voucher:', error);
+      return null;
+    }
+  }
+  
+
 
   
 

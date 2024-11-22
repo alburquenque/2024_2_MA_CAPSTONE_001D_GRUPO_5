@@ -23,7 +23,7 @@
         </ion-thumbnail>
         <ion-label>
           <h3>{{carrito.producto.nombre}}</h3>
-          <p>{{ carrito.producto.descripcion | truncate: 100 }}</p>
+          <p>{{ carrito.producto.descripcion?.slice(0,70) }}...</p>
           <h2>${{carrito.producto.precio}}</h2>
           <p class="cantidad">Cantidad: {{carrito.cantidad}}</p>
         </ion-label>

@@ -46,16 +46,16 @@ export class AuthService {
       const { data, error } = await this.supabase.auth.signInWithPassword(credentials);
       if (error) throw error;
   
-      const [userDetails, _] = await Promise.all([
-        this.getUserDetails(data.user.id),
-        this.guardarInfo(data.user.id, data.session?.access_token)
-      ]);
+      const userDetails = await this.getUserDetails(data.user.id);
   
-      this.userRole.next(userDetails.id_rol);
-      this.currentUser.next(userDetails)
-      this.sessionInitialized = true
-      await this.redirigirBasadoEnRol(userDetails.id_rol);
+      await this.guardarInfo(data.user.id, data.session?.access_token);
+
+        this.userRole.next(userDetails.id_rol);
+        this.currentUser.next(userDetails);
+        this.sessionInitialized = true;
+        this.redirigirBasadoEnRol(userDetails.id_rol)
   
+      console.log('Inicio de sesión exitoso:', userDetails);
       return { data };
     } catch (error) {
       console.error('Error en el proceso de inicio de sesión:', error);
@@ -214,16 +214,6 @@ export class AuthService {
     return !!this.currentUser.value;
   }
 
-
-  async guardarInfo(id: any, token:any){
-    const userId = id;
-    const userDetails = await this.getUserDetails(userId); 
-    if (userDetails) {
-      localStorage.setItem('userData', JSON.stringify(userDetails)); 
-      localStorage.setItem('accessToken', token);
-    }
-  }
-
   // Temas de cambio de contraseña
   reset_password(email: any) {
     return this.supabase.auth.resetPasswordForEmail(email)
@@ -267,13 +257,28 @@ export class AuthService {
       throw error;
     }
   
+    console.log('Detalles del usuario obtenidos:', data);
     return data;
   }
 
-  getLocalUserData(){
-    const userData = localStorage.getItem('userData');
-    return userData ? JSON.parse(userData) : null;
-  };
+  async guardarInfo(id: any, token: any) {
+    const userId = id;
+    const userDetails = await this.getUserDetails(userId);
+  
+    if (userDetails && token) {
+      localStorage.setItem('userData', JSON.stringify(userDetails));
+      localStorage.setItem('accessToken', token);
+      console.log('Información guardada en localStorage:', userDetails, token);
+    } else {
+      console.error('Datos insuficientes para guardar en localStorage:', userDetails, token);
+    }
+  }
+
+  getLocalUserData(): any {
+    const userData = localStorage.getItem('userData'); // Recuperar datos desde localStorage
+    return userData ? JSON.parse(userData) : null; // Parsear a objeto si existen datos
+  }
+  
 
   // Temas de carrito deberia ir en carrito, de ahi se mueve
   async getCarrito(userId: string) {

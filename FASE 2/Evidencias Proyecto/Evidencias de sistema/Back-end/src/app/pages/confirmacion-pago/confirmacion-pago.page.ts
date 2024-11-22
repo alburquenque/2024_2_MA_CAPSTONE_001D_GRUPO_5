@@ -63,10 +63,18 @@ export class ConfirmacionPagoPage implements OnInit {
                 cantidad: item.cantidad,
                 total: total,
               };
+
+              const voucherData = {
+                cantidad: item.cantidad, 
+                total: total,
+                estado: 'Pendiente', 
+                id_compra: compraId 
+              };
             
               console.log('Datos a guardar en ref_compra:', refCompraData);
             
               await this.carritoService.guardarRefCompra(refCompraData);
+              await this.carritoService.guardarVoucher(voucherData);
             
             }
 

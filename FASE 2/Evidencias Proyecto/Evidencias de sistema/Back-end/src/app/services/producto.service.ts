@@ -93,6 +93,24 @@ export class ProductoService {
     }
   }
 
+  async obtenerProductoPorId(idProducto: number): Promise<any> {
+    try {
+      const { data, error } = await this.supabase
+        .from('producto') // Nombre de la tabla
+        .select('*') // Selecciona todas las columnas, o especifica las necesarias
+        .eq('id_producto', idProducto) // Filtra por id_producto
+        .single(); // Asegura que se obtiene un único registro
+  
+      if (error) throw error;
+  
+      return data; // Devuelve el producto
+    } catch (error) {
+      console.error('Error obteniendo producto por ID: ', error);
+      throw error;
+    }
+  }
+  
+
   async eliminarProducto(id: number) {
     const { data, error } = await this.supabase
       .from('producto')
@@ -210,12 +228,114 @@ export class ProductoService {
       throw error;
     }
   }
+
+  async obtenerCompraDelVoucher(idCompra: number): Promise<any[]> {
+    try {
+      const { data, error } = await this.supabase
+        .from('voucher') // Asegúrate de que esta es la tabla correcta
+        .select('id_compra, total') // Selecciona las columnas necesarias
+        .eq('id_compra', idCompra)
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error("Error al obtener compra:", error);
+      throw error;
+    }
+  }
+
+  async obtenerProductosPorCompra(idCompra: number): Promise<any[]> {
+    try {
+      const { data, error } = await this.supabase
+        .from('ref_compra') // Nombre de la tabla
+        .select('id_producto') // Selecciona las columnas necesarias
+        .eq('id_compra', idCompra); // Filtra por id_compra
+  
+      if (error) throw error;
+  
+      return data || []; // Devuelve la lista de productos, o un array vacío si no hay resultados
+    } catch (error) {
+      console.error('Error al obtener productos por compra:', error);
+      throw error;
+    }
+  }
+  
+  async modificarEstado(idCompra: number): Promise<any[]> {
+    try {
+      const { data, error } = await this.supabase
+        .from('compra') 
+        .update({ estado: 'Validado' }) // Aquí pasamos un objeto con los campos a actualizar
+        .eq('id_compra', idCompra); // Filtro por el id de la compra
+  
+      if (error) throw error;
+  
+      return data || []; // Devuelve los datos actualizados o un array vacío si no hay resultados
+    } catch (error) {
+      console.error('Error al modificar el estado de la compra:', error);
+      throw error;
+    }
+  }
+  async modificarEstadoVoucher(idCompra: number): Promise<any[]> {
+    try {
+      const { data, error } = await this.supabase
+        .from('voucher') 
+        .update({ estado: 'Validado' }) // Aquí pasamos un objeto con los campos a actualizar
+        .eq('id_compra', idCompra); // Filtro por el id de la compra
+  
+      if (error) throw error;
+  
+      return data || []; // Devuelve los datos actualizados o un array vacío si no hay resultados
+    } catch (error) {
+      console.error('Error al modificar el estado de la compra:', error);
+      throw error;
+    }
+  }
+
+  async obtenerEstadoCompra(idCompra: number): Promise<any> {
+    try {
+      const { data, error } = await this.supabase
+        .from('compra')
+        .select('estado')
+        .eq('id_compra', idCompra)
+        .single();
+  
+      if (error) throw error;
+  
+      return data; // Devuelve el estado actual de la compra
+    } catch (error) {
+      console.error('Error al obtener el estado de la compra:', error);
+      return null;
+    }
+  }
+
+  async obtenerEstadoVoucher(idCompra: number): Promise<any> {
+    try {
+      const { data, error } = await this.supabase
+        .from('voucher')
+        .select('estado')
+        .eq('id_compra', idCompra)
+        .single();
+  
+      if (error) throw error;
+  
+      return data; // Devuelve el estado actual del voucher
+    } catch (error) {
+      console.error('Error al obtener el estado del voucher:', error);
+      return null;
+    }
+  }
+  
+  
+  
+
+
+  
+
+}
   
 
 
 
 
-}
   
 
   

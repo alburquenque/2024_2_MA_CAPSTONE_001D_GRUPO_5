@@ -16,6 +16,79 @@ ion-content{
         font-size: 1.4rem;
     }
 }
+ion-list {
+    padding-bottom: 115px; /* Sin padding extra */
+    background: transparent; /* Fondo transparente */
+  
+    ion-item {
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+      border-radius: 10px;
+      background: #ffffff; /* Fondo blanco */
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra para el card */
+      transition: transform 0.2s ease-in-out;
+
+      ion-thumbnail{
+        margin-right: 20px;
+        width: 80px; 
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+      }
+  
+      ion-label {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-right: auto;
+  
+        h2 {
+          font-size: 1.1;
+          font-weight: 600;
+          color: #333333;
+          margin: 0 0 0.2rem;
+        }
+  
+        p {
+          font-size: 0.9rem;
+          color: #666666;
+          margin: 0;
+        }
+      }
+    }
+
+  
 }
 
+.total-section {
+    background-color: #fff;
+    padding: 20px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    border-top: solid 1px #eaeaec;
+}
 
+.total-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.total-info h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.pay-button {
+    background-color: #3483fa;
+    color: white;
+    border-radius: 8px;
+    font-size: 18px;
+}
+}
