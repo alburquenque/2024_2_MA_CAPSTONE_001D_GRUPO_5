@@ -2,6 +2,3 @@ npm i @ionic/storage-angular
 npm install @capacitor/barcode-scanner
 npm i qrcode
 npm install --save-dev @types/qrcode
-npm install xlsx
-npm install @types/xlsx --save-dev
-npm i chart.js
