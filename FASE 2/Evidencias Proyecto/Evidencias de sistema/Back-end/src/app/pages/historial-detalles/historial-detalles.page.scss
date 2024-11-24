@@ -1,0 +1,59 @@
+.purchase-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.purchase-header h2 {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.purchase-header p {
+  font-size: 14px;
+  color: var(--ion-color-medium);
+  margin: 4px 0 0;
+}
+
+ion-thumbnail {
+  --size: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--ion-color-light);
+}
+
+.total-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ion-color-light);
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.total-amount {
+  color: var(--ion-color-dark);
+}
+
+.qr-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.qr-container img {
+  max-width: 200px;
+  height: auto;
+}
+
+.qr-instruction {
+  text-align: center;
+  font-size: 14px;
+  color: var(--ion-color-medium);
+  margin-top: 16px;
+}

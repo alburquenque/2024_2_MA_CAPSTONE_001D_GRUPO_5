@@ -56,6 +56,18 @@ const routes: Routes = [
     canActivate: [AuthGuard, RoleGuard],
     data: { roles: [1, 2, 3] }  
   },
+  {
+    path: 'historial',
+    loadChildren: () => import('./pages/historial/historial.module').then( m => m.HistorialPageModule),
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: [1, 2, 3] }  
+  },
+  {
+    path: 'historial-detalles',
+    loadChildren: () => import('./pages/historial-detalles/historial-detalles.module').then( m => m.HistorialDetallesPageModule),
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: [1, 2, 3] }  
+  },
 
   // Rutas protegidas para Admin (Rol 2) falta home administrador
 
@@ -84,6 +96,7 @@ const routes: Routes = [
     canActivate: [AuthGuard, RoleGuard],
     data: { roles: [2] }
   },
+
 
   // Rutas protegidas para SuperAdmin (Rol 3)
   {
@@ -140,6 +153,8 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'login'
   },
+
+
 
 ];
 

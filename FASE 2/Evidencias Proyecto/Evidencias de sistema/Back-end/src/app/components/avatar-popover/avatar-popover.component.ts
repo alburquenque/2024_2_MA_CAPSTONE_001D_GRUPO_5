@@ -23,19 +23,23 @@ export class AvatarPopoverComponent {
     });
   }
   irAlHome() {
+    this.popoverController.dismiss()
     this.router.navigate(['/home']);
   }  
 
   irAlPerfil() {
+    this.popoverController.dismiss()
     this.router.navigate(['/perfil']);
   }  
 
   irAlLogin() {
+    this.popoverController.dismiss()
     this.router.navigate(['/login']);
   }  
 
   logout() {
     this.authService.signOut().then(() => {
+      this.popoverController.dismiss()
       this.router.navigateByUrl('/login', { replaceUrl: true }); // Redirige al login después de cerrar sesión
     });
   }

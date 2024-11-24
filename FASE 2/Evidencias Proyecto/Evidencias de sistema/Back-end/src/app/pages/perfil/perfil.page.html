@@ -1,64 +1,63 @@
 <app-header [title]="'Perfil'"></app-header>
 
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">perfil</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  <h1>Perfil de Usuario</h1>
-  <ion-grid>
-    <ion-row class="border" align-items-center justify-content-center>
-      <ion-col size="4" class="col-center">
-        <div style="width: 150px; max-height: 150px;">
-          <img class="foto-perfil" [src]="localUserData.imagen">
-        </div>
-      </ion-col>
-
-      <ion-col size="8" class="text-columns">
-        <div style="margin-top: 10px;">
-          <h1>{{ localUserData.nombre }} {{ localUserData.apellido }}</h1>
-          <p>{{ localUserData.email }}</p>
-        </div>
-          <ion-button size="small" class="boton" (click)="openModal()" style="margin-top: 10px;"><h1>Editar Perfil</h1></ion-button>
-          <ion-button size="small" class="boton" (click)="openModal2()"><h1>Cambiar Contraseña</h1></ion-button>
-      </ion-col>
-    </ion-row>
-    
-
-    <ion-row class="border" style="margin-top: 20px;">
-      <div style="width: 100%;">
-      <h1 class="titulo">Información Personal</h1>
-      </div>
-      <ion-col size="5" class="texto-personal" style="margin-left: 5px; width: 50%;">
-        <div>
-        <h2>Nombre</h2>
-        <p>{{ localUserData.nombre }} {{ localUserData.apellido }}</p>
-      </div>
-      </ion-col>
-      <ion-col size="6" class="texto-personal" style="width: 50%;">
-        <div>
-        <h2>Correo Electrónico</h2>
+<ion-content class="ion-padding">
+  <ion-card class="profile-card">
+    <ion-card-content>
+      <div class="profile-header">
+        <ion-avatar class="large-avatar">
+          <img [src]="localUserData.imagen" />
+        </ion-avatar>
+        <h2>{{ localUserData.nombre }} {{ localUserData.apellido }}</h2>
         <p>{{ localUserData.email }}</p>
+        <div class="action-buttons">
+          <ion-button size="small" expand="block" (click)="openModal()" class="edit-button">
+            <ion-icon name="create-outline" slot="start"></ion-icon>
+            Editar Perfil
+          </ion-button>
+          <ion-button size="small" expand="block" fill="outline" (click)="openModal2()" class="password-button">
+            <ion-icon name="key-outline" slot="start"></ion-icon>
+            Cambiar Contraseña
+          </ion-button>
+        </div>
       </div>
-      <!-------------------->
-      </ion-col>
-      <ion-col size="5" class="texto-personal" style="margin-left: 5px; width: 50%;">
-        <div>
-        <h2>Teléfono</h2>
-        <p>+56 9 5363 1110</p>
-      </div>
-      </ion-col>
-      <ion-col size="6" class="texto-personal" style="width: 50%;">
-        <div>
-        <h2>Dirección</h2>
-        <p>Papasime 1526, Cerro Navia</p>
-      </div>
-      
-      </ion-col>
-    
-    </ion-row>
+    </ion-card-content>
+  </ion-card>
 
-  </ion-grid>
+  <ion-card class="info-card">
+    <ion-card-content>
+      <h3 class="section-title">Información Personal</h3>
+      
+      <div class="info-grid">
+        <div class="info-item">
+          <p class="label-text">Nombre</p>
+          <h2>{{ localUserData.nombre }} {{ localUserData.apellido }}</h2>
+        </div>
+
+        <div class="info-item">
+          <p class="label-text">Correo electrónico</p>
+          <div class="info-row">
+            <ion-icon name="mail-outline"></ion-icon>
+            <h2>{{ localUserData.email }}</h2>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <p class="label-text">Teléfono</p>
+          <div class="info-row">
+            <ion-icon name="call-outline"></ion-icon>
+            <h2>+56565656</h2>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <p class="label-text">Dirección</p>
+          <div class="info-row">
+            <ion-icon name="location-outline"></ion-icon>
+            <h2>Dirección random</h2>
+          </div>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

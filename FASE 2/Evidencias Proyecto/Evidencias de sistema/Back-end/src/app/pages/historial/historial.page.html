@@ -1,0 +1,66 @@
+<app-header [title]="'Historial de Compras'"></app-header>
+<ion-header [translucent]="true"></ion-header>
+
+<ion-content>
+ <!-- En caso de que si tenga compras realizadas -->
+  <ion-list *ngIf="compras.length > 0; else emptyState">
+    <div class="ion-padding-horizontal ion-padding-top">
+      <ion-text color="medium">
+        <p>Mostrando todas las compras realizadas</p>
+      </ion-text>
+    </div>
+    <ion-card *ngFor="let purchase of compras" class="purchase-card">
+      <ion-card-content>
+        <div class="purchase-header">
+          <div class="date-container">
+            <ion-icon name="calendar-outline"></ion-icon>
+            <ion-text>{{ purchase.voucher[0]?.fecha_emision | date:'dd-MM-yyyy' }}</ion-text>
+
+          </div>
+          <ion-badge color="{{ purchase.voucher[0]?.estado === 'Pendiente' ? 'warning' : 'success' }}" class="status-badge">
+            {{ purchase.voucher[0]?.estado }}
+          </ion-badge>
+        </div>
+
+        <div class="purchase-details">
+          <div class="items-info">
+            <ion-icon name="cube-outline"></ion-icon>
+            <ion-text>
+              {{ purchase.voucher[0]?.cantidad }} {{ purchase.voucher[0]?.cantidad === 1 ? 'artículo' : 'artículos' }}
+            </ion-text>
+          </div>
+
+          <div class="total-section">
+            <div class="total-amount">
+              <ion-text color="medium">Total pagado</ion-text>
+              <ion-text class="price">
+                ${{ purchase.voucher[0]?.total.toLocaleString('es-CL') }}
+              </ion-text>
+            </div>
+            <ion-button fill="clear" (click)="irAlDetalle(purchase.voucher[0]?.id_voucher)">
+              Ver detalles
+              <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+            </ion-button>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+
+  <!-- En caso de que no tenga compras realizadas: -->
+  <ng-template #emptyState>
+    <div class="empty-state">
+      <div class="icon-container">
+        <ion-icon name="bag-outline"></ion-icon>
+      </div>
+      <h2>No hay compras realizadas</h2>
+      <p>
+        Explora nuestra tienda y encuentra productos increíbles para comenzar tu historial de compras
+      </p>
+      <ion-button class="button-emptystate" expand="block" (click)="irAlScanner()">
+        <ion-icon name="cart-outline" slot="start"></ion-icon>
+        Ir al Scanner
+      </ion-button>
+    </div>
+  </ng-template>
+</ion-content>

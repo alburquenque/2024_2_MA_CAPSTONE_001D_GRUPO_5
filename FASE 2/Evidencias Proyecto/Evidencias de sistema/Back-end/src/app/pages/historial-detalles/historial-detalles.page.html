@@ -1,0 +1,51 @@
+<app-header [title]="'Historial de Compras'"></app-header>
+<ion-header [translucent]="true"></ion-header>
+
+<ion-content class="ion-padding">
+  <div *ngFor="let compra of compras">
+  <ion-card>
+    <ion-card-content>
+      <div class="purchase-header">
+        <div>
+          <h2>ID de compra: {{ compra.id_voucher }}</h2>
+          <p>{{ compra.fecha_emision | date:'dd MMM yyyy' }}</p>
+        </div>
+        <ion-badge color="{{ compra.estado === 'Pendiente' ? 'warning' : 'success' }}">{{ compra.estado }}</ion-badge>
+      </div>
+      <ion-list lines="full">
+        <ion-item *ngFor="let item of compra.compra.ref_compra">
+          <ion-thumbnail slot="start">
+            <ion-icon name="cube-outline" size="large"></ion-icon>
+          </ion-thumbnail>
+          <ion-label>
+            <h3>{{ item.producto.nombre }}</h3>
+            <p>Cantidad: {{ item.cantidad }}</p>
+          </ion-label>
+          <ion-note slot="end" color="dark">
+            ${{ item.producto.precio.toLocaleString('es-CL') }}
+          </ion-note>
+        </ion-item>
+      </ion-list>
+      <div class="total-section">
+        <span>Total</span>
+        <span class="total-amount">${{ compra.total.toLocaleString('es-CL') }} CLP</span>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="compra.estado === 'Pendiente'">
+    <ion-card-content>
+      <h3>Código QR de Compra</h3>
+      <div *ngIf="qrGenerated" class="qr-container">
+        <img [src]="qrCodeData" alt="Código QR de la compra" style="margin-top: 20px; width: 150px; height: 150px;">
+      </div>
+      <ion-button *ngIf="!qrGenerated" expand="block" (click)="CodigoQR(compra.id_voucher)">
+        Generar Código QR
+      </ion-button>
+      <p class="qr-instruction">
+        Muestra este código al supervisor para validar tu compra
+      </p>
+    </ion-card-content>
+  </ion-card>
+</div>
+</ion-content>

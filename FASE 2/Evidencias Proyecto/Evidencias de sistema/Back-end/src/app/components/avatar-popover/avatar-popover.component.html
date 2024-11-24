@@ -1,21 +1,21 @@
-<ion-list >
+<ion-list>
   <div class="container">
     <ion-avatar>
-      <img alt="Avatar" [src]="localUserData.imagen"/>          
+      <img alt="Avatar" [src]="localUserData.imagen" />
     </ion-avatar>
     <p class="nombre">{{localUserData.nombre}} {{localUserData.apellido}}</p>
     <p class="email">{{localUserData.email}}</p>
   </div>
-  <ion-item button (click)="dismissPopover('home')">
+  <ion-item button (click)="irAlHome()">
     <ion-icon name="home-outline" slot="start"></ion-icon>
-    <ion-label (click)="irAlHome()">Home</ion-label>
+    <ion-label>Home</ion-label>
   </ion-item>
-  <ion-item button (click)="dismissPopover('gestion-perfil')">
+  <ion-item button (click)="irAlPerfil()">
     <ion-icon name="person-outline" slot="start"></ion-icon>
-    <ion-label (click)="irAlPerfil()">Administrar Perfil</ion-label>
+    <ion-label>Administrar Perfil</ion-label>
   </ion-item>
-  <ion-item button (click)="dismissPopover('logout')">
+  <ion-item button (click)="logout()">
     <ion-icon name="log-out-outline" slot="start"></ion-icon>
-    <ion-label (click)="logout()">Cerrar Sesión</ion-label>
+    <ion-label>Cerrar Sesión</ion-label>
   </ion-item>
 </ion-list>
