@@ -1,23 +1,56 @@
 <app-header [title]="'Gestión de categorías'"></app-header>
 
 <ion-content class="ion-padding">
-  <ion-list>
-    <ion-item *ngFor="let categoria of categorias">
-      <ion-label>
-        <h2>{{ categoria.nombre }}</h2>
-      </ion-label>
-      <ion-button fill="clear" slot="end">
-        <ion-icon name="create-outline" class="custom-icon"></ion-icon>
-      </ion-button>
-      <ion-button (click)="eliminarCategoria(categoria.id_categoria)" fill="clear" slot="end">
-        <ion-icon name="trash-outline" class="custom-icon"></ion-icon>
-      </ion-button>
-    </ion-item>
-  </ion-list>
-  
-  <div class="button-container">
-    <ion-button expand="block" color="primary" routerLink="/agregar-categoria">
-      Agregar Categoría
-    </ion-button>
+  <div class="control-section">
+    <ion-card>
+      <ion-card-content>
+        <h2 class="section-title">Método de ingreso</h2>
+        <ion-button expand="block" color="primary" routerLink="/agregar-categoria">
+          <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+          Agregar Categoría
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <div class="categories-section">
+    <h2 class="section-title">Listado de categorías</h2>
+    <ion-searchbar
+      placeholder="Buscar categorías"
+      (ionInput)="buscarCategorias($event)"
+      [debounce]="300"
+      animated>
+    </ion-searchbar>
+    <ion-label>
+      <ion-icon name="swap-horizontal-outline"></ion-icon>
+      Deslice hacia la izquierda para modificar o eliminar una categoría
+    </ion-label>
+    <ion-list>
+      <ion-item-sliding *ngFor="let categoria of categorias">
+        <ion-item lines="full" class="category-item">
+          <ion-label>
+            <h2>{{ categoria.nombre }}</h2>
+            <p>{{ categoria.descripcion }}</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item-options side="end">
+          <ion-item-option color="primary">
+            <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+          </ion-item-option>
+          <ion-item-option color="danger" (click)="eliminarCategoria(categoria.id_categoria)">
+            <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+
+      <ion-item *ngIf="categorias.length === 0" lines="none" class="empty-state">
+        <ion-label class="ion-text-center">
+          <ion-icon name="folder-open-outline" class="empty-icon"></ion-icon>
+          <h3>No hay categorías</h3>
+          <p>Comience agregando categorías mediante formulario</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
   </div>
 </ion-content>

@@ -112,6 +112,19 @@ const routes: Routes = [
     data: { roles: [3] }
   },
   {
+    path: 'modificar-producto',
+    loadChildren: () => import('./pages/modificar-producto/modificar-producto.module').then(m => m.ModificarProductoPageModule),
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: [3] }
+  },
+  {
+    path: 'modificar-producto/:id',
+    loadChildren: () => import('./pages/modificar-producto/modificar-producto.module').then( m => m.ModificarProductoPageModule),
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: [3] }
+  },
+
+  {
     path: 'agregar-categoria',
     loadChildren: () => import('./pages/agregar-categoria/agregar-categoria.module').then(m => m.AgregarCategoriaPageModule),
     canActivate: [AuthGuard, RoleGuard],
@@ -126,8 +139,7 @@ const routes: Routes = [
   {
     path: 'listar-productos',
     loadChildren: () => import('./pages/listar-productos/listar-productos.module').then(m => m.ListarProductosPageModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: { roles: [3] }
+
   },
   {
     path: 'reportes',
@@ -153,6 +165,8 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'login'
   },
+
+
 
 
 

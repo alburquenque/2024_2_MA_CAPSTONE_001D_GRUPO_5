@@ -80,10 +80,32 @@
   
   .empty-cart {
     text-align: center;
-    font-size: 16px;
-    color: #888;
-  }
+    margin-top: 20%;
+    padding: 16px;
   
+    .empty-cart-icon {
+      font-size: 4rem;
+      color: var(--ion-color-medium);
+      opacity: 0.5;
+      margin-bottom: 1rem;
+    }
+  
+    h3 {
+      font-size: 1.4rem;
+      color: var(--ion-color-dark);
+      margin-bottom: 0.5rem;
+    }
+  
+    p {
+      font-size: 1rem;
+      color: var(--ion-color-medium);
+      margin-bottom: 1.5rem;
+    }
+  
+    ion-button {
+      --border-radius: 8px;
+    }
+  }
 
 
 .total-section {

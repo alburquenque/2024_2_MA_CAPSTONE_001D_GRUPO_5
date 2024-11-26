@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductoService } from 'src/app/services/producto.service';
 import { AlertController, LoadingController, ModalController } from '@ionic/angular';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-listar-productos',
   templateUrl: './listar-productos.page.html',
@@ -14,7 +14,7 @@ export class ListarProductosPage implements OnInit {
   metodoIngreso: 'formulario' | 'csv' = 'formulario';
   textoBusqueda = '';
 
-  constructor(private productoService: ProductoService, private alertController: AlertController, private loadingController: LoadingController, private modalController: ModalController) {}
+  constructor(private productoService: ProductoService, private alertController: AlertController, private loadingController: LoadingController, private modalController: ModalController, private router: Router) {}
 
   ngOnInit() {
     this.cargarProductos();
@@ -31,7 +31,7 @@ export class ListarProductosPage implements OnInit {
     this.productos = this.todosLosProductos.filter(producto => 
       (producto.nombre?.toLowerCase().includes(this.textoBusqueda) ||
        producto.marca?.toLowerCase().includes(this.textoBusqueda) ||
-       producto.codigo_barras?.toString().includes(this.textoBusqueda))
+       producto.codigo_barras.includes(this.textoBusqueda))
     );
   }
   async cargarProductos() {
@@ -43,6 +43,31 @@ export class ListarProductosPage implements OnInit {
     }
   }
 
+  editarProducto(id_producto: number) {
+    try {
+      this.router.navigate(['/modificar-producto', id_producto])
+        .then(success => {
+          console.log('Navigation successful', success);
+        })
+        .catch(error => {
+          console.error('Navigation error', error);
+          this.showNavigationErrorAlert(error);
+        });
+    } catch (error) {
+      console.error('Error during navigation:', error);
+      this.showNavigationErrorAlert(error);
+    }
+  }
+  
+  // Optional error alert method
+  async showNavigationErrorAlert(error: any) {
+    const alert = await this.alertController.create({
+      header: 'Navigation Error',
+      message: `Could not navigate: ${error}`,
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
 
   async eliminarProducto(id: number) {
     const alert = await this.alertController.create({
@@ -124,7 +149,7 @@ export class ListarProductosPage implements OnInit {
   private async mostrarMensajeError() {
     const alert = await this.alertController.create({
       header: 'Error',
-      message: 'Ha ocurrido un error al importar los productos, revise que el esquema del csv cumple con las siguientes especificaciones: codigo_barras,nombre,marca,annio,precio,id_categoria,descripcion',
+      message: 'Ha ocurrido un error al importar los productos, revise que el esquema del csv cumple con las siguientes especificaciones: codigo_barras,nombre,marca,annio,precio,id_categoria,descripcion, imagen',
       buttons: ['OK']
     });
     await alert.present();

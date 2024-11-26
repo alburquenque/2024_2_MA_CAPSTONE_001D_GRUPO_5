@@ -1,54 +1,100 @@
-* {
-    font-family: "Inter", sans-serif;
+:host {
+  --ion-color-primary: #1e88e5;
+  --ion-color-tertiary: #868686;
 }
 
-ion-toolbar {
-    --background: #1e88e5;
-    --color: white;
+.section-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--ion-color-dark);
+  margin-bottom: 1rem;
+}
+
+.control-section {
+  margin-bottom: 1.5rem;
+
+  ion-card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
   }
-  
-  ion-title {
-    display: flex;
-    align-items: center;
-    
-    ion-icon {
-      margin-right: 8px;
+}
+
+.categories-section {
+  ion-list {
+    background: transparent;
+    padding: 0;
+  }
+}
+
+.category-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  --background: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+  ion-label {
+    margin: 12px 16px;
+
+    h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--ion-color-dark);
     }
   }
+}
 
-  
-  ion-item {
-    --padding-start: 0;
-    --inner-padding-end: 0;
-  }
-  
+.empty-state {
+  margin-top: 2rem;
+  --background: transparent;
+
   ion-label {
-    margin-left: 16px;
-  }
-  
-  h2 {
-    font-weight: bold;
-    margin-bottom: 4px;
-  }
-  
-  p {
-    color: #666;
-  }
-  
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--ion-color-medium);
+      margin: 1rem 0;
+    }
 
-  
-  .button-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 16px;
+    p {
+      color: var(--ion-color-medium);
+      font-size: 0.9rem;
+    }
+
+    .empty-icon {
+      font-size: 4rem;
+      color: var(--ion-color-medium);
+      opacity: 0.5;
+    }
   }
-  
-  ion-button[expand="block"] {
-    width: 50%;
+}
+
+ion-item-sliding {
+  border-radius: 8px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+ion-item-options {
+  border-radius: 0 8px 8px 0;
+  height: 90px;
+
+  ion-item-option {
+    font-size: 1.2rem;
+    padding: 0 1rem;
+
+    ion-icon {
+      font-size: 1.4rem;
+    }
   }
-  
-  .custom-icon {
-    color: black;
-    font-weight: bold;
-    font-size: 24px;
-  }
+}
+
+ion-searchbar {
+  --background: #f5f5f5;
+  --box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  --border-radius: 12px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  margin: 1rem 0;
+}

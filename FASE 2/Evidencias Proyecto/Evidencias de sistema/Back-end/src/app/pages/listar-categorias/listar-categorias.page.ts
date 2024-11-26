@@ -7,22 +7,38 @@ import { CategoriaService } from 'src/app/services/categoria.service';
   styleUrls: ['./listar-categorias.page.scss'],
 })
 export class ListarCategoriasPage implements OnInit {
+  todasLasCategorias: any[] = [];
 
   categorias: any[] = [];
-
+  textoBusqueda = '';
   constructor(private categoriaService: CategoriaService, private alertController: AlertController) {}
 
   ngOnInit() {
     this.cargarCategorias();
   }
 
+  buscarCategorias(event: any) {
+    this.textoBusqueda = event.target.value.toLowerCase().trim();
+    
+    if (this.textoBusqueda === '') {
+      this.categorias = [...this.todasLasCategorias];
+      return;
+    }
+  
+    this.categorias = this.todasLasCategorias.filter(categoria => 
+      (categoria.nombre?.toLowerCase().includes(this.textoBusqueda))
+    );
+  }
+
   async cargarCategorias() {
     try {
-      this.categorias = await this.categoriaService.obtenerCategorias();
+      this.todasLasCategorias = await this.categoriaService.obtenerCategorias();
+      this.categorias = [...this.todasLasCategorias];     
     } catch (error) {
-      console.error('Error al cargar las categorías:', error);
-    }
+      console.error('Error obteniendo los datos:', error);
+    }   
   }
+  
 
   async eliminarCategoria(id: number) {
     const alert = await this.alertController.create({

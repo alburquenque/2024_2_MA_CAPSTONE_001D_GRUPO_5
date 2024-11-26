@@ -22,11 +22,14 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card *ngIf="itemsCarrito.length === 0" class="empty-cart">
-    <ion-card-content>
-      El carrito está vacío.
-    </ion-card-content>
-  </ion-card>
+  <div *ngIf="itemsCarrito.length === 0" class="empty-cart">
+    <ion-icon name="cart-outline" class="empty-cart-icon"></ion-icon>
+    <h3>El carrito está vacío</h3>
+    <p>Agrega productos mediante escaneo para comenzar tu compra.</p>
+    <ion-button expand="block" color="primary" routerLink="/scanner">
+      Escanear productos
+    </ion-button>
+  </div>
 
   <div *ngIf="itemsCarrito.length > 0" class="total-section">
     <div class="total-info">
