@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-carrito-realtime',
@@ -11,21 +12,33 @@ import { AuthService } from 'src/app/services/auth.service';
 export class CarritoRealtimePage implements OnInit {
 
   carritos : any
+  private subscription!: Subscription;
+
   constructor(private router: Router, 
               private popoverController: PopoverController,
               private authService: AuthService) { }
 
   ngOnInit() {
-    this.obtenerCarritos()
+    this.authService.getCarritoRealtime();
+    this.authService.subscribeToRealtimeCarrito();
+
+    this.subscription = this.authService.carritos$.subscribe((data) => {
+      this.carritos = data;
+      console.log('Carritos actualizados:', this.carritos);
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
   
   async irAlDetalle(id:any) {
     try {
-      await this.popoverController.dismiss(); // Intenta cerrar el popover solo si está presente
+      await this.popoverController.dismiss(); 
     } catch (error) {
-      //console.log('Popover no estaba presente:', error);
     }
-    //console.log('asi es');
     localStorage.setItem('id_usuario', id)
     this.router.navigate(['/detalle-carritos']);
   } 

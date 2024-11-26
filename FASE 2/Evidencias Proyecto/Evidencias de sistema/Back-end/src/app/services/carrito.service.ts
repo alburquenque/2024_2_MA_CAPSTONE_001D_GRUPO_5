@@ -34,7 +34,6 @@ export class CarritoService {
           const { data, error } = await this.supabase
             .from('carrito')
             .insert({
-              estado:'Activo',
               cantidad: cantidad,
               total,
               id_usuario:userId
@@ -320,11 +319,12 @@ export class CarritoService {
       return null;
     }
   }
+
+
+
   
 
 
   
 
 }
-
-

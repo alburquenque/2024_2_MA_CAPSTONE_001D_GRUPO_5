@@ -16,7 +16,8 @@ export class AuthService {
   private userRole = new BehaviorSubject<number | null>(null);
   private sessionInitialized = false;
 
-
+  private carritosSubject = new BehaviorSubject<any[]>([]); // Lista reactiva de carritos
+  carritos$ = this.carritosSubject.asObservable();
 
   constructor(private supabaseService: SupabaseService, private router: Router) {
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey)
@@ -315,27 +316,33 @@ export class AuthService {
     }
   }
 
-  async getCarritoRealtime(){
+  async getCarritoRealtime() {
     try {
       const { data, error } = await this.supabase
-      .from('carrito')
-      .select(`
-        id_carrito,
-        estado,
-        cantidad,
-        total,
-        id_usuario,
-        usuario (
-          nombre,
-          apellido,
-          imagen
-        )
-      `)
-      .eq('estado', 'Activo')
+        .from('carrito')
+        .select(`
+          id_carrito,
+          cantidad,
+          total,
+          id_usuario,
+          usuario (
+            nombre,
+            apellido,
+            imagen
+          ),
+          ref_carrito (
+            id_refcarrito
+          )
+        `)
+        .filter('cantidad', 'gt', 0)
+        .filter('ref_carrito.id_refcarrito', 'not.is', null);
 
-      if (error){
+      if (error) {
+        console.error('Error en la consulta inicial:', error);
         return null;
-      } 
+      }
+
+      this.carritosSubject.next(data || []);
       return data;
     } catch (error) {
       console.error('Error obteniendo carrito: ', error);
@@ -343,26 +350,63 @@ export class AuthService {
     }
   }
 
-  async getDetallesCarritoRealtime(id:any){
+  // Método para suscribirse a cambios en tiempo real
+  subscribeToRealtimeCarrito() {
+    this.supabase
+      .channel('carrito-changes')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'carrito' },
+        (payload) => {
+          console.log('Cambio detectado en carrito:', payload);
+        }
+      )
+      .subscribe();
+  }
+
+  getRealtimeCarritoUpdates(): Observable<any> {
+    return new Observable(observer => {
+      const channel = this.supabase
+        .channel('carrito-changes')
+        .on(
+          'postgres_changes',
+          { event: '*', schema: 'public', table: 'carrito' },
+          (payload) => {
+            observer.next(payload);
+          }
+        )
+        .subscribe();
+
+      // Método de limpieza
+      return () => {
+        channel.unsubscribe();
+      };
+    });
+  }
+  
+
+  async getDetallesCarritoRealtime(id: any) {
     try {
       const { data, error } = await this.supabase
-      .from('usuario')
-      .select(`
-        nombre,
-        apellido,
-        imagen,
-        carrito(
-          *,
-          ref_carrito(*,
-            producto(*)
+        .from('usuario')
+        .select(`
+          nombre,
+          apellido,
+          imagen,
+          carrito(
+            *,
+            ref_carrito(*, 
+              producto(*)
             )
           )
-      `)
-      .eq('id_usuario', id)
-
-      if (error){
+        `)
+        .eq('id_usuario', id);
+  
+      if (error) {
+        console.error('Error cargando detalles del carrito:', error);
         return null;
-      } 
+      }
+  
       return data;
     } catch (error) {
       console.error('Error obteniendo carrito: ', error);

@@ -1,13 +1,13 @@
 <app-header [title]="'Carrito de compras'"></app-header>
 
-<ion-content>
-  <div *ngFor="let user of carritos" class="profile-container">
+<ion-content *ngIf="carritos">
+  <div class="profile-container">
     <ion-avatar class="profile-avatar">
-      <img src="{{user.imagen}}" alt="Persona">
+      <img [src]="carritos.imagen || 'assets/default-avatar.png'" alt="Persona">
     </ion-avatar>
     <div>
-      <h3>{{user.nombre}} {{user.apellido}}</h3>
-      <p>Cantidad de artículos: {{user.carrito.cantidad}}</p>
+      <h3>{{carritos.nombre}} {{carritos.apellido}}</h3>
+      <p>Cantidad de artículos: {{carritos.carrito?.cantidad || 0}}</p>
     </div>
   </div>
 
@@ -15,21 +15,23 @@
     <h2>Lista de productos</h2>
   </ion-text>
 
-  <div class="product-list" *ngFor="let item of carritos">
-    <ion-card *ngFor="let carrito of item.carrito.ref_carrito" class="product-card">
+  <div class="product-list">
+    <ion-card *ngFor="let carrito of carritos.carrito.ref_carrito" class="product-card">
       <ion-item lines="none">
         <ion-thumbnail slot="start">
-          <img src="{{carrito.producto.imagen}}" alt="Producto">
+          <img [src]="carrito.producto?.imagen || 'assets/default-product.png'" alt="Producto">
         </ion-thumbnail>
         <ion-label>
-          <h3>{{carrito.producto.nombre}}</h3>
-          <p>{{ carrito.producto.descripcion?.slice(0,70) }}...</p>
-          <h2>${{carrito.producto.precio}}</h2>
-          <p class="cantidad">Cantidad: {{carrito.cantidad}}</p>
+          <h3>{{carrito.producto?.nombre || 'Producto sin nombre'}}</h3>
+          <p>{{ carrito.producto?.descripcion?.slice(0, 70) || 'Sin descripción' }}...</p>
+          <h2>${{carrito.producto?.precio || 0}}</h2>
+          <p class="cantidad">Cantidad: {{carrito.cantidad || 0}}</p>
         </ion-label>
       </ion-item>
     </ion-card>
-    <!----->
   </div>
 </ion-content>
 
+<ion-content *ngIf="!carritos">
+  <p>No se encontraron datos del carrito.</p>
+</ion-content>

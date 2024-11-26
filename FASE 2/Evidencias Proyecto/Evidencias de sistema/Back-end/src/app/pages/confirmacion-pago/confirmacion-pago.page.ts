@@ -85,6 +85,7 @@ export class ConfirmacionPagoPage implements OnInit {
           await this.dismissLoading();
           await this.mostrarMensajeExito();
           await this.carritoService.limpiarCarrito(userId);
+
         } catch (error) {
           console.error('Error al procesar la confirmación:', error);
           this.paymentStatus = 'error';

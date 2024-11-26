@@ -20,7 +20,7 @@ export class HeaderComponent {
   constructor(private popoverController: PopoverController, private router: Router, private navCtrl: NavController, private authService: AuthService) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        this.isHomePage = this.router.url === '/home' || this.router.url === '/home-superadmin' || this.router.url === '/';
+        this.isHomePage = this.router.url === '/home' || this.router.url === '/home-superadmin' || this.router.url === '/home-admin' || this.router.url === '/';
       }
       this.authService.getUserRole().subscribe((rol) => {
         this.rolUsuario = rol;

@@ -7,28 +7,22 @@
     <h2>Listado de usuarios</h2>
   </ion-text>
 
-  <ion-list lines="none">
-    <ion-item *ngFor="let carrito of carritos">
-      <ion-avatar slot="start">
-        <img src="{{carrito.usuario.imagen}}" alt="Avatar">
-      </ion-avatar>
-      <ion-label>
-        <h3>{{carrito.usuario.nombre}} {{carrito.usuario.apellido}}</h3>
-      </ion-label>
-      <ion-button slot="end" size="small" (click)="irAlDetalle(carrito.id_usuario)" >Ver carrito</ion-button>
-    </ion-item>
-    <!------------------------------------------------------------------------------>
-    <ion-item style="--border-width: 0;">
-      <ion-avatar slot="start">
-        <img src="assets/Lazcano.png" alt="Avatar">
-      </ion-avatar>
-      <ion-label>
-        <h3>Nombre usuario</h3>
-      </ion-label>
-      <ion-button slot="end" size="small" >Ver carrito</ion-button>
-    </ion-item>
-  </ion-list>
+<ion-list lines="none" *ngIf="carritos && carritos.length > 0">
+  <ion-item *ngFor="let carrito of carritos">
+    <ion-avatar slot="start">
+      <img [src]="carrito?.usuario?.imagen || 'assets/default-avatar.png'" alt="Avatar">
+    </ion-avatar>
+    <ion-label>
+      <h3>{{ carrito?.usuario?.nombre || 'Sin nombre' }} {{ carrito?.usuario?.apellido || '' }}</h3>
+    </ion-label>
+    <ion-button slot="end" size="small" (click)="irAlDetalle(carrito?.id_usuario)">Ver carrito</ion-button>
+  </ion-item>
+</ion-list>
 
+<div class="empty-state" *ngIf="!carritos || carritos.length === 0">
+  <ion-icon name="cart-outline" class="empty-icon"></ion-icon>
+  <p>No hay carritos en este momento.</p>
+</div>
 
 
 
