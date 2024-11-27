@@ -19,7 +19,8 @@ export class ScannerPage implements OnInit {
   productos: any[] = [];
   productoEscaneado: any
   isScanned = false;
-  cantidad: number = 1
+  cantidad: number = 1;
+  carritoID: any
 
 
 
@@ -81,8 +82,11 @@ async ngOnInit() {
     try {
       const loading = await this.loadingController.create()
       await loading.present()
+      this.carritoID = await this.authService.getCarrito(this.datosUser.id_usuario)
+      console.log('Datos que se agregan al carrito', this.productoEscaneado.precio, this.cantidad, 
+        this.productoEscaneado.precio, this.productoEscaneado.id_producto, this.carritoID, this.datosUser.id_usuario )
       await this.carritoService.agregarProducto(this.productoEscaneado.precio, this.cantidad, 
-      this.productoEscaneado.precio, this.productoEscaneado.id_producto, 4, this.datosUser.id_usuario );
+      this.productoEscaneado.precio, this.productoEscaneado.id_producto, this.carritoID, this.datosUser.id_usuario );
       console.log("cantidad: ",this.cantidad)
       await this.cerrarProducto();
       await loading.dismiss()

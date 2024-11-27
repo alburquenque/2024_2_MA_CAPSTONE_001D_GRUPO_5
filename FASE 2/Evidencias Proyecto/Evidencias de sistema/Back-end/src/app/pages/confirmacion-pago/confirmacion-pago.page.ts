@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CarritoService } from 'src/app/services/carrito.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { LoadingController, AlertController } from '@ionic/angular';
+import { ProductoService } from 'src/app/services/producto.service';
 import * as QRCode from 'qrcode';
 
 @Component({
@@ -15,6 +16,8 @@ export class ConfirmacionPagoPage implements OnInit {
   token: string = '';
   loading: any;
   qrCodeData: string | null = null; 
+  voucherID: any;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -22,11 +25,13 @@ export class ConfirmacionPagoPage implements OnInit {
     private carritoService: CarritoService,
     private authService: AuthService,
     private loadingController: LoadingController,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private productoService: ProductoService
   ) {}
 
   async ngOnInit() {
     await this.presentLoading();
+    
     
     this.route.queryParams.subscribe(async params => {
       this.token = params['token_ws'];
@@ -41,7 +46,6 @@ export class ConfirmacionPagoPage implements OnInit {
           }
 
           const compraData = {
-            estado: 'Pendiente',
             cantidad: carrito.cantidad,
             total: carrito.total,
             id_usuario: userId, 
@@ -54,38 +58,43 @@ export class ConfirmacionPagoPage implements OnInit {
             console.log('Items del carrito:', carrito.items);
             
             for (const item of carrito.items) {
-              const total = item.precio_unitario * item.cantidad;
+              const totalporcantidad = item.precio_unitario * item.cantidad;
             
               const refCompraData = {
                 id_compra: compraId,
                 id_producto: item.id_producto,
                 precio_unitario: item.precio_unitario,
                 cantidad: item.cantidad,
-                total: total,
+                total: totalporcantidad,
               };
 
               const voucherData = {
                 cantidad: item.cantidad, 
-                total: total,
+                total: totalporcantidad,
                 estado: 'Pendiente', 
                 id_compra: compraId 
               };
             
               console.log('Datos a guardar en ref_compra:', refCompraData);
+              console.log('Datos a guardar en voucher:', voucherData);
             
               await this.carritoService.guardarRefCompra(refCompraData);
               await this.carritoService.guardarVoucher(voucherData);
+
+              this.voucherID = await this.productoService.obtenerCompraDelVoucher(compraId)
+              console.log("ID VOUCHER", this.voucherID[0].id_voucher)
             
             }
 
-            this.qrCodeData = await this.generateQRCode(compraId.toString());
+            this.qrCodeData = await this.generateQRCode(this.voucherID[0].id_voucher.toString());
           }
 
           this.paymentStatus = 'success';
           await this.dismissLoading();
           await this.mostrarMensajeExito();
+          await this.carritoService.limpiarRefCarrito(userId);
           await this.carritoService.limpiarCarrito(userId);
-
+          
         } catch (error) {
           console.error('Error al procesar la confirmación:', error);
           this.paymentStatus = 'error';

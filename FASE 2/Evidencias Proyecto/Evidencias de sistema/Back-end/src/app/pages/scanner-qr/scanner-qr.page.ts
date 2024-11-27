@@ -18,6 +18,7 @@ export class ScannerQrPage implements OnInit {
   productos: any[] = [];
   totalCompra: any;
   idCompraVoucher: any;
+  voucherEntero: any;
 
   constructor(
     private authService: AuthService,
@@ -52,39 +53,26 @@ export class ScannerQrPage implements OnInit {
         console.log("No se pudo escanear el QR");
         return;
       }
-  
+      
       // Validar que el QR pertenece a una compra
-      const verificationQR = await this.productoService.obtenerCompraDelVoucher(parseInt(code));
-      if (!verificationQR) {
+       this.voucherEntero = await this.productoService.obtenerVoucherEntero(parseInt(code));
+       console.log("Voucher:", this.voucherEntero[0].id_voucher)
+       console.log("Compra:", this.voucherEntero[0].compra)
+       console.log("productos:",this.voucherEntero[0].compra.ref_compra.map((ref: any) => ref.producto)
+      );
+      
+
+       
+      if (!this.voucherEntero[0].id_voucher) {
         this.showAlert("Código no válido", "El QR escaneado no pertenece a un voucher, intentalo nuevamente.");
         return;
       }
-  
-      // Guardar el total de la compra en la variable
-      this.totalCompra = verificationQR[0].total; // Asegúrate de que 'total' sea el campo correcto
-      this.idCompraVoucher = verificationQR[0].id_compra;
-      console.log(' id compra', this.idCompraVoucher)
-      console.log('Total de la compra:', this.totalCompra);
-  
       this.scanResult = code; // Guarda el resultado del QR escaneado
       const loading = await this.loadingController.create();
       await loading.present();
-  
-      // Muestra el modal si el código es válido
       this.isScanned = true;
-  
-      // Obtén los IDs de los productos de la compra
-      const idProductos = await this.productoService.obtenerProductosPorCompra(parseInt(this.scanResult));
-      console.log("IDs de productos obtenidos:", idProductos);
-  
-      // Para cada ID de producto, obtener los detalles específicos
-      this.productos = [];
-      for (const item of idProductos) {
-        const producto = await this.productoService.obtenerProductoPorId(item.id_producto);
-        this.productos.push(producto);
-      }
-  
-      console.log("Detalles de productos obtenidos:", this.productos);
+
+      
   
       await loading.dismiss();
     } catch (e) {
@@ -108,28 +96,11 @@ export class ScannerQrPage implements OnInit {
     await alert.present();
   }
 
-  async obtenerProductos(idCompra: number) {
+  async validarVoucherConConfirmacion() {
     try {
-      const productos = await this.productoService.obtenerProductosPorCompra(idCompra);
-      console.log('Productos obtenidos:', productos);
-  
-      // Aquí puedes asignar los productos a una variable para mostrarlos en tu HTML
-      this.idProductos = productos;
-    } catch (error) {
-      console.error('Error al obtener productos:', error);
-      this.showAlert('Error', 'No se pudieron obtener los productos de esta compra.');
-    }
-  }
 
-  async validarVoucherConConfirmacion(idCompra: number) {
-    try {
-      // Verificar el estado actual de la compra y el voucher
-      const compra = await this.productoService.obtenerEstadoCompra(idCompra);
-      const voucher = await this.productoService.obtenerEstadoVoucher(idCompra);
-  
-      // Si ambos ya están validados, mostrar un mensaje informativo
-      if (compra?.estado === 'Validado' && voucher?.estado === 'Validado') {
-        console.log('El voucher y la compra ya están validados.');
+      if (this.voucherEntero[0].estado === 'Completado') {
+        console.log('El voucher ya está validado.');
         await this.mostrarMensajeYaValidado();
         return;
       }
@@ -151,15 +122,14 @@ export class ScannerQrPage implements OnInit {
             text: 'Confirmar',
             handler: async () => {
               try {
-                // Validar el voucher y actualizar estados
-                const compraActualizada = await this.productoService.modificarEstado(idCompra);
-                const voucherActualizado = await this.productoService.modificarEstadoVoucher(idCompra);
+                // Validar el voucher y actualizar estados;
+                const voucherActualizado = await this.productoService.modificarEstadoVoucher(this.voucherEntero[0].id_voucher);
   
-                if (compraActualizada && voucherActualizado) {
-                  console.log('El voucher y la compra se han validado correctamente.');
+                if (voucherActualizado) {
+                  console.log('El voucher ha sido validado correctamente.');
                   await this.mostrarMensajeExito();
                 } else {
-                  console.error('No se pudo actualizar uno de los estados.');
+                  console.error('No se pudo actualizar el estado.');
                   await this.mostrarMensajeError();
                 }
               } catch (error) {
@@ -198,13 +168,13 @@ export class ScannerQrPage implements OnInit {
   }
 
   validarVoucher(){
-    this.validarVoucherConConfirmacion(this.idCompraVoucher)
+    this.validarVoucherConConfirmacion()
   }
 
   async mostrarMensajeYaValidado() {
     const alert = await this.alertController.create({
       header: 'Información',
-      message: 'Este voucher y su compra ya están validados.',
+      message: 'Este voucher ya se encuentra validado.',
       buttons: ['OK'],
     });
     await alert.present();

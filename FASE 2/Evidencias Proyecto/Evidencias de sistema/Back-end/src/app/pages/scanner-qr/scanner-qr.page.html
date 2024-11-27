@@ -1,16 +1,18 @@
 <app-header [title]="'Escaneo QR'"></app-header>
 
 <ion-content class="ion-padding">
-  <h1>Bienvenido {{datosUser.nombre}}</h1>
+  <h1>Bienvenido {{ datosUser.nombre }}</h1>
   <h3>¡Escanea un voucher!</h3>
   <p>Recuerda que el voucher debe tener un código similar a este:</p>
   <img src="assets/QR_example.png" alt="Código de ejemplo">
 
   <!-- Modal que se muestra al escanear un código válido -->
-  <ion-modal #voucherScanned 
-  [isOpen]="isScanned" 
-  (didDismiss)="isScanned=false"
-  cssClass="custom-modal">
+  <ion-modal
+    #voucherScanned
+    [isOpen]="isScanned"
+    (didDismiss)="isScanned = false"
+    cssClass="custom-modal"
+  >
     <ng-template>
       <ion-header class="ion-no-border">
         <ion-toolbar>
@@ -24,29 +26,30 @@
       </ion-header>
 
       <ion-content>
-        <ion-list lines="none" *ngIf="productos && productos.length > 0">
-          <ion-item *ngFor="let producto of productos">
-              <ion-thumbnail>
-                <img class="imgcarrito" [src]="producto.imagen || 'assets/FARO.png'" alt="{{ producto.nombre || 'Producto' }}">
-              </ion-thumbnail>
-              <!-- Contenedor del texto -->
-              <ion-label>
-                <h2>{{ producto.nombre }}</h2>
-                <p>Precio: {{ formatearPesos(producto.precio) }}</p>
-                <p>Descripción: {{ producto.descripcion?.slice(0,70) }}...</p>
-              </ion-label>
+        <!-- Lista de productos -->
+        <ion-list lines="none" *ngIf="voucherEntero[0].compra.ref_compra && voucherEntero[0].compra.ref_compra.length > 0">
+          <ion-item *ngFor="let ref of voucherEntero[0].compra.ref_compra">
+            <ion-thumbnail>
+              <img class="imgcarrito" [src]="ref.producto.imagen || 'assets/FARO.png'" alt="{{ ref.producto.nombre || 'Producto' }}">
+            </ion-thumbnail>
+            <ion-label>
+              <h2>{{ ref.producto.nombre }}</h2>
+              <p>Precio: {{ formatearPesos(ref.producto.precio) }}</p>
+              <p>Descripción: {{ ref.producto.descripcion?.slice(0, 70) }}...</p>
+            </ion-label>
           </ion-item>
         </ion-list>
 
-            <div class="total-section">
-              <div class="total-info">
-                <h2>Total: {{ formatearPesos(totalCompra) }}</h2>
-              </div>
-              <ion-button expand="block" class="pay-button" (click)="validarVoucher()">Validar Voucher</ion-button>
-            </div>
-        
-        
-        <div *ngIf="productos && productos.length === 0">
+        <!-- Sección total -->
+        <div class="total-section" *ngIf="voucherEntero[0].compra">
+          <div class="total-info">
+            <h2>Total: {{ formatearPesos(voucherEntero[0].total) }}</h2>
+          </div>
+          <ion-button expand="block" class="pay-button" (click)="validarVoucher()">Validar Voucher</ion-button>
+        </div>
+
+        <!-- Mensaje cuando no hay productos -->
+        <div *ngIf="voucherEntero[0].compra.ref_compra.length === 0">
           <p>No se encontraron productos en esta compra.</p>
         </div>
       </ion-content>

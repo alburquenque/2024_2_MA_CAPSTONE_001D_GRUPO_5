@@ -233,7 +233,7 @@ export class ProductoService {
     try {
       const { data, error } = await this.supabase
         .from('voucher') // Asegúrate de que esta es la tabla correcta
-        .select('id_compra, total') // Selecciona las columnas necesarias
+        .select('id_voucher,id_compra, total') // Selecciona las columnas necesarias
         .eq('id_compra', idCompra)
       if (error) throw error;
       return data || [];
@@ -243,19 +243,31 @@ export class ProductoService {
     }
   }
 
-  async obtenerProductosPorCompra(idCompra: number): Promise<any[]> {
+  async obtenerVoucherEntero(idVoucher:any){
     try {
       const { data, error } = await this.supabase
-        .from('ref_compra') // Nombre de la tabla
-        .select('id_producto') // Selecciona las columnas necesarias
-        .eq('id_compra', idCompra); // Filtra por id_compra
-  
-      if (error) throw error;
-  
-      return data || []; // Devuelve la lista de productos, o un array vacío si no hay resultados
+      .from('voucher')
+      .select(`
+        id_voucher,
+        total,
+        id_compra,
+        estado,
+        compra(
+          *,
+          ref_compra(*,
+            producto(*)
+            )
+          )
+      `)
+      .eq('id_voucher', idVoucher)
+
+      if (error){
+        return null;
+      } 
+      return data;
     } catch (error) {
-      console.error('Error al obtener productos por compra:', error);
-      throw error;
+      console.error('Error obteniendo carrito: ', error);
+      return null;
     }
   }
   
@@ -274,12 +286,12 @@ export class ProductoService {
       throw error;
     }
   }
-  async modificarEstadoVoucher(idCompra: number): Promise<any[]> {
+  async modificarEstadoVoucher(idVoucher: number): Promise<any[]> {
     try {
       const { data, error } = await this.supabase
         .from('voucher') 
-        .update({ estado: 'Validado' }) // Aquí pasamos un objeto con los campos a actualizar
-        .eq('id_compra', idCompra); // Filtro por el id de la compra
+        .update({ estado: 'Completado' }) // Aquí pasamos un objeto con los campos a actualizar
+        .eq('id_voucher', idVoucher); // Filtro por el id de la compra
   
       if (error) throw error;
   

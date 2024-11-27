@@ -179,6 +179,27 @@ export class CarritoService {
     }
   }
 
+  async limpiarCantidadTotal(id_carrito: any) {
+    try {
+      const { data, error } = await this.supabase
+        .from('carrito')
+        .update({ 
+          cantidad: 0,
+          total: 0,
+         })
+        .eq('id_carrito', id_carrito);
+  
+      if (error) {
+        console.error("Error actualizando la cantidad y total: ", error);
+        throw error;
+      }
+  ;
+    } catch (error) {
+      console.error('Error actualizando la cantidad y total del carrito: ', error);
+      throw error;
+    }
+  }
+
   async actualizarTotalEnRef(nuevaCantidad: any, idref_carrito: any, precio: any) {
     try {
       const { data, error } = await this.supabase
@@ -222,13 +243,30 @@ export class CarritoService {
     }
   }
 
-  async limpiarCarrito(userId: any) {
+  async limpiarRefCarrito(userId: any) {
     const carrito = await this.authService.getCarrito(userId);
     if (carrito) {
       const { error } = await this.supabase
       .from('ref_carrito')
       .delete()
       .eq('id_carrito', carrito.id_carrito);
+
+      if (error) {
+        console.error('Ocurrió un error al intentar limpiar el carrito: ', error);
+        throw error;
+      }
+    }
+  }
+
+  async limpiarCarrito(userId: any) {
+    const carrito = await this.authService.getCarrito(userId);
+    if (carrito) {
+      const { error } = await this.supabase
+      .from('carrito')
+      .update({ 
+        cantidad: 0, total: 0
+       })
+      .eq('id_usuario', userId);
 
       if (error) {
         console.error('Ocurrió un error al intentar limpiar el carrito: ', error);
@@ -272,7 +310,7 @@ export class CarritoService {
     }
   }
 
-  async guardarCompra(compraData: { estado: string; cantidad: number; total: number; id_usuario: string }): Promise<number | null> {
+  async guardarCompra(compraData: { cantidad: number; total: number; id_usuario: string }): Promise<number | null> {
     try {
       const { data, error } = await this.supabase
         .from('compra')

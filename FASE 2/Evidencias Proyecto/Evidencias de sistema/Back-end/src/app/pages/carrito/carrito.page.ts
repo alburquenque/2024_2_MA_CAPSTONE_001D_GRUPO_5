@@ -4,7 +4,6 @@ import { AuthService } from 'src/app/services/auth.service';
 import { PagoService } from 'src/app/services/pago.service';
 import { LoadingController, Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { Browser } from '@capacitor/browser';
 
 @Component({
   selector: 'app-carrito',
