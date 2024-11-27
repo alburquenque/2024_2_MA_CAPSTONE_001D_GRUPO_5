@@ -331,7 +331,7 @@ export class CarritoService {
     }
   }
 
-  async guardarVoucher(voucherData: { cantidad: number; total: number; estado: string; id_compra: number }): Promise<number | null> {
+  async guardarVoucher(voucherData: { cantidad: any; total: any; estado: any; id_compra: any }): Promise<any | null> {
     try {
       const { data, error } = await this.supabase
         .from('voucher')

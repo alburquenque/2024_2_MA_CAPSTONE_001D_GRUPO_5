@@ -63,7 +63,18 @@ export class ConfirmacionPagoPage implements OnInit {
             id_usuario: userId, 
           };
 
+
           const compraId = await this.carritoService.guardarCompra(compraData);
+
+          const voucherData = {
+            cantidad: carrito.cantidad, 
+            total: carrito.total,
+            estado: 'Pendiente', 
+            id_compra: compraId 
+          };
+          this.carritoService.guardarVoucher(voucherData);
+
+        
 
           if (compraId) {
             console.log('Datos del carrito obtenidos:', carrito);
@@ -80,19 +91,11 @@ export class ConfirmacionPagoPage implements OnInit {
                 total: totalporcantidad,
               };
 
-              const voucherData = {
-                cantidad: item.cantidad, 
-                total: totalporcantidad,
-                estado: 'Pendiente', 
-                id_compra: compraId 
-              };
             
               console.log('Datos a guardar en ref_compra:', refCompraData);
               console.log('Datos a guardar en voucher:', voucherData);
             
               await this.carritoService.guardarRefCompra(refCompraData);
-              await this.carritoService.guardarVoucher(voucherData);
-
               this.voucherID = await this.productoService.obtenerCompraDelVoucher(compraId)
               console.log("ID VOUCHER", this.voucherID[0].id_voucher)
             
