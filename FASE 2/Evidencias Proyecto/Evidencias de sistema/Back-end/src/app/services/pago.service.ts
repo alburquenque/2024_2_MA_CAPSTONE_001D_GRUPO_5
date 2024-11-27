@@ -17,6 +17,12 @@ export interface PaymentInitiation {
   returnUrl: string;
 }
 
+export interface TransactionStatusResponse {
+  status: 'success' | 'error' | 'cancelled';
+  message: string;
+  details?: any;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -67,6 +73,15 @@ export class PagoService {
       console.error('Error creando la referencia de compra: ', error);
       throw error;
     }
+  }
+
+  confirmTransaction(token: string): Observable<TransactionStatusResponse> {
+    return this.http.post<TransactionStatusResponse>(`${this.apiUrl}/confirmar`, { token_ws: token })
+      .pipe(
+        tap(response => {
+          console.log('Estado de la transacción:', response);
+        })
+      );
   }
 
 }

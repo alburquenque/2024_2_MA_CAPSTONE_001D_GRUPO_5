@@ -4,6 +4,7 @@ import { CarritoService } from 'src/app/services/carrito.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { LoadingController, AlertController } from '@ionic/angular';
 import { ProductoService } from 'src/app/services/producto.service';
+import { PagoService } from 'src/app/services/pago.service';
 import * as QRCode from 'qrcode';
 
 @Component({
@@ -26,7 +27,8 @@ export class ConfirmacionPagoPage implements OnInit {
     private authService: AuthService,
     private loadingController: LoadingController,
     private alertController: AlertController,
-    private productoService: ProductoService
+    private productoService: ProductoService,
+    private pagoService : PagoService
   ) {}
 
   async ngOnInit() {
@@ -38,8 +40,18 @@ export class ConfirmacionPagoPage implements OnInit {
       
       if (this.token) {
         try {
+          const statusResponse = await this.pagoService.confirmTransaction(this.token).toPromise();
+
+          if (!statusResponse) {
+            throw new Error('No se recibió respuesta de la transacción');
+          }
+
+          if (statusResponse.status !== 'success') {
+            throw new Error(statusResponse.message || 'Transacción no autorizada');
+          }
           const userId = await this.authService.getCurrentUserId();
           const carrito = await this.authService.getCarrito(userId);
+          
           
           if (!carrito) {
             throw new Error('No se encontró el carrito');
@@ -109,6 +121,8 @@ export class ConfirmacionPagoPage implements OnInit {
     });
   }
 
+
+  
   async presentLoading() {
     this.loading = await this.loadingController.create({
       message: 'Procesando resultado...',
