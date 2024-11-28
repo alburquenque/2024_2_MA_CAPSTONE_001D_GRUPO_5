@@ -39,8 +39,11 @@ export class AvatarPopoverComponent {
 
   logout() {
     this.authService.signOut().then(() => {
-      this.popoverController.dismiss()
-      this.router.navigateByUrl('/login', { replaceUrl: true }); // Redirige al login después de cerrar sesión
+      localStorage.clear(); 
+      this.popoverController.dismiss();
+      this.router.navigateByUrl('/login', { replaceUrl: true });
+    }).catch((error) => {
+      console.error('Error al cerrar sesión:', error); // Manejo de errores
     });
   }
 }

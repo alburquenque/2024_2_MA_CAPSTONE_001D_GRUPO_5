@@ -30,6 +30,10 @@ const routes: Routes = [
     path: 'payment/confirmation',
     loadChildren: () => import('./pages/confirmacion-pago/confirmacion-pago.module').then(m => m.ConfirmacionPagoPageModule)
   },
+  {
+    path: 'change-password',
+    loadChildren: () => import('./pages/change-password/change-password.module').then(m => m.ChangePasswordPageModule) 
+  },
 
   // Rutas protegidas para Cliente (Rol 1)
   {
@@ -154,11 +158,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/carrito/carrito.module').then(m => m.CarritoPageModule),
     canActivate: [AuthGuard, RoleGuard],
     data: { roles: [1, 2, 3] } 
-  },
-  {
-    path: 'change-password',
-    loadChildren: () => import('./pages/change-password/change-password.module').then(m => m.ChangePasswordPageModule),
-    canActivate: [AuthGuard],  
   },
 
   {

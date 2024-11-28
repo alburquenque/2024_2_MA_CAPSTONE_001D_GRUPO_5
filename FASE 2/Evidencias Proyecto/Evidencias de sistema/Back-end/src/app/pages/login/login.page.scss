@@ -24,25 +24,27 @@ p {
     display: block;
     margin-bottom: 8px;
     font-weight: 500;
-    color: #495057; 
+    color: var(--label-color, #495057); /* Color dinámico para labels */
   }
   
   input {
     width: 100%;
     padding: 12px 15px;  
-    border: 1px solid #dee2e6;  
+    border: 1px solid #ced4da; /* Gris claro */
     border-radius: 8px;
     font-size: 16px;
-    transition: border-color 0.2s ease;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+    background-color: #ffffff; /* Fondo blanco */
+    color: #495057; /* Texto oscuro */
     
     &:focus {
       outline: none;
       border-color: #4a90e2;  
-      box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);  
+      box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.25); /* Sombra más clara */
     }
     
     &::placeholder {
-      color: #adb5bd;  
+      color: #adb5bd; /* Color del placeholder */
     }
   }
 }
@@ -52,20 +54,25 @@ ion-button {
   --box-shadow: none;
   
   &[color="dark"] {
-    --background: #2c3e50;  
+    --background: #2c3e50; /* Azul oscuro */
+    --color: #ffffff; /* Texto blanco */
     margin-bottom: 12px;
     
     &:hover {
-      --background: #34495e;
+      --background: #1a252f; /* Azul más oscuro al hacer hover */
     }
   }
   
   &[color="secondary"] {
-    --background: #f8f9fa;
-    --color: #2c3e50;
-    --border-color: #dee2e6;
+    --background: #007bff; /* Azul estándar */
+    --color: #ffffff; /* Texto blanco */
+    --border-color: transparent;
     --border-style: solid;
     --border-width: 1px;
+    
+    &:hover {
+      --background: #0056b3; /* Azul más oscuro en hover */
+    }
   }
 }
 
@@ -104,4 +111,31 @@ ion-note {
   color: #dc3545;
   font-size: 13px;
   margin-top: 4px;
+}
+
+/* Tema oscuro */
+:root {
+  --label-color: #495057; /* Color de labels en modo claro */
+}
+
+[data-theme="dark"] {
+  --label-color: #ffffff; /* Color de labels en modo oscuro */
+  
+  .form-group input {
+    background-color: #1a1a1a; /* Fondo oscuro para inputs */
+    color: #ffffff; /* Texto blanco */
+    border-color: #333333; /* Borde oscuro */
+  }
+
+  ion-button {
+    &[color="dark"] {
+      --background: #1a1a1a; /* Fondo oscuro para botón */
+      --color: #ffffff; /* Texto blanco */
+    }
+    
+    &[color="secondary"] {
+      --background: #4a90e2; /* Azul claro */
+      --color: #ffffff; /* Texto blanco */
+    }
+  }
 }

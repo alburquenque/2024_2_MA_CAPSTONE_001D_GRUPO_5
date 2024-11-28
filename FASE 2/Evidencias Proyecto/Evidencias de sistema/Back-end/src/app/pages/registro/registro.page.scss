@@ -39,7 +39,7 @@ p {
     display: block;
     margin-bottom: 8px;
     font-weight: 500;
-    color: #495057;
+    color: var(--label-color, #495057); /* Color dinámico para etiquetas */
   }
 
   .input-container {
@@ -49,10 +49,12 @@ p {
     input {
       width: 100%;
       padding: 12px;
-      border: 1px solid #dee2e6;
+      border: 1px solid var(--input-border, #dee2e6); /* Borde dinámico */
       border-radius: 8px;
       font-size: 15px;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      background-color: var(--input-bg, #ffffff); /* Fondo blanco */
+      color: var(--input-text, #495057); /* Texto oscuro */
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 
       &:focus {
         border-color: #4a90e2;
@@ -62,7 +64,7 @@ p {
       // Estilo para input inválido
       &.ng-invalid.ng-touched,
       &.ng-invalid.ng-dirty {
-        border-color: #dc3545;  // Rojo para indicar error
+        border-color: #dc3545;  /* Rojo para indicar error */
         box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.1);
       }
     }
@@ -77,10 +79,10 @@ ion-text[color="danger"] {
 }
 
 .border {
-  border: 1px solid #e9ecef;
+  border: 1px solid var(--border-color, #e9ecef); /* Color dinámico del borde */
   border-radius: 12px;
   padding: 25px;
-  background: white;
+  background: var(--border-bg, #ffffff); /* Fondo blanco dinámico */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
@@ -101,4 +103,23 @@ ion-button {
   text-decoration: none;
   font-size: 14px;
   margin-top: 15px;
+}
+
+/* Variables para tema oscuro */
+:root {
+  --label-color: #495057;
+  --input-border: #dee2e6;
+  --input-bg: #ffffff;
+  --input-text: #495057;
+  --border-color: #e9ecef;
+  --border-bg: #ffffff;
+}
+
+[data-theme="dark"] {
+  --label-color: #ffffff; /* Etiquetas en modo oscuro */
+  --input-border: #333333; /* Borde oscuro */
+  --input-bg: #1a1a1a; /* Fondo oscuro */
+  --input-text: #ffffff; /* Texto blanco */
+  --border-color: #333333; /* Borde oscuro */
+  --border-bg: #1a1a1a; /* Fondo oscuro */
 }

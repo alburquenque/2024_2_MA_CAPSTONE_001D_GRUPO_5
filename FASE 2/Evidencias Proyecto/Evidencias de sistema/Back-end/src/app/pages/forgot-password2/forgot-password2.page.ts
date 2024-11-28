@@ -90,11 +90,22 @@ export class ForgotPassword2Page implements OnInit {
   routerLink(){
     this.credentialsFP2.reset()
     setTimeout(() => {
-      this.router.navigate(["/login"])
+      this.router.navigate(["/change-password"])
     }, 0);
+    setTimeout(() => {
+      this.logout()
+    }, 100);
   }
 
-  
+  logout() {
+    this.authService.signOut().then(() => {
+      localStorage.clear(); 
+      this.router.navigateByUrl('/login', { replaceUrl: true });
+    }).catch((error) => {
+      console.error('Error al cerrar sesión:', error); // Manejo de errores
+    });
+  }
+
   async showAlert(title:string, msg:any) {
     const alert = await this.alertController.create({
       header: title,
@@ -138,17 +149,22 @@ export class ForgotPassword2Page implements OnInit {
   handlePaste(event: ClipboardEvent) {
     event.preventDefault();
   
-    const pastedData = event.clipboardData?.getData('Text')?.trim();
+    // Obtén los datos pegados
+    const pastedData = event.clipboardData?.getData('text').trim();
   
+    // Verifica si los datos son válidos
     if (pastedData && pastedData.length === 6) {
+      // Selecciona todos los inputs relacionados con el OTP
       const inputs = document.querySelectorAll('input[formControlName]');
+      
+      // Recorre los inputs y asigna los caracteres
       inputs.forEach((input, index) => {
         if (index < pastedData.length) {
           (input as HTMLInputElement).value = pastedData[index];
         }
       });
   
-      // Actualiza el valor de `credentials` manualmente
+      // Actualiza manualmente el formulario reactivo
       this.credentialsFP2.patchValue({
         codigo1: pastedData[0],
         codigo2: pastedData[1],
@@ -158,11 +174,17 @@ export class ForgotPassword2Page implements OnInit {
         codigo6: pastedData[5],
       });
   
-      // Enfoca el último campo lleno
-      const lastInput = document.querySelector('input[formControlName="codigo6"]') as HTMLInputElement;
-      lastInput.focus();
+      // Encuentra el primer input vacío y enfócalo
+      const firstEmptyInput = Array.from(inputs).find((input: Element) => !(input as HTMLInputElement).value);
+      if (firstEmptyInput) {
+        (firstEmptyInput as HTMLInputElement).focus();
+      } else {
+        // Si todos los campos están llenos, enfoca el último
+        (inputs[inputs.length - 1] as HTMLInputElement).focus();
+      }
     }
   }
+  
   
   
 
