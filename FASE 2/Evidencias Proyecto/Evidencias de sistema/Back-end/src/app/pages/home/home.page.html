@@ -1,7 +1,8 @@
 <app-header [title]="'Inicio'"></app-header>
 
 
-<ion-content class="ion-padding">
+<ion-content class="content ion-padding">
+  <ion-content>
   <h1>¡Bienvenido, {{localUserData.nombre}}! </h1>
   <p>¡Ya puedes comprar utilizando la función de escaneo mediante la aplicación!</p>
   <ion-grid>
@@ -36,6 +37,9 @@
   </ion-card>
 
 <!-- Custom bottom navigation bar -->
+  </ion-content>
+</ion-content>
+
 
 <ion-footer>
   <div class="bottom-nav">
@@ -57,7 +61,5 @@
     </ion-buttons>
   </div>
 </ion-footer>
-
-</ion-content>
 
 
