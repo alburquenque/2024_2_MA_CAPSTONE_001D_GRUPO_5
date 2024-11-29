@@ -10,17 +10,25 @@ import { ToastController } from '@ionic/angular';
 })
 export class ReportesPage implements OnInit {
   
+@ViewChild('chartCantidadPorCategoria', { static: true }) chartCantidadPorCategoria!: ElementRef;
   @ViewChild('chartVentasPorCategoria', { static: true }) chartVentasPorCategoria!: ElementRef;
   @ViewChild('chartTopProductos', { static: true }) chartTopProductos!: ElementRef;
 
-
+  periodo: string = 'year'; 
+  selectedPeriod: string = 'year';
+  chart: any;
+  chartCantidadPorCategoriaInstance: any;
+  chartVentasPorCategoriaInstance: any;
+  chartTopProductosInstance: any;
   metricas: {
     topProductos: { nombre: string; cantidad: number }[];
     totalVentas: number;
+    cantidadVendida: number;
     ventasPorCategoria: { categoria: string; cantidad: number, total: number }[];
   } = {
     topProductos: [],
     totalVentas: 0,
+    cantidadVendida: 0,
     ventasPorCategoria: [],
   };
 
@@ -28,20 +36,23 @@ export class ReportesPage implements OnInit {
 
   async ngOnInit() {
     await this.cargarMetricas();
+    
     this.crearGraficos();
   }
 
   async cargarMetricas() {
     try {
-      const [topProductos, totalVentas, ventasPorCategoria] = await Promise.all([
-        this.reportesService.getTopProductos(5),
-        this.reportesService.getTotalVentas(),
-        this.reportesService.getVentasPorCategoria(),
+      const [topProductos, totalVentas, cantidadVendida, ventasPorCategoria] = await Promise.all([
+        this.reportesService.getTopProductos(5, this.periodo),
+        this.reportesService.getTotalVentas(this.periodo),
+        this.reportesService.getCantidadVendida(this.periodo),
+        this.reportesService.getVentasPorCategoria(this.periodo),
       ]);
 
       this.metricas = {
         topProductos,
         totalVentas,
+        cantidadVendida,
         ventasPorCategoria,
       };
     } catch (error) {
@@ -50,109 +61,111 @@ export class ReportesPage implements OnInit {
   }
 
   crearGraficos() {
-      new Chart(this.chartVentasPorCategoria.nativeElement, {
-      type: 'bar',
+    // Destruir gráficos existentes antes de crear nuevos
+    if (this.chartCantidadPorCategoriaInstance) {
+      this.chartCantidadPorCategoriaInstance.destroy();
+    }
+    if (this.chartVentasPorCategoriaInstance) {
+      this.chartVentasPorCategoriaInstance.destroy();
+    }
+    if (this.chartTopProductosInstance) {
+      this.chartTopProductosInstance.destroy();
+    }
+
+    // Gráfico de Cantidad por Categoría (Pie Chart)
+    this.chartCantidadPorCategoriaInstance = new Chart(this.chartCantidadPorCategoria.nativeElement, {
+      type: 'pie',
       data: {
         labels: this.metricas.ventasPorCategoria.map(v => v.categoria),
-        datasets: [
-          {
-            label: 'Cantidad por Categoría',
-            data: this.metricas.ventasPorCategoria.map(v => v.cantidad),
-            backgroundColor: 'rgba(129, 140, 248, 0.85)', 
-            borderColor: 'rgba(99, 102, 241, 1)',
-            borderWidth: 1,
-            borderRadius: 8,
-            barThickness: 40,
-          },
-          {
-            label: 'Total por Categoría ($)',
-            data: this.metricas.ventasPorCategoria.map(v => v.total),
-            backgroundColor: 'rgba(244, 114, 182, 0.85)', 
-            borderColor: 'rgba(236, 72, 153, 1)',
-            borderWidth: 1,
-            borderRadius: 8,
-            barThickness: 40,
-          },
-        ],
+        datasets: [{
+          data: this.metricas.ventasPorCategoria.map(v => v.cantidad),
+          backgroundColor: [
+            'rgba(129, 140, 248, 0.85)',
+            'rgba(244, 114, 182, 0.85)', 
+            'rgba(56, 189, 248, 0.85)',
+            'rgba(34, 197, 94, 0.85)',
+            'rgba(248, 113, 113, 0.85)'
+          ],
+          borderColor: [
+            'rgba(99, 102, 241, 1)',
+            'rgba(236, 72, 153, 1)',
+            'rgba(14, 165, 233, 1)',
+            'rgba(22, 163, 74, 1)',
+            'rgba(220, 38, 38, 1)'
+          ],
+          borderWidth: 1
+        }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: {
+          title: {
             display: true,
-            position: 'top',
-            labels: {
-              padding: 20,
-              font: {
-                family: "'Inter', sans-serif",
-                size: 13,
-              },
-              usePointStyle: true,
-              pointStyle: 'circle',
-            },
+            text: 'Cantidad de Productos por Categoría'
           },
           tooltip: {
-            backgroundColor: 'rgba(17, 24, 39, 0.95)',
-            titleColor: 'rgba(255, 255, 255, 1)',
-            bodyColor: 'rgba(255, 255, 255, 0.8)',
-            padding: 12,
-            boxPadding: 6,
-            usePointStyle: true,
             callbacks: {
               label: (context) => {
                 const value = context.raw as number;
-                return ` ${context.dataset.label}: ${new Intl.NumberFormat('es-CL', {
-                  style: context.datasetIndex === 1 ? 'currency' : 'decimal',
-                  currency: 'CLP'
-                }).format(value)}`;
-              },
-            },
-          },
-        },
-        scales: {
-          x: {
-            grid: {
-              display: false,
-            },
-            ticks: {
-              font: {
-                family: "'Inter', sans-serif",
-                size: 12,
-              },
-              color: '#6B7280',
-              padding: 8,
-            },
-            border: {
-              display: false,
-            },
-          },
-          y: {
-            grid: {
-              color: 'rgba(243, 244, 246, 1)',
-            },
-            ticks: {
-              font: {
-                family: "'Inter', sans-serif",
-                size: 12,
-              },
-              color: '#6B7280',
-              padding: 8,
-              callback: (value) => new Intl.NumberFormat('es-CL').format(value as number),
-            },
-            border: {
-              display: false,
-            },
-          },
-        },
-        animation: {
-          duration: 750,
-          easing: 'easeInOutQuart',
-        },
-      },
+                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                const percentage = ((value / total) * 100).toFixed(1);
+                return ` ${context.label}: ${value} (${percentage}%)`;
+              }
+            }
+          }
+        }
+      }
     });
 
-    new Chart(this.chartTopProductos.nativeElement, {
+    // Gráfico de Ventas por Categoría (Pie Chart)
+    this.chartVentasPorCategoriaInstance = new Chart(this.chartVentasPorCategoria.nativeElement, {
+      type: 'pie',
+      data: {
+        labels: this.metricas.ventasPorCategoria.map(v => v.categoria),
+        datasets: [{
+          data: this.metricas.ventasPorCategoria.map(v => v.total),
+          backgroundColor: [
+            'rgba(129, 140, 248, 0.85)',
+            'rgba(244, 114, 182, 0.85)', 
+            'rgba(56, 189, 248, 0.85)',
+            'rgba(34, 197, 94, 0.85)',
+            'rgba(248, 113, 113, 0.85)'
+          ],
+          borderColor: [
+            'rgba(99, 102, 241, 1)',
+            'rgba(236, 72, 153, 1)',
+            'rgba(14, 165, 233, 1)',
+            'rgba(22, 163, 74, 1)',
+            'rgba(220, 38, 38, 1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Total de Ventas por Categoría'
+          },
+          tooltip: {
+            callbacks: {
+              label: (context) => {
+                const value = context.raw as number;
+                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                const percentage = ((value / total) * 100).toFixed(1);
+                return ` ${context.label}: $${new Intl.NumberFormat('es-CL').format(value)} (${percentage}%)`;
+              }
+            }
+          }
+        }
+      }
+    });
+
+    // Gráfico de Top Productos (Horizontal Bar Chart)
+    this.chartTopProductosInstance = new Chart(this.chartTopProductos.nativeElement, {
       type: 'bar',
       data: {
         labels: this.metricas.topProductos.map(p => p.nombre.length > 25 ? `${p.nombre.substring(0, 25)}...` : p.nombre),
@@ -173,26 +186,11 @@ export class ReportesPage implements OnInit {
         maintainAspectRatio: false,
         indexAxis: 'y',
         plugins: {
-          legend: {
+          title: {
             display: true,
-            position: 'top',
-            labels: {
-              padding: 20,
-              font: {
-                family: "'Inter', sans-serif",
-                size: 13,
-              },
-              usePointStyle: true,
-              pointStyle: 'circle',
-            },
+            text: 'Top 5 Productos Más Vendidos'
           },
           tooltip: {
-            backgroundColor: 'rgba(17, 24, 39, 0.95)',
-            titleColor: 'rgba(255, 255, 255, 1)',
-            bodyColor: 'rgba(255, 255, 255, 0.8)',
-            padding: 12,
-            boxPadding: 6,
-            usePointStyle: true,
             callbacks: {
               label: (context) => {
                 const value = context.raw as number;
@@ -242,6 +240,22 @@ export class ReportesPage implements OnInit {
       },
     });
   }
+
+  async onPeriodChange() {
+    // Update the periodo property when selectedPeriod changes
+    this.periodo = this.selectedPeriod;
+    
+    // Reload metrics when period is changed
+    try {
+      await this.cargarMetricas();
+      this.crearGraficos(); // Recreate charts with new data
+    } catch (error) {
+      console.error('Error updating metrics:', error);
+      this.mostrarError('No se pudieron actualizar las métricas');
+    }
+  }
+
+
 
   async exportarDatos() {
     try {

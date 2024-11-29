@@ -1,13 +1,44 @@
 :host {
-  --card-border-radius: 16px;
+  --card-border-radius: 12px;
   --card-shadow: 0 4px 16px rgba(0,0,0,0.05);
+  --ion-color-primary: #1e88e5;
+  --ion-color-tertiary: #868686;
 }
 
+* {
+  font-family: "Inter", sans-serif;
+}
 
+.reports-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
+.section-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--ion-color-dark);
+  margin: 0 0 1rem 0;
+}
 
+.period-selector-card {
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+}
 
+.period-select {
+  width: 100%;
+  --placeholder-color: var(--ion-color-medium);
+  font-size: 1rem;
+}
 
+.export-button {
+  margin-bottom: 1rem;
+  height: 48px;
+  --border-radius: 8px;
+  font-weight: 500;
+}
 
 .stat-card {
   margin: 0;
@@ -17,6 +48,8 @@
 
 .stat-card ion-card-content {
   padding: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .stat-icon {
@@ -27,17 +60,31 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 16px;
-
-  ion-icon {
-    font-size: 24px;
-  }
+  opacity: 0.8;
 }
 
+.primary-bg {
+  background-color: rgba(30, 136, 229, 0.1);
+}
+
+.success-bg {
+  background-color: rgba(76, 175, 80, 0.1);
+}
+
+.stat-icon ion-icon {
+  font-size: 24px;
+}
 
 .stat-card h2 {
   margin: 0;
   font-size: 24px;
   font-weight: 700;
   line-height: 1.2;
+  color: var(--ion-color-dark);
 }
 
+.stat-card p {
+  margin: 8px 0 0;
+  font-size: 0.9rem;
+  color: var(--ion-color-medium);
+}

@@ -11,15 +11,33 @@ export class ReportesService {
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
   }
 
+  selectedPeriod: string = 'today';
+
+
+  private filtrarPorPeriodo(query: any, periodo: string) {
+    switch (periodo) {
+      case 'today':
+        return query.gte('fecha', new Date().toISOString().split('T')[0]);
+      case 'week':
+        const weekStart = new Date(new Date().setDate(new Date().getDate() - new Date().getDay()));
+        return query.gte('fecha', weekStart.toISOString().split('T')[0]);
+      case 'month':
+        const monthStart = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+        return query.gte('fecha', monthStart.toISOString().split('T')[0]);
+      case 'year':
+        const yearStart = new Date(new Date().getFullYear(), 0, 1);
+        return query.gte('fecha', yearStart.toISOString().split('T')[0]);
+      default:
+        return query;
+    }
+  }
+
 // Obtenemos los 5 productos más vendidos y su cantidad
-async getTopProductos(limit: number = 5): Promise<{ nombre: string; cantidad: number }[]> {
+async getTopProductos(limit: number = 5, periodo: string): Promise<{ nombre: string; cantidad: number }[]> {
   try {
-    const { data, error } = await this.supabase
-      .from('ref_compra')
-      .select(`
-        cantidad,
-        producto:producto(nombre)
-      `);
+    let query = this.supabase.from('ref_compra').select(`cantidad, producto:producto(nombre)`);
+    query = this.filtrarPorPeriodo(query, periodo)
+    const { data, error } = await query.order('cantidad', { ascending: false }).limit(limit);
 
     if (error) throw error;
 
@@ -45,11 +63,11 @@ async getTopProductos(limit: number = 5): Promise<{ nombre: string; cantidad: nu
   }
 }
 
-async getTotalVentas(): Promise<number> {
+async getTotalVentas(periodo: string): Promise<number> {
   try {
-    const { data, error } = await this.supabase
-      .from('ref_compra') // Asegúrate de que 'compra' es la tabla correcta
-      .select('total');
+    let query = this.supabase.from('ref_compra').select('total');
+    query = this.filtrarPorPeriodo(query, periodo);
+    const { data, error } = await query;
 
     if (error) throw error;
 
@@ -63,18 +81,28 @@ async getTotalVentas(): Promise<number> {
   }
 }
 
-async getVentasPorCategoria(): Promise<{ categoria: string; cantidad: number; total: number }[]> {
+async getCantidadVendida(periodo: string): Promise<number> {
   try {
-    const { data, error } = await this.supabase
-      .from('ref_compra')
-      .select(`
-        cantidad,
-        total,
-        producto(
-          id_categoria,
-          categoria(nombre)
-        )
-      `);
+    let query = this.supabase.from('ref_compra').select('cantidad');
+    query = this.filtrarPorPeriodo(query, periodo);
+    const { data, error } = await query;
+
+    if (error) throw error;
+
+    const cantidadVendida = data.reduce((sum: number, item: any) => sum + item.cantidad, 0);
+
+    return cantidadVendida;
+  } catch (error) {
+    console.error('Error obteniendo la cantidad vendida:', error);
+    return 0;
+  }
+}
+
+async getVentasPorCategoria(periodo: string): Promise<{ categoria: string; cantidad: number; total: number }[]> {
+  try {
+    let query = this.supabase.from('ref_compra').select(`cantidad, total, producto(id_categoria, categoria(nombre))`);
+    query = this.filtrarPorPeriodo(query, periodo);
+    const { data, error } = await query;
 
     if (error) throw error;
 

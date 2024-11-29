@@ -77,11 +77,10 @@ export class CarritoService {
           })  
             if(carrito){
             //Cambiar el total y cantidad en carrito
-            const cantidadEnCarrito = carrito2.cantidad
-            const nuevaCantidad = cantidadEnCarrito + cantidad
-            const totalCarrito = (precio_unitario*nuevaCantidad)+carrito2.total
-            await this.actualizarCantidadEnCarrito(nuevaCantidad, id_carrito2);
-            await this.actualizarTotalEnCarrito(totalCarrito, id_carrito2);
+            const cantidadEnCarrito = carrito2.cantidad + cantidad;
+            const nuevoTotalCarrito = carrito2.total + (precio_unitario * cantidad);
+            await this.actualizarCantidadEnCarrito(cantidadEnCarrito, id_carrito2);
+            await this.actualizarTotalEnCarrito(nuevoTotalCarrito, id_carrito2);
           }
             if (error) console.log("error: ",error);
             

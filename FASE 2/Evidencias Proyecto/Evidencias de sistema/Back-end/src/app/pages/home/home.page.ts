@@ -52,11 +52,11 @@ export class HomePage implements OnInit {
   }
   
   goToScanner() {
-    this.router.navigateByUrl('/scanner', { replaceUrl: true }) // Cambia '/scanner' por la ruta de tu página Scanner
+    this.router.navigateByUrl('/scanner') // Cambia '/scanner' por la ruta de tu página Scanner
   }
 
   goToHome(){
-    this.router.navigateByUrl('/home', { replaceUrl: true })
+    this.router.navigateByUrl('/home')
   }
 
 }
