@@ -23,7 +23,7 @@ export class CarritoRealtimePage implements OnInit {
     this.authService.subscribeToRealtimeCarrito();
 
     this.subscription = this.authService.carritos$.subscribe((data) => {
-      this.carritos = data;
+      this.obtenerCarritos()
       console.log('Carritos actualizados:', this.carritos);
     });
   }

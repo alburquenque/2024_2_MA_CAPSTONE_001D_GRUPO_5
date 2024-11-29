@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CarritoService } from 'src/app/services/carrito.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { PagoService } from 'src/app/services/pago.service';
@@ -16,7 +16,13 @@ export class CarritoPage implements OnInit {
   userId!: string;
   total: number = 0;
 
-  constructor(private carritoService: CarritoService, private authService: AuthService, private pagoService: PagoService, private loadingController: LoadingController, private platform: Platform, private router:Router) { 
+  constructor(private carritoService: CarritoService, 
+              private authService: AuthService, 
+              private pagoService: PagoService, 
+              private loadingController: LoadingController, 
+              private platform: Platform, 
+              private router:Router,
+              private cdr: ChangeDetectorRef,) { 
   }
 
   async ngOnInit() {
@@ -24,7 +30,7 @@ export class CarritoPage implements OnInit {
     this.carritoService.itemsCarrito$.subscribe((items) => {
       this.itemsCarrito = items;
       this.calcularTotal();
-
+      this.DelayCarrito()
     });
     await this.actualizarItemsCarrito();
   }
@@ -126,6 +132,14 @@ export class CarritoPage implements OnInit {
 
   async presentError(message: string) {
     alert(message);
+  }
+
+  //Para actualizar después de un tiempo el carrito
+  DelayCarrito() {
+    setTimeout(() => {
+      this.cdr.detectChanges(); // Llama a la función deseada
+      console.log("si vine al timer")
+    }, 1500); // Tiempo en milisegundos (3000 ms = 3 segundos)
   }
 }
 
