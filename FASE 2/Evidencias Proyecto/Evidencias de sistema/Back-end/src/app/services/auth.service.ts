@@ -461,4 +461,29 @@ export class AuthService {
       throw error;
     }
   }
+
+  //Metodos para cambiar la contraseña
+
+  async updatePassword(newPassword: string): Promise<boolean> {
+    try {
+      const { error } = await this.supabase.auth.updateUser({
+        password: newPassword,
+      });
+      if (error) throw error;
+
+      return true;
+    } catch (error) {
+      console.error('Error actualizando contraseña:', error);
+      return false;
+    }
+  }
+
+  async verifyPassword(currentPassword: string): Promise<boolean> {
+    // Puedes verificar si la contraseña actual es válida reautenticando al usuario
+    const { data, error } = await this.supabase.auth.signInWithPassword({
+      email: (await this.supabase.auth.getUser()).data.user?.email || '',
+      password: currentPassword,
+    });
+    return !error;
+  }
 }

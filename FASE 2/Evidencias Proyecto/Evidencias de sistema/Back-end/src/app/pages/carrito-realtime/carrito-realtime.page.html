@@ -1,29 +1,47 @@
 <app-header [title]="'Carritos online'"></app-header>
 <ion-header [translucent]="true"></ion-header>
 
-<ion-content class="content">
-  <ion-searchbar placeholder="Buscar usuarios..." show-cancel-button="focus"></ion-searchbar>
-  <ion-text class="content">
+<ion-content class="ion-padding">
+  <div class="search-container">
+    <ion-searchbar
+      placeholder="Buscar usuarios..."
+      [animated]="true"
+      class="custom-searchbar"
+    ></ion-searchbar>
+  </div>
+
+  <div class="header-section">
     <h2>Listado de usuarios</h2>
-  </ion-text>
+    <ion-badge color="medium" *ngIf="carritos?.length">
+      {{ carritos.length }} activos
+    </ion-badge>
+  </div>
 
-<ion-list lines="none" *ngIf="carritos && carritos.length > 0">
-  <ion-item *ngFor="let carrito of carritos">
-    <ion-avatar slot="start">
-      <img [src]="carrito?.usuario?.imagen || 'assets/default-avatar.png'" alt="Avatar">
-    </ion-avatar>
-    <ion-label>
-      <h3>{{ carrito?.usuario?.nombre || 'Sin nombre' }} {{ carrito?.usuario?.apellido || '' }}</h3>
-    </ion-label>
-    <ion-button slot="end" size="small" (click)="irAlDetalle(carrito?.id_usuario)">Ver carrito</ion-button>
-  </ion-item>
-</ion-list>
+  <ng-container *ngIf="carritos && carritos.length > 0">
+    <ion-card *ngFor="let carrito of carritos" class="cart-card">
+      <ion-card-content>
+        <div class="user-info">
+          <ion-avatar>
+            <img [src]="carrito?.usuario?.imagen || 'assets/default-avatar.png'" [alt]="carrito?.usuario?.nombre">
+          </ion-avatar>
+          <div class="user-details">
+            <h3>{{ carrito?.usuario?.nombre || 'Sin nombre' }} {{ carrito?.usuario?.apellido || '' }}</h3>
+            <p class="last-active">{{ carrito?.cantidad }} {{ carrito?.cantidad === 1 ? 'Producto' : 'Productos' }}</p>
+          </div>
+        </div>
+        <ion-button (click)="irAlDetalle(carrito?.id_usuario)" class="view-button">
+          Ver Carrito
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
 
-<div class="empty-state" *ngIf="!carritos || carritos.length === 0">
-  <ion-icon name="cart-outline" class="empty-icon"></ion-icon>
-  <p>No hay carritos en este momento.</p>
-</div>
-
-
-
+  <div class="empty-state" *ngIf="!carritos || carritos.length === 0">
+    <div class="empty-icon-container">
+      <ion-icon name="cart-outline"></ion-icon>
+    </div>
+    <h3>No hay carritos activos</h3>
+    <p>Los carritos activos de los usuarios aparecerán aquí en tiempo real</p>
+  </div>
 </ion-content>

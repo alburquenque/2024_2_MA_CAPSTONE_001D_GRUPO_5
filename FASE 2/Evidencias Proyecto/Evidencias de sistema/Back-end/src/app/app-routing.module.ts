@@ -61,6 +61,12 @@ const routes: Routes = [
     data: { roles: [1, 2, 3] }  
   },
   {
+    path: 'edit-password',
+    loadChildren: () => import('./pages/edit-password/edit-password.module').then( m => m.EditPasswordPageModule),
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: [1, 2, 3] }  
+  },
+  {
     path: 'historial',
     loadChildren: () => import('./pages/historial/historial.module').then( m => m.HistorialPageModule),
     canActivate: [AuthGuard, RoleGuard],
@@ -164,6 +170,8 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'login'
   },
+
+
 
 
 

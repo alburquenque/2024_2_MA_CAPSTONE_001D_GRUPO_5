@@ -1,37 +1,57 @@
 <app-header [title]="'Carrito de compras'"></app-header>
 
-<ion-content *ngIf="carritos">
-  <div class="profile-container">
-    <ion-avatar class="profile-avatar">
-      <img [src]="carritos.imagen || 'assets/default-avatar.png'" alt="Persona">
-    </ion-avatar>
-    <div>
-      <h3>{{carritos.nombre}} {{carritos.apellido}}</h3>
-      <p>Cantidad de artículos: {{carritos.carrito?.cantidad || 0}}</p>
-    </div>
+<ion-content class="ion-padding" *ngIf="carritos">
+  <ion-card class="user-card">
+    <ion-card-content>
+      <div class="user-info">
+        <ion-avatar>
+          <img [src]="carritos.imagen || 'assets/default-avatar.png'" [alt]="carritos.nombre">
+        </ion-avatar>
+        <div class="user-details">
+          <h2>{{carritos.nombre}} {{carritos.apellido}}</h2>
+          <div class="cart-count">
+            <ion-icon name="cart-outline"></ion-icon>
+            <span>{{carritos.carrito?.cantidad || 0}} artículos en carrito</span>
+          </div>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <div class="section-header">
+    <h2>Lista de productos</h2>
+    <ion-badge color="medium" mode="ios">
+      Total: ${{carritos.carrito?.total.toLocaleString('es-CL')}}
+    </ion-badge>
   </div>
 
-  <ion-text class="product-list-title">
-    <h2>Lista de productos</h2>
-  </ion-text>
-
   <div class="product-list">
-    <ion-card *ngFor="let carrito of carritos.carrito.ref_carrito" class="product-card">
-      <ion-item lines="none">
-        <ion-thumbnail slot="start">
-          <img [src]="carrito.producto?.imagen || 'assets/default-product.png'" alt="Producto">
-        </ion-thumbnail>
-        <ion-label>
-          <h3>{{carrito.producto?.nombre || 'Producto sin nombre'}}</h3>
-          <p>{{ carrito.producto?.descripcion?.slice(0, 70) || 'Sin descripción' }}...</p>
-          <h2>${{carrito.producto?.precio || 0}}</h2>
-          <p class="cantidad">Cantidad: {{carrito.cantidad || 0}}</p>
-        </ion-label>
-      </ion-item>
+    <ion-card *ngFor="let item of carritos.carrito.ref_carrito" class="product-card">
+      <ion-card-content>
+        <div class="product-content">
+          <div class="product-image">
+            <img [src]="item.producto?.imagen || 'assets/default-product.png'" [alt]="item.producto?.nombre">
+          </div>
+          <div class="product-details">
+            <h3>{{item.producto?.nombre || 'Producto sin nombre'}}</h3>
+            <p class="description">{{ item.producto?.descripcion?.slice(0, 70) || 'Sin descripción' }}...</p>
+            <div class="price-quantity">
+              <span class="price">${{item.producto?.precio.toLocaleString('es-CL')}} CLP</span>
+              <ion-badge color="light" mode="ios">
+                Cantidad: {{item.cantidad || 0}}
+              </ion-badge>
+            </div>
+          </div>
+        </div>
+      </ion-card-content>
     </ion-card>
   </div>
 </ion-content>
 
-<ion-content *ngIf="!carritos">
-  <p>No se encontraron datos del carrito.</p>
+<ion-content class="empty-state" *ngIf="!carritos">
+  <div class="empty-content">
+    <ion-icon name="cart-outline"></ion-icon>
+    <h3>No se encontraron datos del carrito</h3>
+    <p>El carrito está vacío o no existe</p>
+  </div>
 </ion-content>

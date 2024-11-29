@@ -1,7 +1,9 @@
 Cosas que faltan hacer:
 
--Arreglar guards para que el login persista y no se este bug cuando intentar meterte a otra page
--Implementar guard para que rediriga al home  dependiendo del rol de la persona (user, admin, superadmin)
--Terminar de implementar webpay para que al terminar la compra se vuelva a abrir la aplicación (actualmente abre el chrome y redirige al localhost)
--Implementar vista para generación de reportes.
--Cuando se genere el voucher, compra y ref_compra. Seguido de quitar los articulos del carrito recordar de cambiar el total y total de productos de la tabla "carrito" (actualmente esos datos se quedan sin cambios)
+✔Arreglar guards para que el login persista y no se este bug cuando intentar meterte a otra page
+✔Implementar guard para que rediriga al home  dependiendo del rol de la persona (user, admin, superadmin)
+✔Terminar de implementar webpay para que al terminar la compra se vuelva a abrir la aplicación (actualmente abre el chrome y redirige al localhost)
+✔Implementar vista para generación de reportes.
+✔Cuando se genere el voucher, compra y ref_compra. Seguido de quitar los articulos del carrito recordar de cambiar el total y total de productos de la tabla "carrito" (actualmente esos datos se quedan sin cambios)
+
+-Crear page de "Carga" para que sea la nueva page a la cual la app se diriga cuando recién se abra

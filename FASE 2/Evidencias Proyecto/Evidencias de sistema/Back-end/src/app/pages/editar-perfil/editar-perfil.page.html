@@ -1,11 +1,15 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="secondary">
     <ion-buttons slot="start">
-      <ion-button color="medium" (click)="cancel()">Cancelar</ion-button>
+      <ion-button (click)="cancel()" color="light">
+        <ion-icon name="close-outline" style="font-size: 2.0rem;font-weight: bold;"></ion-icon>
+      </ion-button>
     </ion-buttons>
-    <ion-title>Editar Perfil</ion-title>
+    <ion-title class="ion-text-center" style="font-size: 1.rem;font-weight: bold;">Editar Perfil</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="confirmarCambios()">Confirmar</ion-button>
+      <ion-button (click)="confirmarCambios()" [strong]="true" style="font-size: 1.4rem;font-weight: bold;">
+        <ion-icon name="checkmark-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>

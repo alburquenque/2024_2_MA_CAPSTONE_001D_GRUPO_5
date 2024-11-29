@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { EditPasswordComponent } from 'src/app/components/edit-password/edit-password.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { AuthSession, User } from '@supabase/supabase-js';
 import { EditarPerfilPage } from '../editar-perfil/editar-perfil.page';
+import { ChangeDetectorRef } from '@angular/core';
+import { EditPasswordPage } from '../edit-password/edit-password.page';
+
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.page.html',
@@ -16,7 +18,9 @@ export class PerfilPage implements OnInit {
   apellido: string = ''; 
   localUserData: any; 
   
-  constructor(private modalCtrl: ModalController, private authService: AuthService) {}
+  constructor(private modalCtrl: ModalController, 
+              private authService: AuthService,
+              private cdr: ChangeDetectorRef,) {}
 
  ngOnInit() {
   this.localUserData = this.authService.getLocalUserData();
@@ -35,13 +39,16 @@ export class PerfilPage implements OnInit {
     const { data, role } = await modal.onWillDismiss();
 
     if (role === 'confirm') {
-      this.message = `Hello, ${data}!`;
+      console.log("Se confirmó")
+      this.localUserData = this.authService.getLocalUserData();
+      this.cdr.detectChanges();
+
     }
   }
 
   async openModal2() {
     const modal = await this.modalCtrl.create({
-      component: EditPasswordComponent,
+      component: EditPasswordPage,
     });
     modal.present();
 
