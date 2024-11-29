@@ -33,7 +33,10 @@ export class CarritoPage implements OnInit {
       this.DelayCarrito()
     });
     await this.actualizarItemsCarrito();
+    
   }
+
+
 
   calcularTotal() {
     this.total = this.itemsCarrito.reduce((sum, item) => sum + (item.precio_unitario * item.cantidad), 0);
@@ -47,6 +50,7 @@ export class CarritoPage implements OnInit {
   async actualizarItemsCarrito() {
     try {
       const carrito = await this.authService.getCarrito(this.userId);
+      console.log("id del carrito: ", carrito.id_carrito)
       
       if (carrito && carrito.id_carrito) {
         const items = await this.carritoService.obtenerProductosCarrito(carrito.id_carrito);
@@ -141,8 +145,12 @@ export class CarritoPage implements OnInit {
       console.log("si vine al timer")
     }, 1500); // Tiempo en milisegundos (3000 ms = 3 segundos)
   }
+
+  routerLink(){
+    this.router.navigateByUrl('/scanner', { replaceUrl: true })
 }
 
+}
 
 
 
