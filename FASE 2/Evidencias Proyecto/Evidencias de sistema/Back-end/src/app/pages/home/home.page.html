@@ -2,17 +2,16 @@
 
 
 <ion-content class="ion-padding">
-  <h1>Bienvenido, {{localUserData.nombre}}! </h1>
-  <p>Explora las diferentes funciones que tenemos para ti</p>
-
+  <h1>¡Bienvenido, {{localUserData.nombre}}! </h1>
+  <p>¡Ya puedes comprar utilizando la función de escaneo mediante la aplicación!</p>
   <ion-grid>
     <ion-row>
       <ion-col size="6" *ngFor="let itemHome of itemsHome">
         <ion-card class="icon-card" [routerLink]="itemHome.link">
-          <ion-card-header color="secondary">
+          <ion-card-header class="icheader" color="secondary">
             <ion-icon [name]="itemHome.icon" size="large"></ion-icon>
           </ion-card-header>
-          <ion-card-content>
+          <ion-card-content class="iccontent">
             <h2>{{ itemHome.titulo }}</h2>
             <p>{{ itemHome.descripcion }}</p>
           </ion-card-content>
@@ -21,11 +20,26 @@
     </ion-row>
   </ion-grid>
 
+  <ion-card class="content-card">
+    <ion-card-header>
+      <ion-icon name="clipboard-outline"></ion-icon>
+      <h5>Instrucciones</h5>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Al escanear un producto procura tener en consideración los siguientes pasos:</p>
+      <p>1.- La aplicación posea permisos para utilizar la cámara.</p>
+      <p>2.- La cámara se encuentre limpia para no tener inconvenientes a la hora de escanear.</p>
+      <p>3.- Una vez escaneado el producto elegido puedes agregalo a tu carrito.</p>
+      <p>4.- Dentro del carrito podrás ver el producto que agregaste.</p>
+      <p>5.- Presiona "Continuar compra" para realizar el proceso de pago.</p>
+    </ion-card-content>
+  </ion-card>
+
 <!-- Custom bottom navigation bar -->
 
 <ion-footer>
   <div class="bottom-nav">
-    <ion-buttons class="nav-item" fill="clear">
+    <ion-buttons class="nav-item" fill="clear" (click)="goToHome()">
       <ion-icon name="home"></ion-icon>
       <span>Inicio</span>
     </ion-buttons>

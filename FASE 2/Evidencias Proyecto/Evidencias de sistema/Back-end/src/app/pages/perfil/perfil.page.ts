@@ -5,6 +5,7 @@ import { AuthSession, User } from '@supabase/supabase-js';
 import { EditarPerfilPage } from '../editar-perfil/editar-perfil.page';
 import { ChangeDetectorRef } from '@angular/core';
 import { EditPasswordPage } from '../edit-password/edit-password.page';
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-perfil',
@@ -20,7 +21,8 @@ export class PerfilPage implements OnInit {
   
   constructor(private modalCtrl: ModalController, 
               private authService: AuthService,
-              private cdr: ChangeDetectorRef,) {}
+              private cdr: ChangeDetectorRef,
+              private router: Router) {}
 
  ngOnInit() {
   this.localUserData = this.authService.getLocalUserData();
@@ -59,4 +61,11 @@ export class PerfilPage implements OnInit {
     }
   }
 
+  goToScanner() {
+    this.router.navigateByUrl('/scanner', { replaceUrl: true }) // Cambia '/scanner' por la ruta de tu página Scanner
+  }
+
+  goToHome(){
+    this.router.navigateByUrl('/home', { replaceUrl: true })
+  }
 }

@@ -6,13 +6,6 @@ ion-content {
     font-family: "Inter", sans-serif;
 }
   
-h1 {
-    font-size: 28px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 8px;
-}
-  
   
 .icon-card {
     height: 100%;
@@ -26,9 +19,7 @@ h1 {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-
-ion-card-header {
-    padding: 16px;
+.icheader {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -38,10 +29,8 @@ ion-card-header {
         color: white;
     }
 }
-
-
   
-ion-card-content {
+.iccontent {
     flex-grow: 2;
     display: flex;
     flex-direction: column;
@@ -61,69 +50,41 @@ ion-card-content {
         margin: auto;
       }
     }
+
 }
-  
-ion-col {
-    margin-top: 10px;
+
+.content-card {
+  margin-top: 10px;
+  color: black;
+  margin: 5%;
+  ion-card-header {
+    --background: #0163AA;
+    padding-bottom: -20%;
+    display: flex;
+    flex-direction: row; /* Cambiado a fila */
+    align-items: center; /* Alinea icono y texto verticalmente */
+    gap: 10px; /* Espaciado entre el icono y el texto */
+
+    ion-icon {
+      color: white;
+      font-size: 2rem;
+    }
+
+    h5 {
+      color: white;
+      font-weight: bold;
+      margin: 0; /* Elimina márgenes adicionales */
+    }
+  }
+
+  ion-card-content {
+    padding-top: 15px;
+    padding-bottom: 10%;
+  }
+
+
 }
 
 
-ion-footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: white;
-    z-index: 10; 
-  }
   
-  .bottom-nav {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    height: 80px; 
-    background-color: white;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1); 
-    padding: 0 16px; 
-  }
-  
-  .nav-item {
-    display: flex;
-    flex-direction: column; 
-    align-items: center;
-    justify-content: center;
-    text-align: center; 
-    color: #666;
-    font-size: 12px;
-    width: 33%;
-  }
-  
-  .nav-item ion-icon {
-    font-size: 38px; 
-    margin-bottom: 4px; 
-  }
-  
-  .nav-item span {
-    font-size: 12px; 
-  }
-  
-  .scan-button {
-    margin-top: -45px; 
-  }
-  
-  .scan-circle {
-    width: 80px;
-    height: 80px;
-    background: #0072bc; 
-    border-radius: 50%; 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 10px rgba(0, 114, 188, 0.3);
-  }
-  
-  .scan-circle ion-icon {
-    font-size: 30px; 
-    color: white;
-  }
   

@@ -12,9 +12,7 @@ export class HomePage implements OnInit {
 
   itemsHome = [
     { icon: 'qr-code-outline', link:'/scanner', titulo: 'Escanear Código de Barras', descripcion: 'Escanea el código de barras para añadir un producto al carrito' },
-    { icon: 'card-outline', link:'/', titulo: 'Gestionar Pago', descripcion: 'Gestiona el método de pago a utilizar para tus compras' },
     { icon: 'cube-outline', link:'/historial', titulo: 'Historial de compras', descripcion: 'Observa tu historial de compras realizadas usando la aplicación' },
-    { icon: 'qr-code-outline', link:'/scanner-qr', titulo: 'Escanear QR', descripcion: 'Esta funcion cambiarla luego al rol de administrador.' },
 
   ];
 
@@ -54,7 +52,11 @@ export class HomePage implements OnInit {
   }
   
   goToScanner() {
-    this.router.navigate(['/scanner']); // Cambia '/scanner' por la ruta de tu página Scanner
+    this.router.navigateByUrl('/scanner', { replaceUrl: true }) // Cambia '/scanner' por la ruta de tu página Scanner
+  }
+
+  goToHome(){
+    this.router.navigateByUrl('/home', { replaceUrl: true })
   }
 
 }

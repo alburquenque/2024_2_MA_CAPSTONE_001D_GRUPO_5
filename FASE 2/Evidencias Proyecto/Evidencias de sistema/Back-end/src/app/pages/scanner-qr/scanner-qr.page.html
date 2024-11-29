@@ -1,12 +1,27 @@
 <app-header [title]="'Escaneo QR'"></app-header>
 
 <ion-content class="ion-padding">
-  <h1>Bienvenido {{ datosUser.nombre }}</h1>
-  <h3>¡Escanea un voucher!</h3>
-  <p>Recuerda que el voucher debe tener un código similar a este:</p>
-  <img src="assets/QR_example.png" alt="Código de ejemplo">
+  <div class="welcome-section">
+    <h1>¡Bienvenido {{datosUser.nombre}}!</h1>
+    <p>Escanea un voucher</p>
+  </div>
 
-  <!-- Modal que se muestra al escanear un código válido -->
+  <ion-card class="qr-card">
+    <ion-card-content>
+      <div class="instruction-text">
+        Recuerda que el voucher debe tener un código similar a este:
+      </div>
+      <div class="qr-container">
+        <ion-icon name="qr-code-outline"></ion-icon>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button color="secondary" expand="block" class="scan-button" (click)="scanQRCode()" >
+    <ion-icon name="camera-outline" slot="start"></ion-icon>
+    INICIAR ESCANEO
+  </ion-button>
+</ion-content>
   <ion-modal
     #voucherScanned
     [isOpen]="isScanned"
@@ -56,5 +71,5 @@
     </ng-template>
   </ion-modal>
 
-  <ion-button expand="block" (click)="scanQRCode()">Iniciar Escaneo</ion-button>
-</ion-content>
+
+

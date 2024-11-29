@@ -2,17 +2,17 @@
 
 
 <ion-content class="ion-padding">
-  <h1>Bienvenido, {{localUserData.nombre}}!</h1>
-  <p>Supervisa los carritos de compra de los usuarios y confirma sus voucher de compra</p>
+  <h1>¡Bienvenido, {{localUserData.nombre}}!</h1>
+  <p>Puedes supervisar los carritos en tiempo real y validar los vouchers de los usuarios.</p>
 
   <ion-grid>
     <ion-row>
       <ion-col size="6" *ngFor="let itemHome of itemsHome">
         <ion-card class="icon-card" [routerLink]="itemHome.link">
-          <ion-card-header color="secondary">
+          <ion-card-header class="icheader" color="secondary">
             <ion-icon [name]="itemHome.icon" size="large"></ion-icon>
           </ion-card-header>
-          <ion-card-content>
+          <ion-card-content class="iccontent">
             <h2>{{ itemHome.titulo }}</h2>
             <p>{{ itemHome.descripcion }}</p>
           </ion-card-content>
@@ -20,5 +20,20 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+
+  <ion-card class="content-card">
+    <ion-card-header>
+      <ion-icon name="clipboard-outline"></ion-icon>
+      <h5>Instrucciones</h5>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Al escanear un voucher procura tener en consideración los siguientes pasos:</p>
+      <p>1.- Escanea el voucher de la persona.</p>
+      <p>2.- Revisa los productos dentro del voucher.</p>
+      <p>3.- Revisa que los productos que posee el cliente coinciden con los que están dentro del voucher.</p>
+      <p>4.- Valida el voucher con el boton correspondiente.</p>
+      <p>5.- Una vez confirmada la validación, dentro del voucher el estado cambia a "Completado".</p>
+    </ion-card-content>
+  </ion-card>
 
 </ion-content>

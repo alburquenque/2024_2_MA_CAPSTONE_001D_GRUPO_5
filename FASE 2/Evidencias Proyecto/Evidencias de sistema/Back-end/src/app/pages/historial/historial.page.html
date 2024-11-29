@@ -1,9 +1,10 @@
 <app-header [title]="'Historial de Compras'"></app-header>
 <ion-header [translucent]="true"></ion-header>
 
-<ion-content>
+<ion-content class="content">
  <!-- En caso de que si tenga compras realizadas -->
-  <ion-list *ngIf="compras.length > 0; else emptyState">
+<ion-content>
+ <ion-list *ngIf="compras.length > 0; else emptyState">
     <div class="ion-padding-horizontal ion-padding-top">
       <ion-text color="medium">
         <p>Mostrando todas las compras realizadas</p>
@@ -46,6 +47,7 @@
       </ion-card-content>
     </ion-card>
   </ion-list>
+</ion-content>
 
   <!-- En caso de que no tenga compras realizadas: -->
   <ng-template #emptyState>
@@ -63,4 +65,28 @@
       </ion-button>
     </div>
   </ng-template>
+
+  
 </ion-content>
+
+<ion-footer>
+  <div class="bottom-nav">
+    <ion-buttons class="nav-item" fill="clear" (click)="goToHome()">
+      <ion-icon name="home"></ion-icon>
+      <span>Inicio</span>
+    </ion-buttons>
+
+    <ion-buttons class="nav-item scan-button" fill="clear" (click)="goToScanner()">
+      <div class="scan-circle">
+        <ion-icon name="scan"></ion-icon>
+      </div>
+      <span>Escanear</span>
+    </ion-buttons>
+
+    <ion-buttons class="nav-item" fill="clear">
+      <ion-icon name="settings"></ion-icon>
+      <span>Configuracion</span>
+    </ion-buttons>
+  </div>
+</ion-footer>
+

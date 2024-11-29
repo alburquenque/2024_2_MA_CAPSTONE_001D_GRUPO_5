@@ -29,7 +29,7 @@ export class ScannerQrPage implements OnInit {
 
   ngOnInit() {
     this.datosUser = this.authService.getLocalUserData();
-    console.log("Datos del usuario: ", this.datosUser);
+    console.log("datos del usuario: ",this.datosUser)
   }
 
   async startScan(val?: number) {

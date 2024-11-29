@@ -197,6 +197,14 @@ export class ConfirmacionPagoPage implements OnInit {
       return '';
     }
   }
+
+  goToScanner() {
+    this.router.navigateByUrl('/scanner', { replaceUrl: true }) // Cambia '/scanner' por la ruta de tu página Scanner
+  }
+
+  goToHome(){
+    this.router.navigateByUrl('/home', { replaceUrl: true })
+  }
   
 
 }
