@@ -201,7 +201,8 @@ export class ProductoService {
                 annio: row.annio ? parseInt(row.annio) : null,
                 precio: row.precio ? parseFloat(row.precio) : null,
                 id_categoria: row.id_categoria ? parseInt(row.id_categoria) : null,
-                descripcion: row.descripcion?.trim() || null
+                descripcion: row.descripcion?.trim() || null,
+                imagen: row.imagen?.trim() || null,
               }));
 
               if (productos.length > 0) {
