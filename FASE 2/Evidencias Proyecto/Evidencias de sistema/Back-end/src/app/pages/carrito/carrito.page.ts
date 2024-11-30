@@ -15,6 +15,7 @@ export class CarritoPage implements OnInit {
   itemsCarrito: any[] = [];
   userId!: string;
   total: number = 0;
+  loadingItem: string | null = null;
 
   constructor(private carritoService: CarritoService, 
               private authService: AuthService, 
@@ -28,6 +29,7 @@ export class CarritoPage implements OnInit {
   async ngOnInit() {
     this.userId = await this.authService.getCurrentUserId();
     this.carritoService.itemsCarrito$.subscribe((items) => {
+      items = items.sort((a: any, b: any) => a.precio_unitario - b.precio_unitario);
       this.itemsCarrito = items;
       this.calcularTotal();
       this.DelayCarrito()
@@ -68,22 +70,27 @@ export class CarritoPage implements OnInit {
   }
 
   async actualizarCantidad(item: any, cambio: number) {
+    if (this.loadingItem) return; // Evita actualizaciones paralelas
+    this.loadingItem = item.id_refcarrito;
     const nuevaCantidad = item.cantidad + cambio;
-    const nuevoTotal = nuevaCantidad*item.precio_unitario
 
-    const carrito = await this.authService.getCarrito(this.userId)
-    const cantidad_nueva = carrito.cantidad + cambio;
+
     if (nuevaCantidad > 0) {
       await this.carritoService.actualizarCantidadProducto(nuevaCantidad, item.id_refcarrito);
-      await this.carritoService.actualizarCantidadEnCarrito(cantidad_nueva, item.id_carrito);
+      
       await this.carritoService.actualizarTotalEnRef(nuevaCantidad, item.id_refcarrito, item.precio_unitario);
       
       const carrito = await this.carritoService.obtenerProductosCarrito(item.id_carrito)
       if (carrito){
         const total = carrito.reduce((sum, item) => sum + (item.precio_unitario * item.cantidad), 0);
+        console.log("El total ahora es: ", total)
         await this.carritoService.actualizarTotalEnCarrito(total, item.id_carrito);
-      }
 
+        const cantidad_total = carrito.reduce((sum, item) => sum + item.cantidad, 0);
+        console.log("cantidad_total nueva: ", cantidad_total)
+        await this.carritoService.actualizarCantidadEnCarrito(cantidad_total, item.id_carrito);
+      }
+      this.loadingItem = null; // Limpia el estado de carga
 
       
     } else {

@@ -11,15 +11,19 @@
             <h2 class="item-title">{{ item.producto?.nombre || 'Nombre del Producto' }}</h2>
             <p class="item-price">{{ formatearPesos(item.precio_unitario) }}</p>
             <div class="quantity-controls">
-              <button class="button-quantity" (click)="actualizarCantidad(item, -1)"> - </button>
+              <button class="button-quantity" (click)="actualizarCantidad(item, -1)" [disabled]="loadingItem === item.id_refcarrito"> - </button>
               <ion-badge slot="end" color="secondary" class="quantity-badge">{{ item.cantidad }}</ion-badge>
-              <button class="button-quantity" (click)="actualizarCantidad(item, 1)"> + </button>
+              <button class="button-quantity" (click)="actualizarCantidad(item, 1)" [disabled]="loadingItem === item.id_refcarrito"> + </button>
               <button class="button-delete" (click)="eliminarProducto(item)" >
                 <ion-icon name="trash-outline"></ion-icon>
               </button>
+              <div *ngIf="loadingItem === item.id_refcarrito" class="loading-icon">
+                <ion-spinner name="crescent"></ion-spinner>
+              </div>
             </div>
           </div>
         </div>
+
       </ion-card-content>
     </ion-card>
   </div>
