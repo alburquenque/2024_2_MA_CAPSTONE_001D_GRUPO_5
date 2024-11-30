@@ -6,7 +6,7 @@ import { RoleGuard } from './guards/role.guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',  
+    redirectTo: 'splash',  
     pathMatch: 'full'
   },
   // Rutas públicas
@@ -169,6 +169,10 @@ const routes: Routes = [
   {
     path: '**',
     redirectTo: 'login'
+  },
+  {
+    path: 'splash',
+    loadChildren: () => import('./pages/splash/splash.module').then( m => m.SplashPageModule)
   },
 
 
