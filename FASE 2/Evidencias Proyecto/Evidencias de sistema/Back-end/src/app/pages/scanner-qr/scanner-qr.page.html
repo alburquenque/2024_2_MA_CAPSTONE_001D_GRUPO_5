@@ -30,7 +30,7 @@
   >
     <ng-template>
       <ion-header class="ion-no-border">
-        <ion-toolbar>
+        <ion-toolbar color="secondary">
           <ion-title>¡Voucher Escaneado!</ion-title>
           <ion-buttons slot="end">
             <ion-button (click)="voucherScanned.dismiss()">
@@ -41,33 +41,37 @@
       </ion-header>
 
       <ion-content>
-        <!-- Lista de productos -->
+
+        <ion-content class="content-escaneado">
         <ion-list lines="none" *ngIf="voucherEntero[0].compra.ref_compra && voucherEntero[0].compra.ref_compra.length > 0">
           <ion-item *ngFor="let ref of voucherEntero[0].compra.ref_compra">
             <ion-thumbnail>
               <img class="imgcarrito" [src]="ref.producto.imagen || 'assets/FARO.png'" alt="{{ ref.producto.nombre || 'Producto' }}">
             </ion-thumbnail>
-            <ion-label>
+            <ion-label class="labeltext">
               <h2>{{ ref.producto.nombre }}</h2>
               <p>Precio: {{ formatearPesos(ref.producto.precio) }}</p>
               <p>Descripción: {{ ref.producto.descripcion?.slice(0, 70) }}...</p>
+              <p>Cantidad: {{ ref.cantidad }}</p>
             </ion-label>
           </ion-item>
         </ion-list>
+      </ion-content>
 
-        <!-- Sección total -->
-        <div class="total-section" *ngIf="voucherEntero[0].compra">
-          <div class="total-info">
-            <h2>Total: {{ formatearPesos(voucherEntero[0].total) }}</h2>
-          </div>
-          <ion-button expand="block" class="pay-button" (click)="validarVoucher()">Validar Voucher</ion-button>
-        </div>
 
         <!-- Mensaje cuando no hay productos -->
         <div *ngIf="voucherEntero[0].compra.ref_compra.length === 0">
           <p>No se encontraron productos en esta compra.</p>
         </div>
       </ion-content>
+
+              <!-- Sección total -->
+        <div class="total-section" *ngIf="voucherEntero[0].compra">
+          <div class="total-info">
+            <h2>Total: {{ formatearPesos(voucherEntero[0].total) }}</h2>
+          </div>
+          <ion-button expand="block" class="pay-button" (click)="validarVoucher()">Validar Voucher</ion-button>
+        </div>
     </ng-template>
   </ion-modal>
 

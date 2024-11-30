@@ -1,5 +1,6 @@
 <app-header [title]="'Carrito de compras'"></app-header>
 <ion-content>
+  <ion-content class="content-items">
   <div *ngIf="itemsCarrito.length > 0">
     <ion-card *ngFor="let item of itemsCarrito" class="cart-item">
       <ion-card-content>
@@ -27,7 +28,6 @@
       </ion-card-content>
     </ion-card>
   </div>
-
   <div *ngIf="itemsCarrito.length === 0" class="empty-cart">
     <ion-icon name="cart-outline" class="empty-cart-icon"></ion-icon>
     <h3>El carrito está vacío</h3>
@@ -35,6 +35,8 @@
     <ion-button expand="block" color="primary" (click)="routerLink()">
       Escanear productos </ion-button>
   </div>
+  </ion-content>
+
 
   <div *ngIf="itemsCarrito.length > 0" class="total-section">
     <div class="total-info">
