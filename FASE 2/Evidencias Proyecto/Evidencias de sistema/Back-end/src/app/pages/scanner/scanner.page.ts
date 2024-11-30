@@ -85,8 +85,13 @@ async ngOnInit() {
       this.carritoID = await this.authService.getCarrito(this.datosUser.id_usuario)
       console.log('Datos que se agregan al carrito', this.productoEscaneado.precio, this.cantidad, 
         this.productoEscaneado.precio, this.productoEscaneado.id_producto, this.carritoID, this.datosUser.id_usuario )
+      
+      console.log("Precio unitario: ", this.productoEscaneado.precio)
+      console.log("Cantidad: ", this.cantidad)
+      const total_producto = this.productoEscaneado.precio * this.cantidad
+      console.log("total: ", total_producto)
       await this.carritoService.agregarProducto(this.productoEscaneado.precio, this.cantidad, 
-      this.productoEscaneado.precio, this.productoEscaneado.id_producto, this.carritoID, this.datosUser.id_usuario );
+      total_producto, this.productoEscaneado.id_producto, this.carritoID, this.datosUser.id_usuario );
       console.log("cantidad: ",this.cantidad)
       await this.cerrarProducto();
       await loading.dismiss()

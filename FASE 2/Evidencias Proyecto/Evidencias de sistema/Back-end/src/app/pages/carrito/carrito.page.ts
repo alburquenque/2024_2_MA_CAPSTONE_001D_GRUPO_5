@@ -38,7 +38,7 @@ export class CarritoPage implements OnInit {
 
 
 
-  calcularTotal() {
+  async calcularTotal() {
     this.total = this.itemsCarrito.reduce((sum, item) => sum + (item.precio_unitario * item.cantidad), 0);
   }
 
@@ -70,12 +70,22 @@ export class CarritoPage implements OnInit {
   async actualizarCantidad(item: any, cambio: number) {
     const nuevaCantidad = item.cantidad + cambio;
     const nuevoTotal = nuevaCantidad*item.precio_unitario
-    console.log("nuevo total: ",nuevoTotal)
+
+    const carrito = await this.authService.getCarrito(this.userId)
+    const cantidad_nueva = carrito.cantidad + cambio;
     if (nuevaCantidad > 0) {
       await this.carritoService.actualizarCantidadProducto(nuevaCantidad, item.id_refcarrito);
-      await this.carritoService.actualizarCantidadEnCarrito(nuevaCantidad, item.id_carrito);
-      await this.carritoService.actualizarTotalEnCarrito(nuevoTotal, item.id_carrito);
+      await this.carritoService.actualizarCantidadEnCarrito(cantidad_nueva, item.id_carrito);
       await this.carritoService.actualizarTotalEnRef(nuevaCantidad, item.id_refcarrito, item.precio_unitario);
+      
+      const carrito = await this.carritoService.obtenerProductosCarrito(item.id_carrito)
+      if (carrito){
+        const total = carrito.reduce((sum, item) => sum + (item.precio_unitario * item.cantidad), 0);
+        await this.carritoService.actualizarTotalEnCarrito(total, item.id_carrito);
+      }
+
+
+      
     } else {
       await this.eliminarProducto(item);}
     await this.actualizarItemsCarrito();
@@ -84,8 +94,11 @@ export class CarritoPage implements OnInit {
   
   async eliminarProducto(item: any) {
     await this.carritoService.eliminarItemCarrito(item.id_refcarrito);
-    await this.carritoService.actualizarCantidadEnCarrito(0, item.id_carrito);
-    await this.carritoService.actualizarTotalEnCarrito(0, item.id_carrito);
+    const carrito = await this.authService.getCarrito(this.userId)
+    const cantidad_nueva = carrito.cantidad - item.cantidad;
+    const total_nuevo = carrito.total - item.total;
+    await this.carritoService.actualizarCantidadEnCarrito(cantidad_nueva, item.id_carrito);
+    await this.carritoService.actualizarTotalEnCarrito(total_nuevo, item.id_carrito);
     await this.actualizarItemsCarrito();
   }
 
