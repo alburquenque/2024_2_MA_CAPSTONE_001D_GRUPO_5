@@ -129,6 +129,55 @@ async getVentasPorCategoria(periodo: string): Promise<{ categoria: string; canti
   }
 }
 
+// Para obtener todos los usuarios, total de compras y total de productos en carritos
+
+async obtenerTotalUsuarios() {
+  try {
+    const { data, error, count } = await this.supabase
+      .from('usuario')
+      .select('id_usuario', { count: 'exact'})
+    if (error){
+      return null;
+    } 
+    return count;
+  } catch (error) {
+    console.error('Error obteniendo producto: ', error);
+    return null;
+  }
+}
+
+async obtenerTotalCompras() {
+  try {
+    const { data, error, count } = await this.supabase
+      .from('compra')
+      .select(`id_compra`, { count: 'exact'})
+    if (error){
+      return null;
+    } 
+    return count;
+  } catch (error) {
+    console.error('Error obteniendo producto: ', error);
+    return null;
+  }
+}
+
+async obtenerTotalProductosEnCarrito() {
+  try {
+    const { data, error } = await this.supabase
+      .from('ref_carrito')
+      .select(`cantidad`)
+    if (error){
+      return null;
+    } 
+
+    const totalProductos = data.reduce((sum: number, item: any) => sum + item.cantidad, 0);
+    return totalProductos;
+  } catch (error) {
+    console.error('Error obteniendo producto: ', error);
+    return null;
+  }
+}
+
 }
 
 

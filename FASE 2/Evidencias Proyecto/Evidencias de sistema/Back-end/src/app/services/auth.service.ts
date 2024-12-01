@@ -227,7 +227,7 @@ export class AuthService {
     return this.currentUser.asObservable()
   }
 
-  getCurrentUserId(): string {
+  async getCurrentUserId(): Promise<string> {
     if (this.currentUser.value) {
       return (this.currentUser.value as User).id
     } 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { ReportesService } from 'src/app/services/reportes.service';
 
 @Component({
   selector: 'app-home-superadmin',
@@ -9,8 +10,15 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class HomeSuperadminPage implements OnInit {
   localUserData: any; 
+  usuarioRegistrado: any
+  totalCompras: any
+  productosAgregados: any
   
-  constructor(private router: Router,private authService: AuthService) { }
+  constructor(private router: Router,
+              private authService: AuthService,
+              private reportesSerive: ReportesService) { }
+  
+  
   lastActivity: Date = new Date();
 
 
@@ -23,10 +31,11 @@ export class HomeSuperadminPage implements OnInit {
     { icon: 'stats-chart-outline', titulo: 'Reportes y Analíticas', descripcion: 'Visualiza los reportes y analíticas de los productos escaneados', route: '/reportes' },
   ];
 
-  ngOnInit() {
+  async ngOnInit() {
     this.actualizarUltimaActividad();
     this.localUserData = this.authService.getLocalUserData(); // Llamada correcta
     console.log('Datos del usuario en localStorage:', this.localUserData);
+    await this.obtenerReportes()
   }
 
   actualizarUltimaActividad() {
@@ -48,5 +57,15 @@ export class HomeSuperadminPage implements OnInit {
   reportarProblema() {
     // Abre el formulario de reporte de bugs
   }
+
+  async obtenerReportes(){
+    this.usuarioRegistrado = await this.reportesSerive.obtenerTotalUsuarios()
+    this.totalCompras = await this.reportesSerive.obtenerTotalCompras()
+    this.productosAgregados = await this.reportesSerive.obtenerTotalProductosEnCarrito()
+    console.log("1: ", this.usuarioRegistrado)
+    console.log("2: ", this.totalCompras)
+    console.log("3: ", this.productosAgregados)
+  }
+
 
 }

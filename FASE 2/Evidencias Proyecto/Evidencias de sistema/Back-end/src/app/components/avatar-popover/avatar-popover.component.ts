@@ -41,7 +41,7 @@ export class AvatarPopoverComponent {
     this.authService.signOut().then(() => {
       localStorage.clear(); 
       this.popoverController.dismiss();
-      this.router.navigateByUrl('/login', { replaceUrl: true });
+      this.router.navigateByUrl('/splash', { replaceUrl: true });
     }).catch((error) => {
       console.error('Error al cerrar sesión:', error); // Manejo de errores
     });

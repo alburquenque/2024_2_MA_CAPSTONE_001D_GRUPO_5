@@ -27,7 +27,9 @@ export class CarritoPage implements OnInit {
   }
 
   async ngOnInit() {
-    this.userId = await this.authService.getCurrentUserId();
+    const datosUser = await this.authService.getLocalUserData(); // Llamada correcta
+    this.userId = datosUser.id_usuario
+    //console.log("mi user id es: ", this.userId)
     this.carritoService.itemsCarrito$.subscribe((items) => {
       items = items.sort((a: any, b: any) => a.precio_unitario - b.precio_unitario);
       this.itemsCarrito = items;
