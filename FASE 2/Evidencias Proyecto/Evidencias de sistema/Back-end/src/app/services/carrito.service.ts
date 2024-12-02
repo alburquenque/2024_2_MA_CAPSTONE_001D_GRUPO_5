@@ -59,9 +59,19 @@ export class CarritoService {
           const nuevaCantidad = productoExistente.cantidad + cantidad;
           const totalCarrito = nuevaCantidad*productoExistente.precio_unitario
           await this.actualizarCantidadProducto(nuevaCantidad, productoExistente.id_refcarrito);
-          await this.actualizarCantidadEnCarrito(nuevaCantidad, id_carrito2);
-          await this.actualizarTotalEnCarrito(totalCarrito, id_carrito2);
+          //await this.actualizarCantidadEnCarrito(nuevaCantidad, id_carrito2);
+          //await this.actualizarTotalEnCarrito(totalCarrito, id_carrito2);
           await this.actualizarTotalEnRef(nuevaCantidad, productoExistente.id_refcarrito, productoExistente.precio_unitario)
+          const carrito = await this.obtenerProductosCarrito(productoExistente.id_carrito)
+          if (carrito){
+            const total = carrito.reduce((sum, item) => sum + (item.precio_unitario * item.cantidad), 0);
+            console.log("El total ahora es: ", total)
+            await this.actualizarTotalEnCarrito(total, id_carrito2);
+    
+            const cantidad_total = carrito.reduce((sum, item) => sum + item.cantidad, 0);
+            console.log("cantidad_total nueva: ", cantidad_total)
+            await this.actualizarCantidadEnCarrito(cantidad_total, id_carrito2);
+          }
 
         }
         else{
