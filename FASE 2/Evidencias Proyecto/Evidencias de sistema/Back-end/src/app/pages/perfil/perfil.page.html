@@ -49,7 +49,7 @@
   </ion-card>
 </ion-content>
 
-<ion-footer>
+<ion-footer *ngIf="localUserData.id_rol != 3">
   <div class="bottom-nav">
     <ion-buttons class="nav-item" fill="clear" (click)="goToHome()" >
       <ion-icon name="home"></ion-icon>

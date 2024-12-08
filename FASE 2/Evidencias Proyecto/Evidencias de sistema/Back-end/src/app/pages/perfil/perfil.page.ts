@@ -63,7 +63,12 @@ export class PerfilPage implements OnInit {
   }
 
   goToScanner() {
-    this.router.navigateByUrl('/scanner', { replaceUrl: true }) // Cambia '/scanner' por la ruta de tu página Scanner
+    if(this.localUserData.id_rol == 1){
+      this.router.navigateByUrl('/scanner', { replaceUrl: true }) 
+    }else{
+      this.router.navigateByUrl('/scanner-qr', { replaceUrl: true }) 
+    }
+ // Cambia '/scanner' por la ruta de tu página Scanner
   }
 
   goToHome(){
