@@ -26,6 +26,7 @@ export class PerfilPage implements OnInit {
 
  ngOnInit() {
   this.localUserData = this.authService.getLocalUserData();
+  console.log('La info del local user ',this.localUserData)
 }
 
   message = 'This modal example uses the modalController to present and dismiss modals.';

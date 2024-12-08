@@ -33,7 +33,7 @@
           <p class="label-text">Teléfono</p>
           <div class="info-row">
             <ion-icon name="call-outline"></ion-icon>
-            <h2>+56953631110</h2>
+            <h2>{{ localUserData.numero === null ? 'Sin información' : localUserData.numero }}</h2>
           </div>
         </div>
 
@@ -41,7 +41,7 @@
           <p class="label-text">Dirección</p>
           <div class="info-row">
             <ion-icon name="location-outline"></ion-icon>
-            <h2>Papasime 1526, Cerro Navia</h2>
+            <h2>{{ localUserData.direccion}}</h2>
           </div>
         </div>
       </div>

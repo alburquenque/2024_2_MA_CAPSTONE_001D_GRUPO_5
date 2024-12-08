@@ -442,6 +442,8 @@ export class AuthService {
     nombre: string;
     apellido: string;
     imagen: string;
+    numero: number;
+    direccion: string;
   }) {
     try {
       const { error } = await this.supabase
@@ -449,7 +451,9 @@ export class AuthService {
         .update({
           nombre: profileData.nombre,
           apellido: profileData.apellido,
-          imagen: profileData.imagen
+          imagen: profileData.imagen,
+          numero: profileData.numero,
+          direccion: profileData.direccion
         })
         .eq('id_usuario', profileData.id_usuario);
 

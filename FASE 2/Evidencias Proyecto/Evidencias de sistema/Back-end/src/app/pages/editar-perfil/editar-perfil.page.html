@@ -45,4 +45,23 @@
       [(ngModel)]="profileData.apellido">
     </ion-input>
   </ion-item>
+
+  <ion-item>
+    <ion-input 
+      labelPlacement="stacked" 
+      label="Dirección"
+      [(ngModel)]="profileData.direccion">
+    </ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-input 
+      labelPlacement="stacked" 
+      label="Numero de telefono"
+      [(ngModel)]="profileData.numero"
+      maxlength="9"
+      minlength="9"
+      placeholder="El número debe tener 9 dígitos">
+    </ion-input>
+  </ion-item>
 </ion-content>

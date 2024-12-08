@@ -16,7 +16,9 @@ export class EditarPerfilPage implements OnInit {
   profileData = {
     nombre: '',
     apellido: '',
-    imagen: ''
+    imagen: '',
+    numero: 0,
+    direccion:'',
   };
 
   constructor(
@@ -33,6 +35,9 @@ export class EditarPerfilPage implements OnInit {
       this.profileData.nombre = this.userData.nombre;
       this.profileData.apellido = this.userData.apellido;
       this.profileData.imagen = this.userData.imagen;
+      this.profileData.numero = this.userData.numero;
+      this.profileData.direccion = this.userData.direccion;
+      console.log('Datos de perfil:', this.profileData);
     }
   }
 
@@ -65,10 +70,19 @@ export class EditarPerfilPage implements OnInit {
       const hayCambios = 
         this.profileData.nombre !== this.userData.nombre ||
         this.profileData.apellido !== this.userData.apellido ||
-        this.imageFile;
+        this.imageFile ||
+        this.profileData.numero !== this.userData.numero ||
+        this.profileData.direccion !== this.userData.direccion;
 
       if (hayCambios) {
         console.log("hubo cambios")
+
+        if(this.profileData.nombre.length < 3 || this.profileData.apellido.length < 3 || this.profileData.numero.toString().length < 9 || this.profileData.numero.toString().length > 9 || this.profileData.direccion.length < 5){
+          await loading.dismiss();
+          await this.showAlert('Advertencia', 'No se ha rellenado bien los campos.');
+          return null
+        }
+
         let imageUrl = this.userData.imagen;
 
 
@@ -98,14 +112,18 @@ export class EditarPerfilPage implements OnInit {
           id_usuario: this.userData.id_usuario,
           nombre: this.profileData.nombre,
           apellido: this.profileData.apellido,
-          imagen: imageUrl
+          imagen: imageUrl,
+          numero: this.profileData.numero,
+          direccion: this.profileData.direccion
         });
 
         const updatedUserData = {
           ...this.userData,
           nombre: this.profileData.nombre,
           apellido: this.profileData.apellido,
-          imagen: imageUrl
+          imagen: imageUrl,
+          numero: this.profileData.numero,
+          direccion: this.profileData.direccion
         };
         localStorage.setItem('userData', JSON.stringify(updatedUserData));
 
